@@ -1,5 +1,5 @@
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react"
-import { createLight } from "./theme"
+import { createLight } from "./Theme"
 
 export default function ThemeProvider({
   children,
