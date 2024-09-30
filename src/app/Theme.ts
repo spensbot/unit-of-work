@@ -1,24 +1,11 @@
-export interface Theme {
-  colors: {
-    text: string
-    bg: string
-  }
+import { createTheme as muiCreateTheme, Theme as muiTheme } from "@mui/material/styles"
+
+export interface Theme extends muiTheme {
+
 }
 
-export function createLight(): Theme {
-  return {
-    colors: {
-      text: "#000",
-      bg: "#fff",
-    },
-  }
-}
-
-export function createDark(): Theme {
-  return {
-    colors: {
-      text: "#fff",
-      bg: "#000",
-    },
-  }
+export function createTheme(): Theme {
+  const theme = muiCreateTheme()
+  console.log("Spenser: " + theme.spacing(1))
+  return muiCreateTheme()
 }

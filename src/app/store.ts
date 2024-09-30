@@ -1,24 +1,10 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
-
-
-const exampleSlice = createSlice({
-  name: 'example',
-  initialState: {
-    value: 0
-  },
-  reducers: {
-    increment: state => {
-      state.value += 1
-    }
-  }
-})
-
-export const { increment } = exampleSlice.actions
+import { portfolioReducer } from '../Portfolio/portfolioSlice'
 
 export const store = configureStore({
   reducer: {
-    example: exampleSlice.reducer
+    portfolio: portfolioReducer
   }
 })
 

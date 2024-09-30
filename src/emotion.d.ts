@@ -1,7 +1,6 @@
 import '@emotion/react'
-import { Theme as CustomTheme } from './app/Theme'
+import { Theme as ThemeType } from './app/Theme'
 
-// This declaration allows emotion's props.theme to be typed
 declare module '@emotion/react' {
-  export interface Theme extends CustomTheme { }
+  export interface Theme extends ThemeType { }
 }

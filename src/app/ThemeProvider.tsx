@@ -1,14 +1,16 @@
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react"
-import { createLight } from "./Theme"
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles"
+import { createTheme } from "./Theme"
 
 export default function ThemeProvider({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const theme = createTheme()
   return (
-    <EmotionThemeProvider theme={createLight()}>
-      {children}
+    <EmotionThemeProvider theme={theme}>
+      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
     </EmotionThemeProvider>
   )
 }

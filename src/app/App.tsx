@@ -1,16 +1,21 @@
-import { useAppDispatch, useAppSelector, increment } from "./store"
+import styled from "@emotion/styled"
+import PortfolioView from "../Portfolio/PortfolioView"
+import Footer from "./Footer"
+import Header from "./Header"
 
-function App() {
-  const dispatch = useAppDispatch()
-  const value = useAppSelector((state) => state.example.value)
-
+export default function App() {
   return (
-    <>
-      <h1>Unit of Work</h1>
-      <p>Value: {value}</p>
-      <button onClick={() => dispatch(increment())}>Increment</button>
-    </>
+    <Root>
+      <Header />
+      <PortfolioView />
+      <Footer />
+    </Root>
   )
 }
 
-export default App
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+`
