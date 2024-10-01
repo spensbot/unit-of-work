@@ -1,5 +1,4 @@
 import { Fields } from '../Field/Field'
-import { useActivePortfolio } from '../Portfolio/Portfolio'
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -22,7 +21,3 @@ export function newUnit(): Unit {
     fields: {}
   }
 }
-
-// export function useActiveUnit<T>(cb: (unit: Unit) => T): T {
-//   return useActivePortfolio(portfolio => cb(portfolio.rootUnits[0]))
-// }

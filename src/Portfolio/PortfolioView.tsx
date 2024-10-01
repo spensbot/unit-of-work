@@ -1,18 +1,27 @@
-import { Typography } from "@mui/material"
-import { useActivePortfolio } from "../Portfolio/Portfolio"
-import ActiveView from "../View/ActiveView"
+import ActiveView from "../View/ViewView"
 import styled from "@emotion/styled"
+import DisplayInput from "../components/DisplayInput"
+import { setName, setDescription } from "./portfolioSlice"
+import { useActivePortfolio } from "./Portfolio"
+import { useAppDispatch } from "../app/store"
 
 export default function PortfolioView() {
-  const portfolioName = useActivePortfolio((portfolio) => portfolio.name)
-  const portfolioDescription = useActivePortfolio(
-    (portfolio) => portfolio.description
-  )
+  const name = useActivePortfolio((portfolio) => portfolio.name)
+  const description = useActivePortfolio((portfolio) => portfolio.description)
+  const dispatch = useAppDispatch()
 
   return (
     <Root>
-      <Typography variant="h1">{portfolioName}</Typography>
-      <Typography>{portfolioDescription}</Typography>
+      <DisplayInput
+        variant="h4"
+        value={name}
+        onChange={(name) => dispatch(setName(name))}
+      />
+      <DisplayInput
+        variant="h6"
+        value={description}
+        onChange={(description) => dispatch(setDescription(description))}
+      />
       <ActiveView />
     </Root>
   )
@@ -20,4 +29,8 @@ export default function PortfolioView() {
 
 const Root = styled.div`
   flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: ${({ theme }) => theme.spacing(2)};
 `
