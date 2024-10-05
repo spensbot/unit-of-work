@@ -20,7 +20,7 @@ export default function TableView() {
           {fieldDefGuids.map((guid) => {
             return <Th key={guid}>{fieldDefsByGuid[guid]!.name}</Th>
           })}
-          <Th>
+          <Th style={{ textAlign: "right" }}>
             <AddFieldButton />
           </Th>
         </Tr>
