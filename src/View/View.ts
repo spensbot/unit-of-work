@@ -5,10 +5,9 @@ import { useActivePortfolio } from '../Portfolio/Portfolio';
  * Allows users to view the portfolio's units in a specified way
  */
 export interface View {
-  t: 'table' | 'kanban' | 'map'
+  mode: 'table' | 'kanban' | 'map'
   guid: string
   name: string
-  description: string
   group?: GroupDef
   filter?: FilterDef
   sort?: SortDef
@@ -41,10 +40,9 @@ export const defaultView: View = newTableView('Default View')
 
 export function newTableView(name: string): View {
   return {
-    t: 'table',
+    mode: 'table',
     guid: uuidv4(),
     name,
-    description: ''
   }
 }
 

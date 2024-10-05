@@ -1,23 +1,23 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export type Field = User | Number | Date | Select
+export type Field = UserField | NumberField | DateField | SelectField
 
-export interface User { // A human being
+export interface UserField { // A human being
   t: 'User'
-  username: string
+  guid: string
 }
 
-export interface Number {
+export interface NumberField {
   t: 'Number'
   val: number
 }
 
-export interface Date {
+export interface DateField {
   t: 'Date'
   unix: number
 }
 
-export interface Select {
+export interface SelectField {
   t: 'Select'
   val: string
 }

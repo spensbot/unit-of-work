@@ -23,6 +23,9 @@ function createThemeDark(): Theme {
   return muiCreateTheme({
     palette: {
       mode: 'dark',
+      background: {
+        paper: '#222'
+      }
     },
   })
 }

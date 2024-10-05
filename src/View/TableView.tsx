@@ -4,7 +4,7 @@ import Button from "@mui/material/Button"
 import { addUnit } from "../Portfolio/portfolioSlice"
 import { newUnit } from "../Unit/Unit"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
-import { useAppDispatch } from "../main/store"
+import { useAppDispatch } from "../config/store"
 import Box from "@mui/material/Box"
 
 export default function TableView() {
@@ -15,18 +15,23 @@ export default function TableView() {
   return (
     <Root>
       <Table>
-        <Tr>
-          <Th>Unit</Th>
-          {fieldDefGuids.map((guid) => {
-            return <Th key={guid}>{fieldDefsByGuid[guid]!.name}</Th>
+        <thead>
+          <Tr>
+            <Th>Unit</Th>
+            {fieldDefGuids.map((guid) => {
+              return <Th key={guid}>{fieldDefsByGuid[guid]!.name}</Th>
+            })}
+            <Th style={{ textAlign: "right" }}>
+              <AddFieldButton />
+            </Th>
+          </Tr>
+        </thead>
+        <tbody>
+          {viewUnits.map((unitGuid) => {
+            return <UnitViewTr key={unitGuid} guid={unitGuid} />
           })}
-          <Th style={{ textAlign: "right" }}>
-            <AddFieldButton />
-          </Th>
-        </Tr>
-        {viewUnits.map((unitGuid) => {
-          return <UnitViewTr key={unitGuid} guid={unitGuid} />
-        })}
+        </tbody>
+        <tfoot />
       </Table>
       <Box height={(theme) => theme.spacing(2)} />
       <AddUnitButton />

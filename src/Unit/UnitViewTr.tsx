@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import { useAppDispatch } from "../main/store"
+import { useAppDispatch } from "../config/store"
 import DisplayInput from "../components/DisplayInput"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { setUnitName } from "../Portfolio/portfolioSlice"
@@ -32,7 +32,7 @@ export default function UnitViewTr({ guid }: { guid: string }) {
           </Td>
         )
       })}
-      <Td /> {/* AddFieldButton */}
+      <Td />
     </Root>
   )
 }

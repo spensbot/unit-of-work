@@ -22,6 +22,7 @@ Ommited features that users can easily implement themselves via custom fields
     - Group (group by any field e.g. Product)
     - Weight (choose numeric field to add weight to groups e.g. Story Points) Height-weight groups show up larger on the map
     - Annotate (choose fields to display values from the group e.g. Assignee)
+  - Timeline view
 - Allow dragging between groups to change the group (be it assignee, product, status, etc)
 - Collection
   - The root of everything. Begins with an empty list of Units
@@ -42,4 +43,6 @@ Omitted features to focus on the core Project Management features for now
 - Server-side anything (everything will be client-side for now)
 - Multiplayer
 - Unit dependencies
-- Inherit/Accumulate overrides (per-unit)
+- Stard/end times
+- Teams field
+- View folders

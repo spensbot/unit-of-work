@@ -3,6 +3,8 @@ import { useActiveView } from "./View"
 import TableView from "./TableView"
 import KanbanView from "./KanbanView"
 import MapView from "./MapView"
+import ViewSelect from "./ViewSelect"
+import { Box } from "@mui/material"
 
 export default function ActiveViewView() {
   // const activeView = useActivePortfolio((p) => p.activeView)
@@ -10,15 +12,24 @@ export default function ActiveViewView() {
 
   return (
     <Root>
-      <ActiveViewTyped />
+      <ViewSelect />
+      <Box sx={{ padding: 2 }}>
+        <ActiveViewTyped />
+      </Box>
     </Root>
   )
 }
 
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.palette.background.paper};
+`
+
 function ActiveViewTyped() {
   const view = useActiveView((v) => v)
 
-  switch (view.t) {
+  switch (view.mode) {
     case "table":
       return <TableView />
     case "kanban":
@@ -27,8 +38,3 @@ function ActiveViewTyped() {
       return <MapView />
   }
 }
-
-const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-`

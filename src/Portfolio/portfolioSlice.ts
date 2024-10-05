@@ -23,11 +23,15 @@ const portfolioSlice = createSlice({
     },
     setUnitName: (state, { payload }: PayloadAction<{ guid: string, name: string }>) => {
       state.unitsByGuid[payload.guid].name = payload.name
+    },
+    setActiveView: (state, { payload }: PayloadAction<{ guid: string }>) => {
+      state.activeViewGuid = payload.guid
+      state.activeViewUnitGuids = getActiveViewUnitGuids(state)
     }
   }
 })
 
-export const { setName, setDescription, addUnit, setUnitName } = portfolioSlice.actions
+export const { setName, setDescription, addUnit, setUnitName, setActiveView } = portfolioSlice.actions
 
 export const portfolioReducer = portfolioSlice.reducer
 
@@ -36,7 +40,7 @@ function getActiveViewUnitGuids(state: Portfolio): string[] {
     return state.rootUnitGuids
   }
   const units = state.rootUnitGuids.map(guid => state.unitsByGuid[guid])
-  const view = state.viewsByGuid[state.activeViewGuid]
+  // const view = state.viewsByGuid[state.activeViewGuid]
   // TODO: Apply filter, sort, group.
   return units.map(u => u.guid)
 }

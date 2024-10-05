@@ -1,7 +1,8 @@
 import { FieldDef } from '../Field/Field'
 import { View } from '../View/View'
 import { Unit } from '../Unit/Unit'
-import { useAppSelector } from '../main/store'
+import { useAppSelector } from '../config/store'
+import { User } from '../User/User'
 
 export interface Portfolio { // Collection, Domain, Portfolio, Universe
   name: string
@@ -11,9 +12,11 @@ export interface Portfolio { // Collection, Domain, Portfolio, Universe
   fieldDefGuids: string[]
   fieldDefsByGuid: { [guid: string]: FieldDef | undefined }
   layerNames: string[]
+  viewGuids: string[]
   viewsByGuid: { [guid: string]: View }
-  activeViewGuid?: string
+  activeViewGuid: string
   activeViewUnitGuids: string[]
+  usersByGuid: { [guid: string]: User }
 }
 
 export function newPortfolio(): Portfolio {
@@ -22,16 +25,23 @@ export function newPortfolio(): Portfolio {
     description: 'Welcome to your portfolio. Add units of work to get started!',
     rootUnitGuids: [],
     unitsByGuid: {},
-    fieldDefGuids: ['1', '2', '3', '4'],
+    fieldDefGuids: ['Field_1', 'Field_2', 'Field_3', 'Field_4'],
     fieldDefsByGuid: {
-      '1': { guid: '1', field_t: 'Select', name: 'Status' },
-      '2': { guid: '2', field_t: 'Select', name: 'Project' },
-      '3': { guid: '3', field_t: 'Number', name: 'Days' },
-      '4': { guid: '4', field_t: 'User', name: 'Assignee' },
+      'Field_1': { guid: 'Field_1', field_t: 'Select', name: 'Status' },
+      'Field_2': { guid: 'Field_2', field_t: 'Select', name: 'Project' },
+      'Field_3': { guid: 'Field_3', field_t: 'Number', name: 'Days' },
+      'Field_4': { guid: 'Field_4', field_t: 'User', name: 'Assignee' },
     },
     layerNames: [],
-    viewsByGuid: {},
-    activeViewUnitGuids: []
+    viewGuids: ['View_1', 'View_2', 'View_3'],
+    viewsByGuid: {
+      'View_1': { guid: 'View_1', mode: 'table', name: 'Everything' },
+      'View_2': { guid: 'View_2', mode: 'table', name: 'Solitaire Work' },
+      'View_3': { guid: 'View_3', mode: 'table', name: 'Cross-App Work' },
+    },
+    activeViewGuid: 'View_1',
+    activeViewUnitGuids: [],
+    usersByGuid: {}
   }
 }
 

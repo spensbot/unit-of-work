@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import { Field, User, Number, Date, Select } from "./Field"
+import { Field, UserField, NumberField, DateField, SelectField } from "./Field"
 
 export default function FieldView({ field }: { field?: Field }) {
   if (field === undefined) {
@@ -18,19 +18,19 @@ export default function FieldView({ field }: { field?: Field }) {
   }
 }
 
-function UserFieldView({ field }: { field: User }) {
-  return <Root>{field.username}</Root>
+function UserFieldView({ field }: { field: UserField }) {
+  return <Root>{field.guid}</Root>
 }
 
-function NumberFieldView({ field }: { field: Number }) {
+function NumberFieldView({ field }: { field: NumberField }) {
   return <Root>{field.val}</Root>
 }
 
-function DateFieldView({ field }: { field: Date }) {
+function DateFieldView({ field }: { field: DateField }) {
   return <Root>{field.unix}</Root>
 }
 
-function SelectFieldView({ field }: { field: Select }) {
+function SelectFieldView({ field }: { field: SelectField }) {
   return <Root>{field.val}</Root>
 }
 
