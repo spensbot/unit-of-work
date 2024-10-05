@@ -23,15 +23,16 @@ export interface SelectField {
 }
 
 export interface FieldDef {
+  t: Field["t"]
   guid: string
-  field_t: Field["t"]
   name: string
+  selectOptions?: string[] // TODO: Put this on a separate type if things get too hairy
 }
 
 export function newFieldDef(): FieldDef {
   return {
+    t: 'Select',
     guid: uuidv4(),
-    field_t: 'Select',
     name: 'New Field'
   }
 }

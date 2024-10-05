@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { newPortfolio, Portfolio } from './Portfolio'
 import { Unit } from '../Unit/Unit'
+import { Field } from '../Field/Field'
 
 const portfolioSlice = createSlice({
   name: 'portfolio',
@@ -27,11 +28,14 @@ const portfolioSlice = createSlice({
     setActiveView: (state, { payload }: PayloadAction<{ guid: string }>) => {
       state.activeViewGuid = payload.guid
       state.activeViewUnitGuids = getActiveViewUnitGuids(state)
+    },
+    setField: (state, { payload }: PayloadAction<{ unitGuid: string, fieldDefGuid: string, val: Field }>) => {
+      state.unitsByGuid[payload.unitGuid].fieldsByDefGuid[payload.fieldDefGuid] = payload.val
     }
   }
 })
 
-export const { setName, setDescription, addUnit, setUnitName, setActiveView } = portfolioSlice.actions
+export const { setName, setDescription, addUnit, setUnitName, setActiveView, setField } = portfolioSlice.actions
 
 export const portfolioReducer = portfolioSlice.reducer
 

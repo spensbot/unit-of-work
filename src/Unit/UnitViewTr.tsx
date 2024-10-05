@@ -25,13 +25,13 @@ export default function UnitViewTr({ guid }: { guid: string }) {
           }
         />
       </Td>
-      {fieldDefGuids.map((guid) => {
-        return (
-          <Td key={guid}>
-            <FieldView field={unit.fieldsByDefGuid[guid]!} />
-          </Td>
-        )
-      })}
+      {fieldDefGuids.map((guid) => (
+        <UnitField
+          key={unit.guid + guid}
+          unitGuid={unit.guid}
+          fieldDefGuid={guid}
+        />
+      ))}
       <Td />
     </Root>
   )
@@ -44,9 +44,20 @@ const Root = styled.tr`
 
 const Td = styled.td``
 
-// const Root = styled.div`
-//   display: flex;
-//   align-items: center;
-//   gap: ${({ theme }) => theme.spacing(1)};
-//   border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
-// `
+function UnitField({
+  unitGuid,
+  fieldDefGuid,
+}: {
+  unitGuid: string
+  fieldDefGuid: string
+}) {
+  const unit = useActivePortfolio((p) => p.unitsByGuid[unitGuid])
+  const fieldDef = useActivePortfolio((p) => p.fieldDefsByGuid[fieldDefGuid])
+  const field = unit.fieldsByDefGuid[fieldDefGuid]
+
+  return (
+    <Td key={fieldDefGuid}>
+      <FieldView unitGuid={unitGuid} field={field} def={fieldDef!} />
+    </Td>
+  )
+}
