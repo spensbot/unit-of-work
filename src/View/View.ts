@@ -1,8 +1,12 @@
+import { v4 as uuidv4 } from 'uuid';
+import { useActivePortfolio } from '../Portfolio/Portfolio';
+
 /**
  * Allows users to view the portfolio's units in a specified way
  */
 export interface View {
-  mode: 'kanban' | 'table' | 'map'
+  t: 'table' | 'kanban' | 'map'
+  guid: string
   name: string
   description: string
   group?: GroupDef
@@ -31,4 +35,21 @@ export interface WeightDef {
 
 export interface AnnotateDef {
   field: string
+}
+
+export const defaultView: View = newTableView('Default View')
+
+export function newTableView(name: string): View {
+  return {
+    t: 'table',
+    guid: uuidv4(),
+    name,
+    description: ''
+  }
+}
+
+export function useActiveView<T>(cb: (view: View) => T) {
+  return useActivePortfolio(p => {
+    return cb(p.activeViewGuid ? p.viewsByGuid[p.activeViewGuid] : defaultView)
+  })
 }

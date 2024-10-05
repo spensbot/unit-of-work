@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export interface Unit { // A Unit of work
   guid: string
-  children: Unit[]
+  childrenGuids: string[]
   name: string
   description: string
   fields: Fields
@@ -15,7 +15,7 @@ export interface Unit { // A Unit of work
 export function newUnit(): Unit {
   return {
     guid: uuidv4(),
-    children: [],
+    childrenGuids: [],
     name: 'My Unit',
     description: '',
     fields: {}

@@ -1,11 +1,11 @@
 import styled from "@emotion/styled"
-import { useAppDispatch } from "../app/store"
+import { useAppDispatch } from "../main/store"
 import DisplayInput from "../components/DisplayInput"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { setUnitName } from "../Portfolio/portfolioSlice"
 
 export default function UnitView({ guid }: { guid: string }) {
-  const unit = useActivePortfolio((p) => p.units[guid])
+  const unit = useActivePortfolio((p) => p.unitsByGuid[guid])
   const dispatch = useAppDispatch()
 
   return (

@@ -2,6 +2,7 @@ export type Field = User | Number | Date | Select
 
 export interface User { // A human being
   t: 'User'
+  username: string
 }
 
 export interface Number {
@@ -22,6 +23,7 @@ export interface Select {
 export type Fields = { [name: string]: Field | undefined }
 
 export interface FieldDef {
+  t: 'FieldDef'
   field_t: Field["t"]
   name: string
   childBehavior: 'accumulate' | 'inherit' | 'none'

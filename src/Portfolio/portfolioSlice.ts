@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { newPortfolio, Portfolio, getViewUnits } from './Portfolio'
-import { newUnit } from '../Unit/Unit'
-
-function updateViewUnits(portfolio: Portfolio) {
-  portfolio.viewUnits = getViewUnits(portfolio, portfolio.views[0])
-}
+import { newPortfolio, Portfolio } from './Portfolio'
+import { Unit } from '../Unit/Unit'
 
 const portfolioSlice = createSlice({
   name: 'portfolio',
@@ -16,14 +12,17 @@ const portfolioSlice = createSlice({
     setDescription: (state, { payload }: PayloadAction<string>) => {
       state.description = payload
     },
-    addUnit: (state) => {
-      const unit = newUnit()
-      state.units[unit.guid] = unit
-      state.rootUnits.push(unit.guid)
-      updateViewUnits(state)
+    addUnit: (state, { payload: { unit, parentGuid } }: PayloadAction<{ unit: Unit, parentGuid?: string }>) => {
+      state.unitsByGuid[unit.guid] = unit
+      if (parentGuid === undefined) {
+        state.rootUnitGuids.push(unit.guid)
+      } else {
+        unit.childrenGuids.push(unit.guid)
+      }
+      state.activeViewUnitGuids = getActiveViewUnitGuids(state)
     },
     setUnitName: (state, { payload }: PayloadAction<{ guid: string, name: string }>) => {
-      state.units[payload.guid].name = payload.name
+      state.unitsByGuid[payload.guid].name = payload.name
     }
   }
 })
@@ -31,3 +30,13 @@ const portfolioSlice = createSlice({
 export const { setName, setDescription, addUnit, setUnitName } = portfolioSlice.actions
 
 export const portfolioReducer = portfolioSlice.reducer
+
+function getActiveViewUnitGuids(state: Portfolio): string[] {
+  if (state.activeViewGuid === undefined) {
+    return state.rootUnitGuids
+  }
+  const units = state.rootUnitGuids.map(guid => state.unitsByGuid[guid])
+  const view = state.viewsByGuid[state.activeViewGuid]
+  // TODO: Apply filter, sort, group.
+  return units.map(u => u.guid)
+}

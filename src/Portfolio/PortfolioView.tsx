@@ -1,9 +1,9 @@
-import ActiveView from "../View/ViewView"
+import ActiveViewView from "../View/ActiveViewView"
 import styled from "@emotion/styled"
 import DisplayInput from "../components/DisplayInput"
 import { setName, setDescription } from "./portfolioSlice"
 import { useActivePortfolio } from "./Portfolio"
-import { useAppDispatch } from "../app/store"
+import { useAppDispatch } from "../main/store"
 
 export default function PortfolioView() {
   const name = useActivePortfolio((portfolio) => portfolio.name)
@@ -22,7 +22,7 @@ export default function PortfolioView() {
         value={description}
         onChange={(description) => dispatch(setDescription(description))}
       />
-      <ActiveView />
+      <ActiveViewView />
     </Root>
   )
 }

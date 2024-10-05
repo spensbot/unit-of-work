@@ -7,7 +7,7 @@ export default function ThemeProvider({
 }: {
   children: React.ReactNode
 }) {
-  const theme = createTheme()
+  const theme = createTheme("dark")
   return (
     <EmotionThemeProvider theme={theme}>
       <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
