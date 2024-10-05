@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export type Field = User | Number | Date | Select
 
 export interface User { // A human being
@@ -20,11 +22,16 @@ export interface Select {
   val: string
 }
 
-export type Fields = { [name: string]: Field | undefined }
-
 export interface FieldDef {
-  t: 'FieldDef'
+  guid: string
   field_t: Field["t"]
   name: string
-  childBehavior: 'accumulate' | 'inherit' | 'none'
+}
+
+export function newFieldDef(): FieldDef {
+  return {
+    guid: uuidv4(),
+    field_t: 'Select',
+    name: 'New Field'
+  }
 }

@@ -4,7 +4,7 @@
 
 Ommited features that users can easily implement themselves via custom fields
 
-- Status (backlog, review, todo)
+- Status (todo, in-progress, review, complete)
 - Product (Solitaire, etc.)
 - Story Points
 - Sprint

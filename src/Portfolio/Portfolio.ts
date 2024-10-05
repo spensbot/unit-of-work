@@ -8,7 +8,8 @@ export interface Portfolio { // Collection, Domain, Portfolio, Universe
   description: string
   rootUnitGuids: string[]
   unitsByGuid: { [guid: string]: Unit }
-  fieldDefsByName: { [name: string]: FieldDef | undefined }
+  fieldDefGuids: string[]
+  fieldDefsByGuid: { [guid: string]: FieldDef | undefined }
   layerNames: string[]
   viewsByGuid: { [guid: string]: View }
   activeViewGuid?: string
@@ -18,10 +19,16 @@ export interface Portfolio { // Collection, Domain, Portfolio, Universe
 export function newPortfolio(): Portfolio {
   return {
     name: 'My Portfolio',
-    description: 'Welcome to your portfolio! Add units of work to get started!',
+    description: 'Welcome to your portfolio. Add units of work to get started!',
     rootUnitGuids: [],
     unitsByGuid: {},
-    fieldDefsByName: {},
+    fieldDefGuids: ['1', '2', '3', '4'],
+    fieldDefsByGuid: {
+      '1': { guid: '1', field_t: 'Select', name: 'Status' },
+      '2': { guid: '2', field_t: 'Select', name: 'Project' },
+      '3': { guid: '3', field_t: 'Number', name: 'Days' },
+      '4': { guid: '4', field_t: 'User', name: 'Assignee' },
+    },
     layerNames: [],
     viewsByGuid: {},
     activeViewUnitGuids: []

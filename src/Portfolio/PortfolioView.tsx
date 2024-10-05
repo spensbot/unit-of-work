@@ -4,6 +4,7 @@ import DisplayInput from "../components/DisplayInput"
 import { setName, setDescription } from "./portfolioSlice"
 import { useActivePortfolio } from "./Portfolio"
 import { useAppDispatch } from "../main/store"
+import { Box } from "@mui/material"
 
 export default function PortfolioView() {
   const name = useActivePortfolio((portfolio) => portfolio.name)
@@ -22,6 +23,7 @@ export default function PortfolioView() {
         value={description}
         onChange={(description) => dispatch(setDescription(description))}
       />
+      <Box height={(theme) => theme.spacing(2)} />
       <ActiveViewView />
     </Root>
   )

@@ -1,4 +1,4 @@
-import { Fields } from '../Field/Field'
+import { Field } from '../Field/Field'
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -7,7 +7,7 @@ export interface Unit { // A Unit of work
   childrenGuids: string[]
   name: string
   description: string
-  fields: Fields
+  fieldsByDefGuid: { [name: string]: Field | undefined }
   // start: Date
   // end: Date
 }
@@ -17,7 +17,12 @@ export function newUnit(): Unit {
     guid: uuidv4(),
     childrenGuids: [],
     name: 'My Unit',
-    description: '',
-    fields: {}
+    description: 'A description of my unit',
+    fieldsByDefGuid: {
+      '1': { t: 'Select', val: 'todo' },
+      '2': { t: 'Select', val: 'Solitaire' },
+      '3': { t: 'Number', val: 1 },
+      '4': { t: 'User', username: 'Spenser' },
+    }
   }
 }
