@@ -1,3 +1,3 @@
 # Unit of Work
 
-An unopinionated project management software that is simple-by-default with opt-in complexity.
+Unopinionated project management software. Simple-by-default. Opt-in complexity where you need it.
