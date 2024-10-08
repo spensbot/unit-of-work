@@ -12,6 +12,7 @@ import { useAppDispatch } from "../config/store"
 import { setField } from "../Portfolio/portfolioSlice"
 import NumberInput from "../components/NumberInput"
 import { useDispatch } from "react-redux"
+import UserSelect from "../User/UserSelect"
 
 interface Props<T> {
   unitGuid: string
@@ -30,7 +31,7 @@ export default function FieldView({
 
   switch (field.t) {
     case "User":
-      return <UserFieldView field={field} />
+      return <UserFieldView unitGuid={unitGuid} field={field} def={def} />
     case "Number":
       return <NumberFieldView unitGuid={unitGuid} field={field} def={def} />
     case "Date":
@@ -40,8 +41,26 @@ export default function FieldView({
   }
 }
 
-function UserFieldView({ field }: { field: UserField }) {
-  return <Root>{field.guid}</Root>
+function UserFieldView({ field, unitGuid, def }: Props<UserField>) {
+  const dispatch = useDispatch()
+
+  return (
+    <UserSelect
+      userGuid={field.guid}
+      onChange={(newUserGuid) =>
+        dispatch(
+          setField({
+            unitGuid,
+            fieldDefGuid: def.guid,
+            val: {
+              t: "User",
+              guid: newUserGuid,
+            },
+          })
+        )
+      }
+    />
+  )
 }
 
 function NumberFieldView({ field, unitGuid, def }: Props<NumberField>) {

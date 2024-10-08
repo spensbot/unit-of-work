@@ -16,6 +16,7 @@ export interface Portfolio { // Collection, Domain, Portfolio, Universe
   viewsByGuid: { [guid: string]: View }
   activeViewGuid: string
   activeViewUnitGuids: string[]
+  userGuids: string[]
   usersByGuid: { [guid: string]: User }
 }
 
@@ -41,7 +42,11 @@ export function newPortfolio(): Portfolio {
     },
     activeViewGuid: 'View_1',
     activeViewUnitGuids: [],
-    usersByGuid: {}
+    userGuids: ['User_1', 'User_2'],
+    usersByGuid: {
+      'User_1': { guid: 'User_1', username: 'Alice', image_url: 'https://i.pravatar.cc/150?img=1' },
+      'User_2': { guid: 'User_2', username: 'Bob', image_url: 'https://i.pravatar.cc/150?img=2' }
+    }
   }
 }
 
