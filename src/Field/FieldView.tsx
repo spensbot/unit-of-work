@@ -1,52 +1,77 @@
 import styled from "@emotion/styled"
+import { Field, UserField, NumberField, DateField, SelectField } from "./Field"
 import {
-  Field,
+  UserFieldDef,
+  NumberFieldDef,
+  DateFieldDef,
+  SelectFieldDef,
   FieldDef,
-  UserField,
-  NumberField,
-  DateField,
-  SelectField,
-} from "./Field"
+} from "./FieldDef"
 import Select from "../components/Select"
 import { useAppDispatch } from "../config/store"
 import { setField } from "../Portfolio/portfolioSlice"
 import NumberInput from "../components/NumberInput"
 import { useDispatch } from "react-redux"
 import UserSelect from "../User/UserSelect"
+import { DatePicker } from "@mui/x-date-pickers"
 
-interface Props<T> {
+interface Props<Def, T> {
   unitGuid: string
-  field: T
-  def: FieldDef
+  def: Def
+  field?: T
 }
 
 export default function FieldView({
   unitGuid,
-  field,
   def,
-}: Props<Field | undefined>) {
-  if (field === undefined) {
-    return null
-  }
-
-  switch (field.t) {
-    case "User":
-      return <UserFieldView unitGuid={unitGuid} field={field} def={def} />
-    case "Number":
-      return <NumberFieldView unitGuid={unitGuid} field={field} def={def} />
-    case "Date":
-      return <DateFieldView field={field} />
-    case "Select":
-      return <SelectFieldView unitGuid={unitGuid} field={field} def={def} />
+  field,
+}: Props<FieldDef, Field>) {
+  switch (def.t) {
+    case "UserFieldDef":
+      return (
+        <UserFieldView
+          unitGuid={unitGuid}
+          def={def}
+          field={field?.t === "User" ? field : undefined}
+        />
+      )
+    case "NumberFieldDef":
+      return (
+        <NumberFieldView
+          unitGuid={unitGuid}
+          def={def}
+          field={field?.t === "Number" ? field : undefined}
+        />
+      )
+    case "DateFieldDef":
+      return (
+        <DateFieldView
+          unitGuid={unitGuid}
+          def={def}
+          field={field?.t === "Date" ? field : undefined}
+        />
+      )
+    case "SelectFieldDef":
+      return (
+        <SelectFieldView
+          unitGuid={unitGuid}
+          def={def}
+          field={field?.t === "Select" ? field : undefined}
+        />
+      )
   }
 }
 
-function UserFieldView({ field, unitGuid, def }: Props<UserField>) {
+function UserFieldView({
+  field,
+  unitGuid,
+  def,
+}: Props<UserFieldDef, UserField>) {
   const dispatch = useDispatch()
 
   return (
     <UserSelect
-      userGuid={field.guid}
+      userGuid={field?.guid}
       onChange={(newUserGuid) =>
         dispatch(
           setField({
@@ -63,12 +88,16 @@ function UserFieldView({ field, unitGuid, def }: Props<UserField>) {
   )
 }
 
-function NumberFieldView({ field, unitGuid, def }: Props<NumberField>) {
+function NumberFieldView({
+  field,
+  unitGuid,
+  def,
+}: Props<NumberFieldDef, NumberField>) {
   const dispatch = useDispatch()
   return (
     <Root>
       <NumberInput
-        value={field.val}
+        value={field?.val}
         onChange={(newVal) =>
           dispatch(
             setField({
@@ -83,25 +112,26 @@ function NumberFieldView({ field, unitGuid, def }: Props<NumberField>) {
   )
 }
 
-function DateFieldView({ field }: { field: DateField }) {
-  return <Root>{field.unix}</Root>
+function DateFieldView({
+  unitGuid,
+  field,
+  def,
+}: Props<DateFieldDef, DateField>) {
+  let def2 = def
+  return <DatePicker />
 }
 
 function SelectFieldView({
   unitGuid,
   field,
   def,
-}: {
-  unitGuid: string
-  field: SelectField
-  def: FieldDef
-}) {
+}: Props<SelectFieldDef, SelectField>) {
   const dispatch = useAppDispatch()
 
   return (
     <Root>
       <Select
-        value={field.val}
+        value={field?.val}
         onChange={(newVal) =>
           dispatch(
             setField({
@@ -111,7 +141,7 @@ function SelectFieldView({
             })
           )
         }
-        variants={def.selectOptions!}
+        variants={def.selectOptions}
       />
     </Root>
   )

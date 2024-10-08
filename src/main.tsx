@@ -6,14 +6,18 @@ import { store } from "./config/store.ts"
 import { CssBaseline } from "@mui/material"
 import ThemeProvider from "./config/ThemeProvider.tsx"
 import GlobalStyle from "./config/GlobalStyle.tsx"
+import { LocalizationProvider } from "@mui/x-date-pickers"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ReduxProvider store={store}>
       <ThemeProvider>
-        <CssBaseline />
-        <GlobalStyle />
-        <App />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <CssBaseline />
+          <GlobalStyle />
+          <App />
+        </LocalizationProvider>
       </ThemeProvider>
     </ReduxProvider>
   </StrictMode>

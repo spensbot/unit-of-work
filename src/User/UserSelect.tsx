@@ -8,29 +8,36 @@ import { useActivePortfolio } from "../Portfolio/Portfolio"
 import UserView from "./UserView"
 
 interface Props {
-  userGuid: string
+  userGuid?: string
   onChange: (newUserGuid: string) => void
   label?: string
+  id?: string
 }
 
-export default function UserSelect({ userGuid, onChange, label }: Props) {
-  const userGuids = useActivePortfolio((p) => p.userGuids)
+export default function UserSelect({
+  userGuid,
+  onChange,
+  label,
+  id = "UserSelect",
+}: Props) {
+  let userGuids = useActivePortfolio((p) => p.userGuids)
 
-  console.log(`${userGuid}, variants: ${userGuids}`)
+  let selectVariants = [...userGuids, undefined]
+  const labelId = `${id}-label`
 
   return (
     <FormControl fullWidth>
-      {label && <InputLabel id="demo-simple-select-label">{label}</InputLabel>}
+      {label && <InputLabel id={labelId}>{label}</InputLabel>}
       <MuiSelect
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
+        labelId={labelId}
+        id={id}
         value={userGuid}
         label={label}
         onChange={(e) => onChange(e.target.value as string)}
       >
-        {userGuids.map((variantGuid) => (
-          <MenuItem key={variantGuid} value={variantGuid}>
-            <UserView guid={variantGuid} />
+        {selectVariants.map((variantGuid) => (
+          <MenuItem key={variantGuid ?? "None"} value={variantGuid}>
+            {variantGuid ? <UserView guid={variantGuid} /> : "None"}
           </MenuItem>
           // <UserSelectItem key={variantGuid} guid={variantGuid} />
         ))}

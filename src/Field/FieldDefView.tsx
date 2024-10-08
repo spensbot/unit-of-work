@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import { FieldDef } from "./Field"
+import { FieldDef } from "./FieldDef"
 
 export default function FieldDefView({ def }: { def: FieldDef }) {
   return <Root>{def.name}</Root>

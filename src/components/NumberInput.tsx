@@ -3,17 +3,14 @@ import DisplayInput from "./DisplayInput"
 import { useState } from "react"
 
 interface Props {
-  value: number
+  value?: number
   onChange: (newValue: number) => void
 }
 
 export default function NumberInput({ value, onChange }: Props) {
-  const [text, setText] = useState(value.toString())
+  const [text, setText] = useState(value?.toString() ?? "")
 
-  console.log(text)
-  let isError = parseNum(text) === null
-  console.log(parseNum(text))
-  console.log(isError)
+  let isError = parseNum(text) === null && value !== undefined
 
   return (
     <Root isError={isError}>

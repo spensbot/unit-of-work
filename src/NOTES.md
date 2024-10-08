@@ -46,3 +46,4 @@ Omitted features to focus on the core Project Management features for now
 - Stard/end times
 - Teams field
 - View folders
+- Calculated fields (based on the values of other fields, like a spreadsheet)

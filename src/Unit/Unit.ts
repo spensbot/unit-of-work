@@ -19,10 +19,10 @@ export function newUnit(): Unit {
     name: 'My Unit',
     description: 'A description of my unit',
     fieldsByDefGuid: {
-      'Field_1': { t: 'Select', val: 'todo' },
-      'Field_2': { t: 'Select', val: 'Solitaire' },
-      'Field_3': { t: 'Number', val: 1 },
-      'Field_4': { t: 'User', guid: 'User_1' },
+      // 'Field_1': { t: 'Select', val: 'todo' },
+      // 'Field_2': { t: 'Select', val: 'Solitaire' },
+      // 'Field_3': { t: 'Number', val: 1 },
+      // 'Field_4': { t: 'User', guid: 'User_1' },
     }
   }
 }

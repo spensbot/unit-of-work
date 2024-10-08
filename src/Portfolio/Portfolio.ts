@@ -1,4 +1,4 @@
-import { FieldDef } from '../Field/Field'
+import { FieldDef } from '../Field/FieldDef'
 import { View } from '../View/View'
 import { Unit } from '../Unit/Unit'
 import { useAppSelector } from '../config/store'
@@ -26,12 +26,13 @@ export function newPortfolio(): Portfolio {
     description: 'Welcome to your portfolio. Add units of work to get started!',
     rootUnitGuids: [],
     unitsByGuid: {},
-    fieldDefGuids: ['Field_1', 'Field_2', 'Field_3', 'Field_4'],
+    fieldDefGuids: ['Field_1', 'Field_2', 'Field_3', 'Field_4', 'Field_5'],
     fieldDefsByGuid: {
-      'Field_1': { guid: 'Field_1', t: 'Select', name: 'Status', selectOptions: ['todo', 'in-progress', 'complete'] },
-      'Field_2': { guid: 'Field_2', t: 'Select', name: 'Project', selectOptions: ['Solitaire', 'Sudoku', 'BrainBridge'] },
-      'Field_3': { guid: 'Field_3', t: 'Number', name: 'Days' },
-      'Field_4': { guid: 'Field_4', t: 'User', name: 'Assignee' },
+      'Field_1': { guid: 'Field_1', t: 'SelectFieldDef', name: 'Status', selectOptions: ['todo', 'in-progress', 'complete'] },
+      'Field_2': { guid: 'Field_2', t: 'SelectFieldDef', name: 'Project', selectOptions: ['Solitaire', 'Sudoku', 'BrainBridge'] },
+      'Field_3': { guid: 'Field_3', t: 'NumberFieldDef', name: 'Days' },
+      'Field_4': { guid: 'Field_4', t: 'UserFieldDef', name: 'Assignee' },
+      'Field_5': { guid: 'Field_5', t: 'DateFieldDef', name: 'End' },
     },
     layerNames: [],
     viewGuids: ['View_1', 'View_2', 'View_3'],

@@ -6,28 +6,41 @@ import {
 } from "@mui/material"
 
 interface Props {
-  value: string
+  value?: string
   onChange: (newValue: string) => void
   variants: string[]
   label?: string
+  id?: string
 }
 
-export default function Select({ value, onChange, variants, label }: Props) {
+export default function Select({
+  value,
+  onChange,
+  variants,
+  label,
+  id = "Select",
+}: Props) {
+  const labelId = `${id}-label`
+
+  let selectVariants = [...variants, undefined]
+
   return (
     <FormControl fullWidth>
-      {label && <InputLabel id="demo-simple-select-label">{label}</InputLabel>}
+      {label && <InputLabel id={labelId}>{label}</InputLabel>}
       <MuiSelect
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
+        labelId={labelId}
+        id={id}
         value={value}
         label={label}
         onChange={(e) => onChange(e.target.value as string)}
       >
-        {variants.map((variant) => (
-          <MenuItem key={variant} value={variant}>
-            {variant}
-          </MenuItem>
-        ))}
+        {selectVariants.map((variant) => {
+          return (
+            <MenuItem key={variant ?? "None"} value={variant}>
+              {variant ?? "None"}
+            </MenuItem>
+          )
+        })}
       </MuiSelect>
     </FormControl>
   )
