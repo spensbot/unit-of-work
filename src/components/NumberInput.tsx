@@ -10,14 +10,19 @@ interface Props {
 export default function NumberInput({ value, onChange }: Props) {
   const [text, setText] = useState(value.toString())
 
+  console.log(text)
+  let isError = parseNum(text) === null
+  console.log(parseNum(text))
+  console.log(isError)
+
   return (
-    <Root>
+    <Root isError={isError}>
       <DisplayInput
         value={text}
         onChange={(newText) => {
-          const num = parseFloat(newText)
+          const num = parseNum(newText)
           setText(newText)
-          if (!isNaN(num)) {
+          if (num !== null) {
             onChange(num)
           }
         }}
@@ -26,4 +31,14 @@ export default function NumberInput({ value, onChange }: Props) {
   )
 }
 
-const Root = styled.div``
+function parseNum(text: string): number | null {
+  const num = parseFloat(text)
+  if (isNaN(num)) return null
+  return num
+}
+
+const Root = styled.div<{ isError: boolean }>`
+  color: ${(props) => props.theme.palette.error.main};
+  background-color: ${(props) =>
+    props.isError && props.theme.palette.error.dark};
+`
