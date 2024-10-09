@@ -119,7 +119,7 @@ function DateFieldView({
   def,
 }: Props<DateFieldDef, DateField>) {
   let def2 = def
-  return <DatePicker />
+  return <DatePicker slotProps={{ textField: { size: "small" } }} />
 }
 
 function SelectFieldView({

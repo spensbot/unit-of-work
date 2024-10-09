@@ -45,6 +45,7 @@ export default function Select({
     <FormControl fullWidth>
       {label && <InputLabel id={labelId}>{label}</InputLabel>}
       <MuiSelect
+        size="small"
         labelId={labelId}
         id={id}
         value={_value}

@@ -7,6 +7,9 @@ import {
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import UserView from "./UserView"
 
+const NULL_ITEM_VALUE = 0
+const NULL_ITEM_DISPLAY = "None"
+
 interface Props {
   userGuid?: string
   onChange: (newUserGuid: string) => void
@@ -22,22 +25,25 @@ export default function UserSelect({
 }: Props) {
   let userGuids = useActivePortfolio((p) => p.userGuids)
 
-  let selectVariants = [...userGuids, undefined]
   const labelId = `${id}-label`
+
+  const _value = userGuid ?? NULL_ITEM_VALUE
+  const _variants: (string | 0)[] = [...userGuids, NULL_ITEM_VALUE]
 
   return (
     <FormControl fullWidth>
       {label && <InputLabel id={labelId}>{label}</InputLabel>}
       <MuiSelect
+        size="small"
         labelId={labelId}
         id={id}
-        value={userGuid}
+        value={_value}
         label={label}
         onChange={(e) => onChange(e.target.value as string)}
       >
-        {selectVariants.map((variantGuid) => (
-          <MenuItem key={variantGuid ?? "None"} value={variantGuid}>
-            {variantGuid ? <UserView guid={variantGuid} /> : "None"}
+        {_variants.map((variantGuid) => (
+          <MenuItem key={variantGuid} value={variantGuid}>
+            {variantGuid ? <UserView guid={variantGuid} /> : NULL_ITEM_DISPLAY}
           </MenuItem>
           // <UserSelectItem key={variantGuid} guid={variantGuid} />
         ))}

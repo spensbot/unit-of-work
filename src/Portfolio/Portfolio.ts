@@ -37,9 +37,9 @@ export function newPortfolio(): Portfolio {
     layerNames: [],
     viewGuids: ['View_1', 'View_2', 'View_3'],
     viewsByGuid: {
-      'View_1': { guid: 'View_1', mode: 'table', name: 'Everything' },
-      'View_2': { guid: 'View_2', mode: 'table', name: 'Solitaire Work' },
-      'View_3': { guid: 'View_3', mode: 'table', name: 'Cross-App Work' },
+      'View_1': { guid: 'View_1', mode: 'table', name: 'Everything', depth: 0 },
+      'View_2': { guid: 'View_2', mode: 'table', name: 'Solitaire Work', depth: 0 },
+      'View_3': { guid: 'View_3', mode: 'table', name: 'Cross-App Work', depth: 0 },
     },
     activeViewGuid: 'View_1',
     activeViewUnitGuids: [],

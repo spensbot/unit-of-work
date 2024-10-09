@@ -45,9 +45,8 @@ const portfolioSlice = createSlice({
       state.viewsByGuid[state.activeViewGuid].group = payload
       state.activeViewUnitGuids = getActiveViewUnitGuids(state)
     },
-    setLayer: (state, { payload }: PayloadAction<{ min: number, max: number }>) => {
-      state.viewsByGuid[state.activeViewGuid].layerMin = payload.min
-      state.viewsByGuid[state.activeViewGuid].layerMax = payload.max
+    setDepth: (state, { payload }: PayloadAction<number>) => {
+      state.viewsByGuid[state.activeViewGuid].depth = payload
       state.activeViewUnitGuids = getActiveViewUnitGuids(state)
     }
   }
@@ -63,7 +62,7 @@ export const {
   setFilter,
   setSort,
   setGroup,
-  setLayer
+  setDepth
 } = portfolioSlice.actions
 
 export const portfolioReducer = portfolioSlice.reducer

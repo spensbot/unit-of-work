@@ -5,7 +5,7 @@ import {
   setFilter,
   setSort,
   setGroup,
-  setLayer,
+  setDepth,
 } from "../Portfolio/portfolioSlice"
 import Select from "../components/Select"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
@@ -17,7 +17,7 @@ export default function ViewConfig() {
       <FilterView />
       <SortView />
       <GroupView />
-      <LayersView />
+      <DepthView />
     </Root>
   )
 }
@@ -32,7 +32,8 @@ const Root = styled.div`
 function FilterView() {
   const dispatch = useAppDispatch()
   const filter = useActiveView((v) => v.filter)
-  const fields = useActivePortfolio((p) => p.fieldDefGuids)
+  const fieldDefs = useActivePortfolio((p) => p.fieldDefGuids)
+  const fieldDefsByGuid = useActivePortfolio((p) => p.fieldDefsByGuid)
 
   return (
     <SubRoot>
@@ -43,7 +44,8 @@ function FilterView() {
             setFilter(newFieldGuid ? { fieldGuid: newFieldGuid } : undefined)
           )
         }
-        variants={fields}
+        variants={fieldDefs}
+        displays={fieldDefs.map((guid) => fieldDefsByGuid[guid]?.name ?? "")}
         label="Filter"
       />
     </SubRoot>
@@ -53,7 +55,8 @@ function FilterView() {
 function SortView() {
   const dispatch = useAppDispatch()
   const sort = useActiveView((v) => v.sort)
-  const fields = useActivePortfolio((p) => p.fieldDefGuids)
+  const fieldDefs = useActivePortfolio((p) => p.fieldDefGuids)
+  const fieldDefsByGuid = useActivePortfolio((p) => p.fieldDefsByGuid)
 
   return (
     <SubRoot>
@@ -64,7 +67,8 @@ function SortView() {
             setSort(newFieldGuid ? { fieldGuid: newFieldGuid } : undefined)
           )
         }
-        variants={fields}
+        variants={fieldDefs}
+        displays={fieldDefs.map((guid) => fieldDefsByGuid[guid]?.name ?? "")}
         label="Sort"
       />
     </SubRoot>
@@ -74,7 +78,8 @@ function SortView() {
 function GroupView() {
   const dispatch = useAppDispatch()
   const group = useActiveView((v) => v.group)
-  const fields = useActivePortfolio((p) => p.fieldDefGuids)
+  const fieldDefs = useActivePortfolio((p) => p.fieldDefGuids)
+  const fieldDefsByGuid = useActivePortfolio((p) => p.fieldDefsByGuid)
 
   return (
     <SubRoot>
@@ -85,20 +90,20 @@ function GroupView() {
             setGroup(newFieldGuid ? { fieldGuid: newFieldGuid } : undefined)
           )
         }
-        variants={fields}
+        variants={fieldDefs}
+        displays={fieldDefs.map((guid) => fieldDefsByGuid[guid]?.name ?? "")}
         label="Group"
       />
     </SubRoot>
   )
 }
 
-function LayersView() {
+function DepthView() {
   const dispatch = useAppDispatch()
-  const availableLayers = 3
-  const layerMin = useActiveView((v) => v.layerMin)
-  const layerMax = useActiveView((v) => v.layerMax)
+  const availableDepth = 2
+  const depth = useActiveView((v) => v.depth)
 
-  if (availableLayers < 2) {
+  if (availableDepth < 1) {
     return null
   }
 
@@ -106,17 +111,15 @@ function LayersView() {
     <SubRoot>
       <Box sx={{ width: 200 }}>
         <Slider
-          value={[layerMin ?? 1, layerMax ?? 1]}
+          value={depth}
           onChange={(_, newValue) => {
             if (!Array.isArray(newValue)) {
-              console.error("Expected array")
-              return
+              dispatch(setDepth(newValue))
             }
-            dispatch(setLayer({ min: newValue[0], max: newValue[1] }))
           }}
           valueLabelDisplay="auto"
-          min={1}
-          max={availableLayers}
+          min={0}
+          max={availableDepth}
           step={1}
         />
       </Box>

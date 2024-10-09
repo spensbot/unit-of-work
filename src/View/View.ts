@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useActivePortfolio } from '../Portfolio/Portfolio';
+import { FieldDef } from '../Field/FieldDef';
 
 /**
  * Allows users to view the portfolio's units in a specified way
@@ -11,9 +12,18 @@ export interface View {
   group?: GroupDef
   filter?: FilterDef
   sort?: SortDef
-  layerMin?: number
-  layerMax?: number
+  depth: number // Determines how many levels of children to show
 }
+
+export interface ByField {
+  fieldDef: FieldDef
+}
+
+export interface ByParent {
+  parentGuid: string
+}
+
+export type By = ByField | ByParent
 
 export interface GroupDef {
   fieldGuid: string
@@ -34,6 +44,7 @@ export function newTableView(name: string): View {
     mode: 'table',
     guid: uuidv4(),
     name,
+    depth: 0
   }
 }
 
