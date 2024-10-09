@@ -4,23 +4,27 @@ import { useState } from "react"
 
 interface Props {
   value?: number
-  onChange: (newValue: number) => void
+  onChange: (newValue?: number) => void
 }
 
 export default function NumberInput({ value, onChange }: Props) {
   const [text, setText] = useState(value?.toString() ?? "")
 
-  let isError = parseNum(text) === null && value !== undefined
+  let isError = parseNum(text) === null && text !== ""
 
   return (
     <Root isError={isError}>
       <DisplayInput
         value={text}
         onChange={(newText) => {
-          const num = parseNum(newText)
           setText(newText)
-          if (num !== null) {
-            onChange(num)
+          if (newText === "") {
+            onChange(undefined)
+          } else {
+            const num = parseNum(newText)
+            if (num !== null) {
+              onChange(num)
+            }
           }
         }}
       />

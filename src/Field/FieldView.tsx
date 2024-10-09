@@ -102,7 +102,8 @@ function NumberFieldView({
           dispatch(
             setField({
               fieldDefGuid: def.guid,
-              val: { t: "Number", val: newVal },
+              val:
+                newVal === undefined ? undefined : { t: "Number", val: newVal },
               unitGuid,
             })
           )
@@ -131,12 +132,15 @@ function SelectFieldView({
   return (
     <Root>
       <Select
-        value={field?.val}
+        value={field?.val ?? null}
         onChange={(newVal) =>
           dispatch(
             setField({
               fieldDefGuid: def.guid,
-              val: { t: "Select", val: newVal },
+              val:
+                newVal === null
+                  ? undefined
+                  : { t: "Select", val: newVal ?? undefined },
               unitGuid,
             })
           )

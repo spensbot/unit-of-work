@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { newPortfolio, Portfolio } from './Portfolio'
 import { Unit } from '../Unit/Unit'
 import { Field } from '../Field/Field'
+import { FilterDef, SortDef, GroupDef } from '../View/View'
 
 const portfolioSlice = createSlice({
   name: 'portfolio',
@@ -29,13 +30,41 @@ const portfolioSlice = createSlice({
       state.activeViewGuid = payload.guid
       state.activeViewUnitGuids = getActiveViewUnitGuids(state)
     },
-    setField: (state, { payload }: PayloadAction<{ unitGuid: string, fieldDefGuid: string, val: Field }>) => {
+    setField: (state, { payload }: PayloadAction<{ unitGuid: string, fieldDefGuid: string, val?: Field }>) => {
       state.unitsByGuid[payload.unitGuid].fieldsByDefGuid[payload.fieldDefGuid] = payload.val
+    },
+    setFilter: (state, { payload }: PayloadAction<FilterDef | undefined>) => {
+      state.viewsByGuid[state.activeViewGuid].filter = payload
+      state.activeViewUnitGuids = getActiveViewUnitGuids(state)
+    },
+    setSort: (state, { payload }: PayloadAction<SortDef | undefined>) => {
+      state.viewsByGuid[state.activeViewGuid].sort = payload
+      state.activeViewUnitGuids = getActiveViewUnitGuids(state)
+    },
+    setGroup: (state, { payload }: PayloadAction<GroupDef | undefined>) => {
+      state.viewsByGuid[state.activeViewGuid].group = payload
+      state.activeViewUnitGuids = getActiveViewUnitGuids(state)
+    },
+    setLayer: (state, { payload }: PayloadAction<{ min: number, max: number }>) => {
+      state.viewsByGuid[state.activeViewGuid].layerMin = payload.min
+      state.viewsByGuid[state.activeViewGuid].layerMax = payload.max
+      state.activeViewUnitGuids = getActiveViewUnitGuids(state)
     }
   }
 })
 
-export const { setName, setDescription, addUnit, setUnitName, setActiveView, setField } = portfolioSlice.actions
+export const {
+  setName,
+  setDescription,
+  addUnit,
+  setUnitName,
+  setActiveView,
+  setField,
+  setFilter,
+  setSort,
+  setGroup,
+  setLayer
+} = portfolioSlice.actions
 
 export const portfolioReducer = portfolioSlice.reducer
 

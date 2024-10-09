@@ -7,7 +7,7 @@ export interface Unit { // A Unit of work
   childrenGuids: string[]
   name: string
   description: string
-  fieldsByDefGuid: { [name: string]: Field | undefined }
+  fieldsByDefGuid: { [fieldDefGuid: string]: Field | undefined }
   // start: Date
   // end: Date
 }

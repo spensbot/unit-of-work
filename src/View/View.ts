@@ -11,29 +11,20 @@ export interface View {
   group?: GroupDef
   filter?: FilterDef
   sort?: SortDef
-  weight?: WeightDef
-  annotate?: AnnotateDef
-  layer?: number
+  layerMin?: number
+  layerMax?: number
 }
 
 export interface GroupDef {
-  field: string
+  fieldGuid: string
 }
 
 export interface FilterDef {
-  field: string
+  fieldGuid: string
 }
 
 export interface SortDef {
-  field: string
-}
-
-export interface WeightDef {
-  field: string
-}
-
-export interface AnnotateDef {
-  field: string
+  fieldGuid: string
 }
 
 export const defaultView: View = newTableView('Default View')
