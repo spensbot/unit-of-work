@@ -9,32 +9,37 @@ export interface View {
   mode: 'table' | 'kanban' | 'map'
   guid: string
   name: string
-  group?: GroupDef
-  filter?: FilterDef
-  sort?: SortDef
+  group?: Group
+  filter?: Filter
+  sort?: Sort
   depth: number // Determines how many levels of children to show
 }
 
 export interface ByField {
-  fieldDef: FieldDef
+  t: 'ByField'
+  fieldDefGuid: string
 }
 
 export interface ByParent {
+  t: 'ByParent'
   parentGuid: string
 }
 
 export type By = ByField | ByParent
 
-export interface GroupDef {
-  fieldGuid: string
+export interface Group {
+  by: By
 }
 
-export interface FilterDef {
-  fieldGuid: string
+export interface Filter {
+  by: By
+  value: string
+  op: 'eq' | 'ne'
 }
 
-export interface SortDef {
-  fieldGuid: string
+export interface Sort {
+  by: By
+  ascending: boolean
 }
 
 export const defaultView: View = newTableView('Default View')
