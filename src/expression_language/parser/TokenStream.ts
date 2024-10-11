@@ -1,6 +1,6 @@
 import { Id, isId, isIdStart } from '../Token/Id';
 import { isKeyword, Keyword } from '../Token/Keyword';
-import { isOpChar } from '../Token/Operator';
+import { isOpChar, OperatorString } from '../Token/Operator';
 import { isPunc } from '../Token/Punc';
 import { Str, STR_CHAR } from '../Token/Str';
 import { Token, Num } from '../Token/Token';
@@ -12,6 +12,22 @@ export default class TokenStream {
 
   constructor(input: string) {
     this.input = new InputStream(input)
+  }
+
+  is(t: Token['t'], val: Token['val']): boolean {
+    const token = this.peek()
+    return token !== null && token.t === t && token.val === val
+  }
+
+  skip<T extends Token>(t: T['t'], val: T['val']): T {
+    const tk = this.next()
+    if (tk === null) {
+      throw this.error('Unexpected end of input')
+    }
+    if (tk.t !== t || tk.val !== val) {
+      throw this.error(`Expecting ${t} "${val}", got ${tk.t} "${tk.val}"`)
+    }
+    return tk as T
   }
 
   peek(): Token | null {
@@ -27,8 +43,8 @@ export default class TokenStream {
     return token ?? this.readNext()
   }
 
-  croak(msg: string): void {
-    this.input.croak(msg)
+  error(msg: string): Error {
+    return this.input.error(msg)
   }
 
   private readWhile(predicate: (char: string) => boolean): string {
@@ -49,12 +65,12 @@ export default class TokenStream {
       }
       return isDigit(ch)
     })
-    return { t: 'Num', value: parseFloat(numberString) }
+    return { t: 'Num', val: parseFloat(numberString) }
   }
 
   private readId(): Id | Keyword {
     const id = this.readWhile(isId)
-    return { t: isKeyword(id) ? 'Kw' : 'Id', value: id }
+    return { t: isKeyword(id) ? 'Kw' : 'Id', val: id }
   }
 
   private readEscaped(end: string): string {
@@ -80,7 +96,7 @@ export default class TokenStream {
   }
 
   private readString(): Str {
-    return { t: 'Str', value: this.readEscaped('"') }
+    return { t: 'Str', val: this.readEscaped('"') }
   }
 
   private readNext(): Token | null {
@@ -90,10 +106,9 @@ export default class TokenStream {
     if (ch === STR_CHAR) return this.readString()
     if (isDigit(ch)) return this.readNumber()
     if (isIdStart(ch)) return this.readId()
-    if (isPunc(ch)) return { t: 'Punc', value: this.input.next() }
-    if (isOpChar(ch)) return { t: 'Op', value: this.readWhile(isOpChar) }
-    this.input.croak(`TokenStream: Can't handle character: "${ch}"`)
-    throw new Error('unreachable')
+    if (isPunc(ch)) return { t: 'Punc', val: this.input.next() }
+    if (isOpChar(ch)) return { t: 'Op', val: this.readWhile(isOpChar) as OperatorString }
+    throw this.input.error(`TokenStream: Can't handle character: "${ch}"`)
   }
 }
 

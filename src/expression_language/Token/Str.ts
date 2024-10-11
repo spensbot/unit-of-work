@@ -1,6 +1,6 @@
 export interface Str {
   t: 'Str'
-  value: string
+  val: string
 }
 
 export const STR_CHAR = '"'

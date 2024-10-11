@@ -19,8 +19,8 @@ export default class InputStream {
     return this.position >= this.input.length
   }
 
-  public croak(msg: string): void {
-    throw new Error(`${msg} (${this.position})`)
+  public error(msg: string): Error {
+    return new Error(`${msg} (${this.position})`)
   }
 }
 

@@ -15,24 +15,25 @@ export const operators = {
   '<=': (a: number, b: number) => a <= b,
 }
 
-export type OperatorVal = keyof typeof operators
+export type OperatorString = keyof typeof operators
 
+// Higher number means higher precedence
 export const operatorPrecedence = {
-  '!': 1,
-  '.': 1,
-  '*': 2,
-  '/': 2,
-  // '%': 2,
-  '+': 3,
-  '-': 3,
-  '>': 4,
-  '<': 4,
-  '>=': 4,
-  '<=': 4,
-  '==': 5,
-  '!=': 5,
-  '&&': 6,
-  '||': 7,
+  '!': 100,
+  '.': 90,
+  '*': 80,
+  '/': 80,
+  // '%': 80,
+  '+': 70,
+  '-': 70,
+  '>': 60,
+  '<': 60,
+  '>=': 60,
+  '<=': 60,
+  '==': 50,
+  '!=': 50,
+  '&&': 40,
+  '||': 30,
   // '=': 8
 }
 
@@ -44,5 +45,5 @@ export function isOpChar(ch: string): boolean {
 
 export interface Operator {
   t: 'Op'
-  value: OperatorVal
+  val: OperatorString
 }

@@ -6,7 +6,7 @@ import { Str } from './Str'
 
 export interface Num {
   t: 'Num'
-  value: number
+  val: number
 }
 
 export type Token = Punc | Num | Str | Keyword | Id | Operator

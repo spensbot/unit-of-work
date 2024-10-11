@@ -1,9 +1,9 @@
-import { Operator } from "../Token/Operator"
+import { OperatorString } from "../Token/Operator"
 import { Node } from "./Node"
 
 export interface BinaryOp {
   t: 'BinaryOp'
-  operator: Operator
   left: Node
+  op: OperatorString
   right: Node
 }

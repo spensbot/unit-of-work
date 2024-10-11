@@ -1,15 +1,18 @@
-import { Token } from "../Token/Token"
+import TokenStream from "../parser/TokenStream"
 
 export interface Bool {
   t: 'Bool'
-  value: boolean
+  val: boolean
 }
 
-export function parseBool(token: Token): Bool | undefined {
-  if (token.t === 'Kw' && (token.value === 'true' || token.value === 'false')) {
+export function parseBool(ts: TokenStream): Bool | undefined {
+  const tk = ts.peek()
+
+  if (tk?.t === 'Kw' && (tk.val === 'true' || tk.val === 'false')) {
+    ts.next()
     return {
       t: 'Bool',
-      value: token.value === 'true'
+      val: tk.val === 'true'
     }
   }
 }

@@ -1,6 +1,6 @@
 export interface Punc {
   t: 'Punc'
-  value: string
+  val: string
 }
 
 const punc = '()'

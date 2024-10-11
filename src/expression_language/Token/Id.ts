@@ -1,6 +1,6 @@
 export interface Id {
   t: 'Id'
-  value: string
+  val: string
 }
 
 export function isIdStart(ch: string): boolean {

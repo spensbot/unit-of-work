@@ -1,6 +1,6 @@
 export interface Keyword {
   t: 'Kw'
-  value: string
+  val: string
 }
 
 const keywords = ['true', 'false']

@@ -1,65 +1,80 @@
 import { parseBool } from "../Node/Bool";
 import { Node, parseSimpleNode } from "../Node/Node";
-import { operators } from "../Token/Operator";
-import { Token } from "../Token/Token";
+import { operatorPrecedence } from "../Token/Operator";
 import TokenStream from "./TokenStream";
 
 
 export default function parse(input: string): Node {
-  return parseStream(new TokenStream(input))
+  return parseNode(new TokenStream(input))
 }
 
-function parseStream(ts: TokenStream): Node {
-  const tk = ts.peek()
+function parseNode(ts: TokenStream): Node {
+  const node =
+    parseParenthesis(ts)
+    ?? parseSimpleNode(ts)
+    ?? parseBool(ts)
+    ?? parseUnaryOp(ts)
 
-  if (tk === null) {
-    ts.croak('Unexpected end of input')
-    throw new Error('Unreachable')
-  }
+  if (node) return parseBinaryOp(ts, node, 0)
 
-  const node = parseSimpleNode(tk) ?? parseBool(tk)
-
-  if (node === undefined) {
-    ts.croak(`Unexpected token: ${tk.t}`)
-    throw new Error('Unreachable')
-  }
-
-  return node
-}
-
-function isPunc(tk: Token | null, ch: string): boolean {
-  return tk?.t === 'Punc' && tk.value === ch
-}
-
-function skipPunc(ts: TokenStream, ch: string): void {
-  if (!isPunc(ts.peek(), ch)) {
-    ts.croak(`Expecting punctuation: "${ch}"`)
-  }
-  ts.next()
-}
-
-function isOp(tk: Token | null, op: keyof typeof operators): boolean {
-  return tk?.t === 'Op' && tk.value === op
-}
-
-function skipOp(ts: TokenStream, op: keyof typeof operators): void {
-  if (!isOp(ts.peek(), op)) {
-    ts.croak(`Expecting operator: "${op}"`)
-  }
-  ts.next()
+  throw ts.error('Unexpected token: ' + JSON.stringify(ts.peek()))
 }
 
 function parseUnaryOp(ts: TokenStream): Node | undefined {
   const tk = ts.peek()
 
-  if (isOp(tk, '!')) {
+  if (tk?.t === 'Op' && tk.val === '!') {
     ts.next()
     return {
       t: 'UnaryOp',
-      operator: { t: 'Op', value: '!' },
-      operand: parseStream(ts)
+      op: tk.val,
+      right: parseNode(ts)
     }
   }
 }
 
-function 
+function parseParenthesis(ts: TokenStream): Node | undefined {
+  if (ts.is('Punc', '(')) {
+    ts.next()
+    const node = parseNode(ts)
+    ts.skip('Punc', ')')
+    return node
+  }
+}
+
+function parseBinaryOp(ts: TokenStream, left: Node, leftPrecedence: number): Node {
+  const tk = ts.peek()
+
+  if (tk?.t === 'Op' && tk.val !== '!') {
+    const rightPrecedence = operatorPrecedence[tk.val]
+    if (rightPrecedence > leftPrecedence) {
+      ts.next()
+      return parseBinaryOp(ts, {
+        t: 'BinaryOp',
+        left,
+        op: tk.val,
+        right: parseBinaryOp(ts, parseNode(ts), rightPrecedence)
+      }, leftPrecedence)
+    }
+  }
+
+  return left
+}
+
+// function parseBinaryOp(ts: TokenStream, left: Node, precedence: number): Node {
+//   var tk = ts.peek()
+//   if (tk?.t === 'Op') {
+//     var nextPrecedence = operatorPrecedence[tk.value]
+//     if (nextPrecedence < precedence) {
+//       ts.next()
+//       const right = parseBinaryOp(ts, parseNode(ts), nextPrecedence)
+//       return parseBinaryOp(ts, {
+//         t: 'BinaryOp',
+//         operator: tk.value,
+//         left,
+//         right
+//       }, precedence)
+//     }
+//   }
+//   return left
+// }
