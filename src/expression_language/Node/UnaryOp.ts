@@ -4,5 +4,5 @@ import { Node } from "./Node"
 export interface UnaryOp {
   t: 'UnaryOp'
   op: OperatorString
-  right: Node
+  operand: Node
 }

@@ -3,7 +3,7 @@ import { Node } from "./Node"
 
 export interface BinaryOp {
   t: 'BinaryOp'
-  left: Node
   op: OperatorString
+  left: Node
   right: Node
 }
