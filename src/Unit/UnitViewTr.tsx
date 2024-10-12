@@ -1,10 +1,10 @@
 import styled from "@emotion/styled"
 import { useAppDispatch } from "../config/store"
 import DisplayInput from "../components/DisplayInput"
-import { useActivePortfolio } from "../Portfolio/Portfolio"
+import { Portfolio, useActivePortfolio } from "../Portfolio/Portfolio"
 import { setActiveUnit, setUnitName } from "../Portfolio/portfolioSlice"
 import FieldView from "../Field/FieldValView"
-import { Box } from "@mui/material"
+import { Box, IconButton } from "@mui/material"
 import DragHandleIcon from "@mui/icons-material/DragHandle"
 import { memo } from "react"
 
@@ -20,6 +20,9 @@ function UnitViewTr({ guid }: { guid: string }) {
 
   return (
     <Root isActive={isActive}>
+      <Td>
+        <UnitDepth guid={guid} />
+      </Td>
       <Td>
         <Box display="flex" alignItems="center">
           {UnitSelect(guid)}
@@ -87,7 +90,7 @@ function UnitSelect(guid: string) {
   const dispatch = useAppDispatch()
 
   return (
-    <div
+    <IconButton
       onClick={() =>
         dispatch(
           setActiveUnit({
@@ -97,6 +100,42 @@ function UnitSelect(guid: string) {
       }
     >
       <DragHandleIcon />
-    </div>
+    </IconButton>
   )
+}
+
+function UnitDepth({ guid }: { guid: string }) {
+  const depth = useActivePortfolio((p) => getDepth(guid, p))
+
+  return (
+    <Td>
+      <Box display="flex" gap="0.2rem">
+        {Array.from({ length: depth + 1 }).map((_, i) => (
+          <DepthIcon key={i} />
+        ))}
+      </Box>
+    </Td>
+  )
+}
+
+function DepthIcon() {
+  const size = "0.8rem"
+  return (
+    // <Box bgcolor={"purple"} width={size} height={size} borderRadius={size} />
+    <Box
+      bgcolor={"purple"}
+      width={"0.3rem"}
+      height={"1rem"}
+      borderRadius={size}
+    />
+  )
+}
+
+function getDepth(unitGuid: string, portfolio: Portfolio): number {
+  const unit = portfolio.unitsByGuid[unitGuid]
+  if (unit.parentGuid === undefined) {
+    return 0
+  } else {
+    return 1 + getDepth(unit.parentGuid, portfolio)
+  }
 }
