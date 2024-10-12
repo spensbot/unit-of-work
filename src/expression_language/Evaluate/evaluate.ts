@@ -10,7 +10,6 @@ export default function evaluate(node: Node, context: any): any {
     case 'Bool':
       return node.val
     case 'Id':
-      // TODO: This won't work when evaluating . operators
       return context[node.val]
     case 'BinaryOp':
       if (node.op === '.' && node.right.t === 'Id') {

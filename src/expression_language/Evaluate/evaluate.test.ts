@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import evaluate from "./evaluate"
-import parse from '../parser/parse'
+import parse from '../parse/parse'
 
 test('evaluate', () => {
   expect(evaluate({ t: 'Num', val: 1 }, {})).toBe(1)

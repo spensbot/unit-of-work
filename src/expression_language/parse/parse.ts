@@ -51,8 +51,8 @@ function parseBinaryOp(ts: TokenStream, left: Node, currentPrecedence: number): 
       ts.next()
       return parseBinaryOp(ts, {
         t: 'BinaryOp',
-        left,
         op: tk.val,
+        left,
         right: parseBinaryOp(ts, parseAtom(ts), precedence)
       }, currentPrecedence)
     }

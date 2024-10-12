@@ -1,4 +1,4 @@
-import TokenStream from "../parser/TokenStream"
+import TokenStream from "../parse/TokenStream"
 
 export interface Bool {
   t: 'Bool'

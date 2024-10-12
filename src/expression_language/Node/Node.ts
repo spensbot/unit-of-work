@@ -1,4 +1,4 @@
-import TokenStream from "../parser/TokenStream";
+import TokenStream from "../parse/TokenStream";
 import { Id } from "../Token/Id";
 import { Str } from "../Token/Str";
 import { Num } from "../Token/Token";

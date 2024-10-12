@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest'
 import parse from './parse'
 import { Node } from '../Node/Node'
-import util from 'util'
 
 function testParse(expr: string, expected: Node) {
   const node = parse(expr)
