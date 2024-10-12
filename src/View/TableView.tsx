@@ -6,6 +6,9 @@ import { newUnit } from "../Unit/Unit"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useAppDispatch } from "../config/store"
 import Box from "@mui/material/Box"
+import { memo } from "react"
+
+const UnitViewTrMemo = memo(UnitViewTr)
 
 export default function TableView() {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
@@ -28,7 +31,7 @@ export default function TableView() {
         </thead>
         <tbody>
           {viewUnits.map((unitGuid) => {
-            return <UnitViewTr key={unitGuid} guid={unitGuid} />
+            return <UnitViewTrMemo key={unitGuid} guid={unitGuid} />
           })}
         </tbody>
         <tfoot />
