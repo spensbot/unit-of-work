@@ -2,6 +2,7 @@ import styled from "@emotion/styled"
 import PortfolioView from "../Portfolio/PortfolioView"
 import Footer from "./Footer"
 import Header from "./Header"
+import ErrorTrigger from "../config/ErrorTrigger"
 
 export default function App() {
   return (

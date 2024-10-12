@@ -9,6 +9,8 @@ import GlobalStyle from "./config/GlobalStyle.tsx"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { beginSaveLoad } from "./config/saveload.ts"
+import { ErrorBoundary } from "react-error-boundary"
+import ErrorFallback from "./config/ErrorFallback.tsx"
 
 beginSaveLoad()
 
@@ -19,7 +21,9 @@ createRoot(document.getElementById("root")!).render(
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <CssBaseline />
           <GlobalStyle />
-          <App />
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <App />
+          </ErrorBoundary>
         </LocalizationProvider>
       </ThemeProvider>
     </ReduxProvider>

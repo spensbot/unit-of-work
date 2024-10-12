@@ -3,14 +3,12 @@ import { useActiveView } from "./View"
 import TableView from "./TableView"
 import KanbanView from "./KanbanView"
 import MapView from "./MapView"
-import ViewSelect from "./ViewSelect"
 import { Box } from "@mui/material"
 import ViewConfig from "./ViewConfig"
 
 export default function ActiveViewView() {
   return (
     <Root>
-      <ViewSelect />
       <ViewConfig />
       <Box sx={{ padding: 2 }}>
         <ActiveViewTyped />

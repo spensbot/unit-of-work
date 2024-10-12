@@ -1,3 +1,6 @@
+import { Box } from "@mui/material"
+import ActiveUnitView from "../Unit/ActiveUnitView"
+import ViewSelect from "../View/ViewSelect"
 import ActiveViewView from "../View/ViewView"
 import styled from "@emotion/styled"
 
@@ -14,7 +17,11 @@ export default function PortfolioView() {
         value={description}
         onChange={(description) => dispatch(setDescription(description))}
       /> */}
-      <ActiveViewView />
+      <ViewSelect />
+      <Box display="flex" flexGrow={1}>
+        <ActiveViewView />
+        <ActiveUnitView />
+      </Box>
     </Root>
   )
 }
@@ -23,6 +30,6 @@ const Root = styled.div`
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
+  /* gap: ${({ theme }) => theme.spacing(1)}; */
   /* padding: ${({ theme }) => theme.spacing(2)}; */
 `

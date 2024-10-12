@@ -16,17 +16,49 @@ const portfolioSlice = createSlice({
     setDescription: (state, { payload }: PayloadAction<string>) => {
       state.description = payload
     },
-    addUnit: (state, { payload: { unit, parentGuid } }: PayloadAction<{ unit: Unit, parentGuid?: string }>) => {
+    addUnit: (state, { payload: { unit } }: PayloadAction<{ unit: Unit }>) => {
       state.unitsByGuid[unit.guid] = unit
-      if (parentGuid === undefined) {
+      if (unit.parentGuid === undefined) {
         state.rootUnitGuids.push(unit.guid)
       } else {
-        unit.childrenGuids.push(unit.guid)
+        state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
       }
       updateActiveViewUnitGuids(state)
     },
+    setActiveUnit: (state, { payload }: PayloadAction<{ guid?: string }>) => {
+      state.activeUnitGuid = payload.guid
+    },
     setUnitName: (state, { payload }: PayloadAction<{ guid: string, name: string }>) => {
       state.unitsByGuid[payload.guid].name = payload.name
+    },
+    setUnitDescription: (state, { payload }: PayloadAction<{ guid: string, description: string }>) => {
+      state.unitsByGuid[payload.guid].description = payload.description
+    },
+    deleteUnit: (state, { payload }: PayloadAction<{ guid: string }>) => {
+      delete state.activeUnitGuid
+      const unit = state.unitsByGuid[payload.guid]
+      if (unit.parentGuid === undefined) {
+        state.rootUnitGuids = state.rootUnitGuids.filter(guid => guid !== unit.guid)
+      } else {
+        state.unitsByGuid[unit.parentGuid].childrenGuids = state.unitsByGuid[unit.parentGuid].childrenGuids.filter(guid => guid !== unit.guid)
+      }
+      delete state.unitsByGuid[payload.guid]
+      updateActiveViewUnitGuids(state)
+    },
+    moveUnit: (state, { payload }: PayloadAction<{ guid: string, parentGuid?: string }>) => {
+      const unit = state.unitsByGuid[payload.guid]
+      // Remove child from old parent
+      if (unit.parentGuid !== undefined) {
+        const oldParent = state.unitsByGuid[unit.parentGuid]
+        oldParent.childrenGuids = oldParent.childrenGuids.filter(guid => guid !== unit.guid)
+      }
+      // Assign new parent
+      unit.parentGuid = payload.parentGuid
+      // Add child to new parent
+      if (unit.parentGuid !== undefined) {
+        state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
+      }
+      updateActiveViewUnitGuids(state)
     },
     setActiveView: (state, { payload }: PayloadAction<{ guid: string }>) => {
       state.activeViewGuid = payload.guid
@@ -50,6 +82,9 @@ const portfolioSlice = createSlice({
     setDepth: (state, { payload }: PayloadAction<number>) => {
       state.viewsByGuid[state.activeViewGuid].depth = payload
       updateActiveViewUnitGuids(state)
+    },
+    enterErrorState: (state, _: PayloadAction) => {
+      state.activeUnitGuid = "THIS UNIT ISN'T REAL. NOTHING IS REAL"
     }
   }
 })
@@ -58,13 +93,18 @@ export const {
   setName,
   setDescription,
   addUnit,
+  setActiveUnit,
   setUnitName,
+  setUnitDescription,
+  moveUnit,
+  deleteUnit,
   setActiveView,
   setField,
   setFilter,
   setSort,
   setGroup,
-  setDepth
+  setDepth,
+  enterErrorState
 } = portfolioSlice.actions
 
 export const portfolioReducer = portfolioSlice.reducer

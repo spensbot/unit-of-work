@@ -8,6 +8,7 @@ export interface Portfolio { // Collection, Domain, Portfolio, Universe
   name: string
   description: string
   rootUnitGuids: string[]
+  activeUnitGuid?: string
   unitsByGuid: { [guid: string]: Unit }
   fieldGuids: string[]
   fieldsByGuid: { [guid: string]: Field | undefined }
@@ -26,10 +27,10 @@ export function newPortfolio(): Portfolio {
     description: 'Welcome to your portfolio. Add units of work to get started!',
     rootUnitGuids: [],
     unitsByGuid: {},
-    fieldGuids: ['Field_1', 'Field_2', 'Field_3', 'Field_4', 'Field_5'],
+    fieldGuids: ['Field_1', 'Field_2', 'Field_3', 'Field_4'],
     fieldsByGuid: {
       'Field_1': { guid: 'Field_1', t: 'SelectField', name: 'Status', selectOptions: ['todo', 'in-progress', 'complete'] },
-      'Field_2': { guid: 'Field_2', t: 'SelectField', name: 'Project', selectOptions: ['Solitaire', 'Sudoku', 'BrainBridge'] },
+      'Field_2': { guid: 'Field_2', t: 'SelectField', name: 'Product', selectOptions: ['Solitaire', 'Sudoku', 'BrainBridge'] },
       'Field_3': { guid: 'Field_3', t: 'NumberField', name: 'Days' },
       'Field_4': { guid: 'Field_4', t: 'UserField', name: 'Assignee' },
       'Field_5': { guid: 'Field_5', t: 'DateField', name: 'End' },
