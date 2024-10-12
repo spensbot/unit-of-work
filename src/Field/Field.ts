@@ -1,22 +1,50 @@
+import { v4 as uuidv4 } from 'uuid';
+
+interface FieldBase {
+  guid: string
+  name: string
+}
+
 export type Field = UserField | NumberField | DateField | SelectField
 
-export interface UserField { // A human being
-  t: 'User'
-  guid: string
+export interface UserField extends FieldBase {
+  t: 'UserField'
 }
 
-export interface NumberField {
-  t: 'Number'
-  val: number
+export interface NumberField extends FieldBase {
+  t: 'NumberField'
+}
+
+export interface DateField extends FieldBase {
+  t: 'DateField'
+}
+
+export interface SelectField extends FieldBase {
+  t: 'SelectField'
+  selectOptions: string[] // TODO: Put this on a separate type if things get too hairy
+}
+
+export function newField(): Field {
+  return {
+    t: 'SelectField',
+    guid: uuidv4(),
+    name: 'New Field',
+    selectOptions: []
+  }
 }
 
 
-export interface DateField {
-  t: 'Date'
-  unix: number
+// ========= Potential Future stuff ============
+export type PropogationStrategy = InheritStrategy
+
+// Top-down inheritance of field values
+export interface InheritStrategy {
+  t: 'InheritStrategy'
 }
 
-export interface SelectField {
-  t: 'Select'
-  val: string
+// Bottom-up aggregation of field values
+export interface AggregateStrategy<T> {
+  t: 'AggregateStrategy',
+  init: T,
+  merge: (accumulator: T, val: T) => T,
 }

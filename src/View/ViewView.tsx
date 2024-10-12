@@ -26,9 +26,9 @@ const Root = styled.div`
 `
 
 function ActiveViewTyped() {
-  const view = useActiveView((v) => v)
+  const viewMode = useActiveView((v) => v.mode)
 
-  switch (view.mode) {
+  switch (viewMode) {
     case "table":
       return <TableView />
     case "kanban":

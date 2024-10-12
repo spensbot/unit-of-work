@@ -8,8 +8,8 @@ import { useAppDispatch } from "../config/store"
 import Box from "@mui/material/Box"
 
 export default function TableView() {
-  const fieldDefGuids = useActivePortfolio((p) => p.fieldDefGuids)
-  const fieldDefsByGuid = useActivePortfolio((p) => p.fieldDefsByGuid)
+  const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
+  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
   const viewUnits = useActivePortfolio((p) => p.activeViewUnitGuids)
 
   return (
@@ -18,8 +18,8 @@ export default function TableView() {
         <thead>
           <Tr>
             <Th>Unit</Th>
-            {fieldDefGuids.map((guid) => {
-              return <Th key={guid}>{fieldDefsByGuid[guid]!.name}</Th>
+            {fieldGuids.map((guid) => {
+              return <Th key={guid}>{fieldsByGuid[guid]!.name}</Th>
             })}
             <Th style={{ textAlign: "right" }}>
               <AddFieldButton />

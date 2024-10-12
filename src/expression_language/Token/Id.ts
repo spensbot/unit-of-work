@@ -8,5 +8,5 @@ export function isIdStart(ch: string): boolean {
 }
 
 export function isId(ch: string): boolean {
-  return isIdStart(ch) || '?!-<>=0123456789'.includes(ch)
+  return isIdStart(ch) || '0123456789'.includes(ch)
 }

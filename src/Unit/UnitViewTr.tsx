@@ -3,11 +3,11 @@ import { useAppDispatch } from "../config/store"
 import DisplayInput from "../components/DisplayInput"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { setUnitName } from "../Portfolio/portfolioSlice"
-import FieldView from "../Field/FieldView"
+import FieldView from "../Field/FieldValView"
 
 export default function UnitViewTr({ guid }: { guid: string }) {
   const unit = useActivePortfolio((p) => p.unitsByGuid[guid])
-  const fieldDefGuids = useActivePortfolio((p) => p.fieldDefGuids)
+  const fieldDefGuids = useActivePortfolio((p) => p.fieldGuids)
   const dispatch = useAppDispatch()
 
   return (
@@ -52,8 +52,8 @@ function UnitField({
   fieldDefGuid: string
 }) {
   const unit = useActivePortfolio((p) => p.unitsByGuid[unitGuid])
-  const fieldDef = useActivePortfolio((p) => p.fieldDefsByGuid[fieldDefGuid])
-  const field = unit.fieldsByDefGuid[fieldDefGuid]
+  const fieldDef = useActivePortfolio((p) => p.fieldsByGuid[fieldDefGuid])
+  const field = unit.fieldValsByGuid[fieldDefGuid]
 
   return (
     <Td key={fieldDefGuid}>

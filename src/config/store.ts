@@ -1,16 +1,36 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore, PayloadAction, Reducer } from '@reduxjs/toolkit'
 import { useDispatch, useSelector } from 'react-redux'
 import { portfolioReducer } from '../Portfolio/portfolioSlice'
 
-export const store = configureStore({
-  reducer: {
-    portfolio: portfolioReducer
-  }
+const baseReducer = combineReducers({
+  portfolio: portfolioReducer
 })
 
-// Infer the `RootState`,  `AppDispatch`, and `AppStore` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type RootState = ReturnType<typeof baseReducer>
+
+const RESET_STATE = 'RESET_STATE'
+
+export function resetState(newState: RootState) {
+  return {
+    type: RESET_STATE,
+    payload: newState
+  }
+}
+
+const rootReducer: Reducer<RootState, PayloadAction<any>> = (state, action) => {
+  if (action.type === RESET_STATE) {
+    return {
+      ...state,
+      ...action.payload
+    }
+  }
+  return baseReducer(state, action)
+}
+
+export const store = configureStore({
+  reducer: rootReducer
+})
+
 export type AppDispatch = typeof store.dispatch
 export type AppStore = typeof store
 

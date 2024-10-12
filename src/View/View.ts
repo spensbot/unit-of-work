@@ -1,12 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useActivePortfolio } from '../Portfolio/Portfolio';
-import { FieldDef } from '../Field/FieldDef';
 
 /**
  * Allows users to view the portfolio's units in a specified way
  */
 export interface View {
-  mode: 'table' | 'kanban' | 'map'
+  mode: 'table' | 'kanban' | 'map' | 'timeline'
   guid: string
   name: string
   group?: Group
@@ -15,30 +14,17 @@ export interface View {
   depth: number // Determines how many levels of children to show
 }
 
-export interface ByField {
-  t: 'ByField'
-  fieldDefGuid: string
-}
-
-export interface ByParent {
-  t: 'ByParent'
-  parentGuid: string
-}
-
-export type By = ByField | ByParent
-
-export interface Group {
-  by: By
+export type Group = {
+  by: 'field' | 'parent'
+  fieldGuid: string
 }
 
 export interface Filter {
-  by: By
-  value: string
-  op: 'eq' | 'ne'
+  expression: string
 }
 
 export interface Sort {
-  by: By
+  fieldGuid: string
   ascending: boolean
 }
 

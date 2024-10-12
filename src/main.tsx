@@ -8,6 +8,9 @@ import ThemeProvider from "./config/ThemeProvider.tsx"
 import GlobalStyle from "./config/GlobalStyle.tsx"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { beginSaveLoad } from "./config/saveload.ts"
+
+beginSaveLoad()
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

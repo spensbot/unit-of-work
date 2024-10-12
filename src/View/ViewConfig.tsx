@@ -9,15 +9,15 @@ import {
 } from "../Portfolio/portfolioSlice"
 import Select from "../components/Select"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
-import { Box, Slider } from "@mui/material"
+import { Box, Slider, TextField } from "@mui/material"
 
 export default function ViewConfig() {
   return (
     <Root>
-      <FilterView />
+      <DepthView />
       <SortView />
       <GroupView />
-      <DepthView />
+      <FilterView />
     </Root>
   )
 }
@@ -32,31 +32,27 @@ const Root = styled.div`
 function FilterView() {
   const dispatch = useAppDispatch()
   const filter = useActiveView((v) => v.filter)
-  const fieldDefs = useActivePortfolio((p) => p.fieldDefGuids)
-  const fieldDefsByGuid = useActivePortfolio((p) => p.fieldDefsByGuid)
+
+  const onChange = (newVal: string) => {
+    dispatch(setFilter({ expression: newVal }))
+  }
 
   return (
-    <SubRoot>
-      <Select
-        value={filter?.fieldGuid ?? null}
-        onChange={(newFieldGuid) =>
-          dispatch(
-            setFilter(newFieldGuid ? { fieldGuid: newFieldGuid } : undefined)
-          )
-        }
-        variants={fieldDefs}
-        displays={fieldDefs.map((guid) => fieldDefsByGuid[guid]?.name ?? "")}
-        label="Filter"
-      />
-    </SubRoot>
+    <TextField
+      size="small"
+      label="Filter"
+      value={filter?.expression ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+      fullWidth
+    />
   )
 }
 
 function SortView() {
   const dispatch = useAppDispatch()
   const sort = useActiveView((v) => v.sort)
-  const fieldDefs = useActivePortfolio((p) => p.fieldDefGuids)
-  const fieldDefsByGuid = useActivePortfolio((p) => p.fieldDefsByGuid)
+  const fields = useActivePortfolio((p) => p.fieldGuids)
+  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
 
   return (
     <SubRoot>
@@ -64,11 +60,15 @@ function SortView() {
         value={sort?.fieldGuid ?? null}
         onChange={(newFieldGuid) =>
           dispatch(
-            setSort(newFieldGuid ? { fieldGuid: newFieldGuid } : undefined)
+            setSort(
+              newFieldGuid
+                ? { fieldGuid: newFieldGuid, ascending: true }
+                : undefined
+            )
           )
         }
-        variants={fieldDefs}
-        displays={fieldDefs.map((guid) => fieldDefsByGuid[guid]?.name ?? "")}
+        variants={fields}
+        displays={fields.map((guid) => fieldsByGuid[guid]?.name ?? "")}
         label="Sort"
       />
     </SubRoot>
@@ -78,8 +78,8 @@ function SortView() {
 function GroupView() {
   const dispatch = useAppDispatch()
   const group = useActiveView((v) => v.group)
-  const fieldDefs = useActivePortfolio((p) => p.fieldDefGuids)
-  const fieldDefsByGuid = useActivePortfolio((p) => p.fieldDefsByGuid)
+  const fields = useActivePortfolio((p) => p.fieldGuids)
+  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
 
   return (
     <SubRoot>
@@ -87,11 +87,15 @@ function GroupView() {
         value={group?.fieldGuid ?? null}
         onChange={(newFieldGuid) =>
           dispatch(
-            setGroup(newFieldGuid ? { fieldGuid: newFieldGuid } : undefined)
+            setGroup(
+              newFieldGuid
+                ? { by: "field", fieldGuid: newFieldGuid }
+                : undefined
+            )
           )
         }
-        variants={fieldDefs}
-        displays={fieldDefs.map((guid) => fieldDefsByGuid[guid]?.name ?? "")}
+        variants={fields}
+        displays={fields.map((guid) => fieldsByGuid[guid]?.name ?? "")}
         label="Group"
       />
     </SubRoot>
@@ -128,5 +132,6 @@ function DepthView() {
 }
 
 const SubRoot = styled.div`
-  width: ${({ theme }) => theme.spacing(15)};
+  /* width: ${({ theme }) => theme.spacing(15)}; */
+  /* min-width: ${({ theme }) => theme.spacing(15)}; */
 `

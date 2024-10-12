@@ -28,12 +28,6 @@ test('isId', () => {
   expect(isId('A')).toBe(true)
   expect(isId('_')).toBe(true)
   expect(isId('1')).toBe(true)
-  expect(isId('!')).toBe(true)
-  expect(isId('?')).toBe(true)
-  expect(isId('-')).toBe(true)
-  expect(isId('<')).toBe(true)
-  expect(isId('>')).toBe(true)
-  expect(isId('=')).toBe(true)
   expect(isId('hello')).toBe(true)
 
   expect(isId(' ')).toBe(false)
