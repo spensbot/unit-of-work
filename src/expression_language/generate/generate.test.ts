@@ -5,11 +5,11 @@ import generate from './generate'
 function testRoundTrip(expression: string) {
   const ast = parse(expression)
 
-  console.log(`AST: ${JSON.stringify(ast, null, 2)}`)
+  // console.log(`AST: ${JSON.stringify(ast, null, 2)}`)
 
   const generated = generate(ast)
 
-  console.log(`GENERATED: ${generated}`)
+  // console.log(`GENERATED: ${generated}`)
 
   expect(parse(generated)).toEqual(ast)
 }

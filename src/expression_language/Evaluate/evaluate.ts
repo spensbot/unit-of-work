@@ -1,22 +1,44 @@
 import { Node } from '../Node/Node'
-import { operators } from '../Token/Operator'
+import { operators, operatorTypes, TypeOfValue } from '../Token/Operator'
 
 export default function evaluate(node: Node, context: any): any {
   switch (node.t) {
     case 'Num':
-      return node.val
+      return expect(node.val, 'number')
     case 'Str':
-      return node.val
+      return expect(node.val, 'string')
     case 'Bool':
-      return node.val
+      return expect(node.val, 'boolean')
     case 'Id':
+      const val = context[node.val]
+      if (val === undefined) throw `${node.val} does not exist`
       return context[node.val]
     case 'BinaryOp':
-      if (node.op === '.' && node.right.t === 'Id') {
-        return evaluate(node.left, context)[node.right.val]
+      const left = evaluate(node.left, context)
+
+      if (node.op === '.') {
+        if (node.right.t !== 'Id') throw `Expected Id, got: ${node.right}`
+        expect(left, 'object')
+        const res = left[node.right.val]
+        if (res === undefined) throw `.${node.right.val} does not exist`
+        return res
+      } else {
+        const right = evaluate(node.right, context)
+        const types = operatorTypes[node.op]
+        if (types.in) {
+          expect(left, types.in)
+          expect(right, types.in)
+        }
+
+        const func = operators[node.op] as (left: any, right: any) => any
+        return func(left, right)
       }
-      return operators[node.op](evaluate(node.left, context), evaluate(node.right, context))
     case 'UnaryOp':
-      return operators['!'](evaluate(node.operand, context))
+      return operators['!'](expect(evaluate(node.operand, context), 'boolean'))
   }
+}
+
+function expect(val: any, type: TypeOfValue): any {
+  if (typeof val !== type) throw `Expected ${type}, got ${typeof val} (${val})`
+  return val
 }

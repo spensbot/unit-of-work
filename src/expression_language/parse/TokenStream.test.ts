@@ -33,4 +33,5 @@ test('TokenStream', () => {
   expect(stream.next()).toEqual({ t: 'Id', val: 'name' })
   expect(stream.next()).toEqual({ t: 'Op', val: '==' })
   expect(stream.next()).toEqual({ t: 'Str', val: 'spenser' })
+  expect(stream.next()).toEqual(null)
 })
