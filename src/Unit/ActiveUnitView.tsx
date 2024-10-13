@@ -28,14 +28,7 @@ export default function ActiveUnitView() {
           <Close />
         </IconButton>
       </Box>
-
       <Description guid={guid} />
-      <Button
-        variant="contained"
-        onClick={() => dispatch(deleteUnit({ guid }))}
-      >
-        Delete
-      </Button>
       <Children guid={guid} />
       <Button
         onClick={() =>
@@ -46,7 +39,7 @@ export default function ActiveUnitView() {
           )
         }
       >
-        Add Child
+        Add Child Unit
       </Button>
     </Root>
   )
@@ -102,5 +95,5 @@ const Root = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
-  flex: 1 0 auto;
+  flex: 1 1 auto;
 `

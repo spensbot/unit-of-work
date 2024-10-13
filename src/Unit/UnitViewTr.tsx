@@ -2,11 +2,16 @@ import styled from "@emotion/styled"
 import { useAppDispatch } from "../config/store"
 import DisplayInput from "../components/DisplayInput"
 import { Portfolio, useActivePortfolio } from "../Portfolio/Portfolio"
-import { setActiveUnit, setUnitName } from "../Portfolio/portfolioSlice"
+import {
+  deleteUnit,
+  setActiveUnit,
+  setUnitName,
+} from "../Portfolio/portfolioSlice"
 import FieldView from "../Field/FieldValView"
 import { Box, IconButton } from "@mui/material"
 import DragHandleIcon from "@mui/icons-material/DragHandle"
 import { memo } from "react"
+import { Delete } from "@mui/icons-material"
 
 export default memo(UnitViewTr)
 
@@ -46,7 +51,11 @@ function UnitViewTr({ guid }: { guid: string }) {
           fieldDefGuid={fieldGuid}
         />
       ))}
-      <Td />
+      <Td style={{ textAlign: "right" }}>
+        <IconButton onClick={() => dispatch(deleteUnit({ guid }))}>
+          <Delete />
+        </IconButton>
+      </Td>
     </Root>
   )
 }

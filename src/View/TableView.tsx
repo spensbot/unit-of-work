@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 import UnitViewTr from "../Unit/UnitViewTr"
 import Button from "@mui/material/Button"
-import { addUnit } from "../Portfolio/portfolioSlice"
+import { addUnit, setActiveUnit } from "../Portfolio/portfolioSlice"
 import { newUnit } from "../Unit/Unit"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useAppDispatch } from "../config/store"
@@ -77,7 +77,11 @@ function AddUnitButton() {
   return (
     <Button
       fullWidth
-      onClick={() => dispatch(addUnit({ unit: newUnit() }))}
+      onClick={() => {
+        const unit = newUnit()
+        dispatch(addUnit({ unit }))
+        dispatch(setActiveUnit({ guid: unit.guid }))
+      }}
       sx={{
         alignSelf: "flex-end",
       }}

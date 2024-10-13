@@ -18,6 +18,7 @@ export default function ActiveViewView() {
 }
 
 const Root = styled.div`
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.palette.background.paper};
