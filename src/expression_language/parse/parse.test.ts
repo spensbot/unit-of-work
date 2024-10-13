@@ -5,8 +5,6 @@ import { Node } from '../Node/Node'
 function testParse(expr: string, expected: Node) {
   const node = parse(expr)
 
-  // console.log(util.inspect(node, false, null, true))
-
   expect(node).toEqual(expected)
 }
 

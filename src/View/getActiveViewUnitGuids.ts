@@ -6,19 +6,24 @@ import { Filter, Sort } from "./View"
 import { FieldVal } from "../Field/FieldVal"
 
 export default function getActiveViewUnitGuids(state: Portfolio): string[] {
-  if (state.activeViewGuid === undefined) {
-    return state.rootUnitGuids
-  }
-
   const activeView = state.viewsByGuid[state.activeViewGuid]
 
-  let units = state.rootUnitGuids.map(guid => state.unitsByGuid[guid])
+  console.log(`Depth: ${activeView.depth}`)
+
+  // let units = state.rootUnitGuids.map(guid => state.unitsByGuid[guid])
+  let units = state.rootUnitGuids.flatMap(guid => getUnitsRecursive(state.unitsByGuid[guid], activeView.depth, state))
   // const view = state.vie wsByGuid[state.activeViewGuid]
   // TODO: Apply filter, sort, group.
   if (activeView.filter) units = applyFilter(units, activeView.filter, state)
   if (activeView.sort) units = applySort(units, activeView.sort, state)
 
   return units.map(u => u.guid)
+}
+
+function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] {
+  if (depth === 1) return [unit]
+
+  return [unit, ...unit.childrenGuids.flatMap(guid => getUnitsRecursive(state.unitsByGuid[guid], depth - 1, state))]
 }
 
 function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {

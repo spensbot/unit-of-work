@@ -5,10 +5,6 @@ import TokenStream from "./TokenStream"
 test('TokenStream', () => {
   const stream = new TokenStream('hello== true || goodbye == false && !((1 + 5) != 6) && user.name == "spenser"')
 
-  // while (!stream.eof()) {
-  //   console.log(stream.next())
-  // }
-
   expect(stream.next()).toEqual({ t: 'Id', val: 'hello' })
   expect(stream.next()).toEqual({ t: 'Op', val: '==' })
   expect(stream.next()).toEqual({ t: 'Kw', val: 'true' })

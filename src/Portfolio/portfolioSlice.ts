@@ -114,7 +114,6 @@ function updateActiveViewUnitGuids(state: Portfolio) {
   const newGuids = getActiveViewUnitGuids(state)
 
   if (JSON.stringify(state.activeViewUnitGuids) !== JSON.stringify(newGuids)) {
-    console.log('Updating Active View Unit Guids')
     state.activeViewUnitGuids = newGuids
   }
 }

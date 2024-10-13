@@ -10,6 +10,7 @@ import {
 import Select from "../components/Select"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { Box, Slider, TextField } from "@mui/material"
+import getMaxDepth from "../Portfolio/getMaxDepth"
 
 export default function ViewConfig() {
   return (
@@ -103,11 +104,11 @@ function GroupView() {
 }
 
 function DepthView() {
+  const maxDepth = useActivePortfolio((p) => getMaxDepth(p))
   const dispatch = useAppDispatch()
-  const availableDepth = 2
   const depth = useActiveView((v) => v.depth)
 
-  if (availableDepth < 1) {
+  if (maxDepth < 2) {
     return null
   }
 
@@ -122,8 +123,8 @@ function DepthView() {
             }
           }}
           valueLabelDisplay="auto"
-          min={0}
-          max={availableDepth}
+          min={1}
+          max={maxDepth}
           step={1}
         />
       </Box>

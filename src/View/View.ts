@@ -35,7 +35,7 @@ export function newTableView(name: string): View {
     mode: 'table',
     guid: uuidv4(),
     name,
-    depth: 0
+    depth: 1
   }
 }
 

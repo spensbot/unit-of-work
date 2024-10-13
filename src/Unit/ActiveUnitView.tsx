@@ -4,9 +4,7 @@ import { Box, Button, IconButton, TextField } from "@mui/material"
 import {
   setUnitName,
   setUnitDescription,
-  moveUnit,
   setActiveUnit,
-  deleteUnit,
   addUnit,
 } from "../Portfolio/portfolioSlice"
 import { useAppDispatch } from "../config/store"
@@ -49,7 +47,6 @@ function Children({ guid }: { guid: string }) {
   const childrenGuids = useActivePortfolio(
     (p) => p.unitsByGuid[guid].childrenGuids
   )
-  const dispatch = useAppDispatch()
   return (
     <table>
       <tbody>

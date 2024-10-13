@@ -21,13 +21,9 @@ function UnitViewTr({ guid }: { guid: string }) {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
   const dispatch = useAppDispatch()
 
-  if (isActive) console.log("ActiveUnit")
-
   return (
     <Root isActive={isActive}>
-      <Td>
-        <UnitDepth guid={guid} />
-      </Td>
+      <UnitDepth guid={guid} />
       <Td>
         <Box display="flex" alignItems="center">
           {UnitSelect(guid)}
