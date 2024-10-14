@@ -80,13 +80,11 @@ function UnitField({
   unitGuid: string
   fieldDefGuid: string
 }) {
-  const unit = useActivePortfolio((p) => p.unitsByGuid[unitGuid])
   const field = useActivePortfolio((p) => p.fieldsByGuid[fieldDefGuid])
-  const val = unit.fieldValsByGuid[fieldDefGuid]
 
   return (
     <Td key={fieldDefGuid}>
-      <FieldValView unitGuid={unitGuid} field={field!} val={val} />
+      <FieldValView unitGuid={unitGuid} field={field!} />
     </Td>
   )
 }

@@ -1,11 +1,4 @@
 import styled from "@emotion/styled"
-import {
-  FieldVal,
-  UserFieldVal,
-  NumberFieldVal,
-  DateFieldVal,
-  SelectFieldVal,
-} from "./FieldVal"
 import { UserField, NumberField, DateField, SelectField, Field } from "./Field"
 import Select from "../components/Select"
 import { useAppDispatch } from "../config/store"
@@ -17,58 +10,25 @@ import { DatePicker } from "@mui/x-date-pickers"
 import getFieldVal from "./getFieldVal"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 
-interface Props<F, Val> {
+interface Props<F> {
   unitGuid: string
   field: F
-  val?: Val
 }
 
-export default function FieldView({
-  unitGuid,
-  field,
-  val,
-}: Props<Field, FieldVal>) {
+export default function FieldView({ unitGuid, field }: Props<Field>) {
   switch (field.t) {
     case "UserField":
-      return (
-        <UserFieldView
-          unitGuid={unitGuid}
-          field={field}
-          val={val?.t === "User" ? val : undefined}
-        />
-      )
+      return <UserFieldView unitGuid={unitGuid} field={field} />
     case "NumberField":
-      return (
-        <NumberFieldView
-          unitGuid={unitGuid}
-          field={field}
-          val={val?.t === "Number" ? val : undefined}
-        />
-      )
+      return <NumberFieldView unitGuid={unitGuid} field={field} />
     case "DateField":
-      return (
-        <DateFieldView
-          unitGuid={unitGuid}
-          field={field}
-          val={val?.t === "Date" ? val : undefined}
-        />
-      )
+      return <DateFieldView unitGuid={unitGuid} field={field} />
     case "SelectField":
-      return (
-        <SelectFieldView
-          unitGuid={unitGuid}
-          field={field}
-          val={val?.t === "Select" ? val : undefined}
-        />
-      )
+      return <SelectFieldView unitGuid={unitGuid} field={field} />
   }
 }
 
-function UserFieldView({
-  unitGuid,
-  field,
-  val,
-}: Props<UserField, UserFieldVal>) {
+function UserFieldView({ unitGuid, field }: Props<UserField>) {
   const dispatch = useDispatch()
   const userGuid = useActivePortfolio((p) => {
     const val = getFieldVal(p.unitsByGuid[unitGuid], field, p)
@@ -77,7 +37,7 @@ function UserFieldView({
 
   return (
     <UserSelect
-      userGuid={val?.guid}
+      userGuid={userGuid}
       onChange={(newUserGuid) =>
         dispatch(
           setField({
@@ -94,16 +54,19 @@ function UserFieldView({
   )
 }
 
-function NumberFieldView({
-  unitGuid,
-  field,
-  val,
-}: Props<NumberField, NumberFieldVal>) {
+function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
   const dispatch = useDispatch()
+  const numberValue = useActivePortfolio((p) => {
+    const val = getFieldVal(p.unitsByGuid[unitGuid], field, p)
+    return val?.t === "Number" ? val.val : undefined
+  })
+
+  console.log(numberValue)
+
   return (
     <Root>
       <NumberInput
-        value={val?.val}
+        value={numberValue}
         onChange={(newVal) =>
           dispatch(
             setField({
@@ -119,21 +82,21 @@ function NumberFieldView({
   )
 }
 
-function DateFieldView(_props: Props<DateField, DateFieldVal>) {
+function DateFieldView(_props: Props<DateField>) {
   return <DatePicker slotProps={{ textField: { size: "small" } }} />
 }
 
-function SelectFieldView({
-  unitGuid,
-  field,
-  val,
-}: Props<SelectField, SelectFieldVal>) {
+function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
   const dispatch = useAppDispatch()
+  const selectValue = useActivePortfolio((p) => {
+    const val = getFieldVal(p.unitsByGuid[unitGuid], field, p)
+    return val?.t === "Select" ? val.val : undefined
+  })
 
   return (
     <Root>
       <Select
-        value={val?.val ?? null}
+        value={selectValue ?? null}
         onChange={(newVal) =>
           dispatch(
             setField({
