@@ -14,69 +14,75 @@ import NumberInput from "../components/NumberInput"
 import { useDispatch } from "react-redux"
 import UserSelect from "../User/UserSelect"
 import { DatePicker } from "@mui/x-date-pickers"
+import getFieldVal from "./getFieldVal"
+import { useActivePortfolio } from "../Portfolio/Portfolio"
 
-interface Props<Def, T> {
+interface Props<F, Val> {
   unitGuid: string
-  def: Def
-  field?: T
+  field: F
+  val?: Val
 }
 
 export default function FieldView({
   unitGuid,
-  def,
   field,
+  val,
 }: Props<Field, FieldVal>) {
-  switch (def.t) {
+  switch (field.t) {
     case "UserField":
       return (
         <UserFieldView
           unitGuid={unitGuid}
-          def={def}
-          field={field?.t === "User" ? field : undefined}
+          field={field}
+          val={val?.t === "User" ? val : undefined}
         />
       )
     case "NumberField":
       return (
         <NumberFieldView
           unitGuid={unitGuid}
-          def={def}
-          field={field?.t === "Number" ? field : undefined}
+          field={field}
+          val={val?.t === "Number" ? val : undefined}
         />
       )
     case "DateField":
       return (
         <DateFieldView
           unitGuid={unitGuid}
-          def={def}
-          field={field?.t === "Date" ? field : undefined}
+          field={field}
+          val={val?.t === "Date" ? val : undefined}
         />
       )
     case "SelectField":
       return (
         <SelectFieldView
           unitGuid={unitGuid}
-          def={def}
-          field={field?.t === "Select" ? field : undefined}
+          field={field}
+          val={val?.t === "Select" ? val : undefined}
         />
       )
   }
 }
 
 function UserFieldView({
-  field,
   unitGuid,
-  def,
+  field,
+  val,
 }: Props<UserField, UserFieldVal>) {
   const dispatch = useDispatch()
+  const userGuid = useActivePortfolio((p) => {
+    const val = getFieldVal(p.unitsByGuid[unitGuid], field, p)
+    return val?.t === "User" ? val.guid : undefined
+  })
 
   return (
     <UserSelect
-      userGuid={field?.guid}
+      userGuid={val?.guid}
       onChange={(newUserGuid) =>
         dispatch(
           setField({
             unitGuid,
-            fieldDefGuid: def.guid,
+            fieldDefGuid: field.guid,
             val: {
               t: "User",
               guid: newUserGuid,
@@ -89,19 +95,19 @@ function UserFieldView({
 }
 
 function NumberFieldView({
-  field,
   unitGuid,
-  def,
+  field,
+  val,
 }: Props<NumberField, NumberFieldVal>) {
   const dispatch = useDispatch()
   return (
     <Root>
       <NumberInput
-        value={field?.val}
+        value={val?.val}
         onChange={(newVal) =>
           dispatch(
             setField({
-              fieldDefGuid: def.guid,
+              fieldDefGuid: field.guid,
               val:
                 newVal === undefined ? undefined : { t: "Number", val: newVal },
               unitGuid,
@@ -120,18 +126,18 @@ function DateFieldView(_props: Props<DateField, DateFieldVal>) {
 function SelectFieldView({
   unitGuid,
   field,
-  def,
+  val,
 }: Props<SelectField, SelectFieldVal>) {
   const dispatch = useAppDispatch()
 
   return (
     <Root>
       <Select
-        value={field?.val ?? null}
+        value={val?.val ?? null}
         onChange={(newVal) =>
           dispatch(
             setField({
-              fieldDefGuid: def.guid,
+              fieldDefGuid: field.guid,
               val:
                 newVal === null
                   ? undefined
@@ -140,7 +146,7 @@ function SelectFieldView({
             })
           )
         }
-        variants={def.selectOptions}
+        variants={field.selectOptions}
       />
     </Root>
   )

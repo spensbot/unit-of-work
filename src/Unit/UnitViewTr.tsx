@@ -7,7 +7,7 @@ import {
   setActiveUnit,
   setUnitName,
 } from "../Portfolio/portfolioSlice"
-import FieldView from "../Field/FieldValView"
+import FieldValView from "../Field/FieldValView"
 import { Box, IconButton } from "@mui/material"
 import DragHandleIcon from "@mui/icons-material/DragHandle"
 import { memo } from "react"
@@ -81,12 +81,12 @@ function UnitField({
   fieldDefGuid: string
 }) {
   const unit = useActivePortfolio((p) => p.unitsByGuid[unitGuid])
-  const fieldDef = useActivePortfolio((p) => p.fieldsByGuid[fieldDefGuid])
-  const field = unit.fieldValsByGuid[fieldDefGuid]
+  const field = useActivePortfolio((p) => p.fieldsByGuid[fieldDefGuid])
+  const val = unit.fieldValsByGuid[fieldDefGuid]
 
   return (
     <Td key={fieldDefGuid}>
-      <FieldView unitGuid={unitGuid} field={field} def={fieldDef!} />
+      <FieldValView unitGuid={unitGuid} field={field!} val={val} />
     </Td>
   )
 }
