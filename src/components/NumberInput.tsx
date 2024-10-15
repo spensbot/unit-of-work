@@ -8,9 +8,14 @@ interface Props {
 }
 
 export default function NumberInput({ value, onChange }: Props) {
-  const [text, setText] = useState(value?.toString() ?? "")
+  const valString = toString(value)
+  const [text, setText] = useState(valString)
 
   let isError = parseNum(text) === null && text !== ""
+
+  if (!isError && text !== valString) {
+    setText(valString)
+  }
 
   return (
     <Root isError={isError}>
@@ -30,6 +35,10 @@ export default function NumberInput({ value, onChange }: Props) {
       />
     </Root>
   )
+}
+
+function toString(val: number | undefined): string {
+  return val?.toString() ?? ""
 }
 
 function parseNum(text: string): number | null {

@@ -21,7 +21,7 @@ export default function getActiveViewUnitGuids(state: Portfolio): string[] {
 }
 
 function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] {
-  if (depth === 1) return [unit]
+  if (depth < 2) return [unit]
 
   return [unit, ...unit.childrenGuids.flatMap(guid => getUnitsRecursive(state.unitsByGuid[guid], depth - 1, state))]
 }

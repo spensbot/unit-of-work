@@ -2,8 +2,6 @@ import { Unit } from "../Unit/Unit";
 import { Portfolio } from "./Portfolio";
 
 export default function getMaxDepth(state: Portfolio) {
-  console.log(state.viewsByGuid[state.activeViewGuid])
-
   return getMaxDepthRecursive(state.rootUnitGuids.map(guid => state.unitsByGuid[guid]), state)
 }
 

@@ -3,11 +3,23 @@ import { Portfolio } from "../Portfolio/Portfolio"
 import { Field } from "./Field"
 import { FieldVal, NumberFieldVal } from "./FieldVal"
 
+export interface FieldValInfo {
+  explicit: FieldVal | undefined
+  calculated: FieldVal | undefined
+}
+
 export default function getFieldVal(unit: Unit, field: Field, portfolio: Portfolio): FieldVal | undefined {
-  const explicitVal = unit.fieldValsByGuid[field.guid]
+  const explicit = getExplicitFieldVal(unit, field)
+  const calculated = getCalculatedFieldVal(unit, field, portfolio)
 
-  if (explicitVal !== undefined) return explicitVal
+  return explicit ?? calculated
+}
 
+export function getExplicitFieldVal(unit: Unit, field: Field): FieldVal | undefined {
+  return unit.fieldValsByGuid[field.guid]
+}
+
+export function getCalculatedFieldVal(unit: Unit, field: Field, portfolio: Portfolio): FieldVal | undefined {
   switch (field.t) {
     case 'UserField':
       return getInheritedField(unit, field, portfolio)
