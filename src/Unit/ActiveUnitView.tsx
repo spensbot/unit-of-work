@@ -11,6 +11,7 @@ import { useAppDispatch } from "../config/store"
 import { Close } from "@mui/icons-material"
 import UnitViewTr from "./UnitViewTr"
 import { newUnit } from "./Unit"
+import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp"
 
 export default function ActiveUnitView() {
   const guid = useActivePortfolio((p) => p.activeUnitGuid)
@@ -21,6 +22,7 @@ export default function ActiveUnitView() {
   return (
     <Root>
       <Box display="flex" alignItems="center" gap={2}>
+        <GotoParentButton guid={guid} />
         <Name guid={guid} />
         <IconButton onClick={() => dispatch(setActiveUnit({}))}>
           <Close />
@@ -84,6 +86,23 @@ function Description({ guid }: { guid: string }) {
       multiline
       minRows={3}
     />
+  )
+}
+
+function GotoParentButton({ guid }: { guid: string }) {
+  const dispatch = useAppDispatch()
+  const parentGuid = useActivePortfolio((p) => p.unitsByGuid[guid].parentGuid)
+
+  if (!parentGuid) return null
+
+  return (
+    <IconButton
+      onClick={() => {
+        dispatch(setActiveUnit({ guid: parentGuid }))
+      }}
+    >
+      <ArrowCircleUpIcon sx={{ fontSize: 30 }} />
+    </IconButton>
   )
 }
 
