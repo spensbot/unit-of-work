@@ -17,8 +17,8 @@ export function newUnit(parentGuid?: string): Unit {
   return {
     guid: uuidv4(),
     childrenGuids: [],
-    name: 'My Unit',
-    description: 'A description of my unit',
+    name: '',
+    description: '',
     fieldValsByGuid: {
       // 'Field_1': { t: 'Select', val: 'todo' },
       // 'Field_2': { t: 'Select', val: 'Solitaire' },

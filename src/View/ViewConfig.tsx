@@ -114,7 +114,7 @@ function DepthView() {
 
   return (
     <SubRoot>
-      <Box sx={{ width: 200 }}>
+      <Box width={30 * (maxDepth - 1)} marginX={2}>
         <Slider
           value={depth}
           onChange={(_, newValue) => {
@@ -126,6 +126,7 @@ function DepthView() {
           min={1}
           max={maxDepth}
           step={1}
+          marks
         />
       </Box>
     </SubRoot>

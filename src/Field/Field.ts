@@ -1,50 +1,42 @@
-import { v4 as uuidv4 } from 'uuid';
-
 interface FieldBase {
   guid: string
   name: string
+  propogateDown?: PropogateDownStrategy
 }
 
 export type Field = UserField | NumberField | DateField | SelectField
 
 export interface UserField extends FieldBase {
   t: 'UserField'
+  propogateUp?: GroupStrategy
 }
 
 export interface NumberField extends FieldBase {
   t: 'NumberField'
+  propogateUp?: PropogateUpStrategy<number>
 }
 
 export interface DateField extends FieldBase {
   t: 'DateField'
+  propogateUp?: PropogateUpStrategy<Date>
 }
 
 export interface SelectField extends FieldBase {
   t: 'SelectField'
-  selectOptions: string[] // TODO: Put this on a separate type if things get too hairy
+  selectOptions: string[]
+  propogateUp?: GroupStrategy
 }
 
-export function newField(): Field {
-  return {
-    t: 'SelectField',
-    guid: uuidv4(),
-    name: 'New Field',
-    selectOptions: []
-  }
-}
+export type PropogateDownStrategy = 'Inherit' // <-- Give children the same value as the nearest explicit parent
 
+export type PropogateUpStrategy<T> = AggregateStrategy<T> | GroupStrategy
 
-// ========= Potential Future stuff ============
-export type PropogationStrategy = InheritStrategy
-
-// Top-down inheritance of field values
-export interface InheritStrategy {
-  t: 'InheritStrategy'
-}
-
-// Bottom-up aggregation of field values
-export interface AggregateStrategy<T> {
+export interface AggregateStrategy<T> { // Combine all children values into a single value
   t: 'AggregateStrategy',
-  init: T,
-  merge: (accumulator: T, val: T) => T,
+  merge: (a: T, b: T) => T
+}
+
+export interface GroupStrategy { // Combine all children values into a map<T, weight>
+  t: 'GroupStrategy',
+  weightFieldGuid?: string // 
 }

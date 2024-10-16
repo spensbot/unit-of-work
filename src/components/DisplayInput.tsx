@@ -18,6 +18,7 @@ export default function DisplayInput({
       <TextField
         variant="standard"
         value={value}
+        autoComplete="off"
         onChange={(e) => onChange(e.target.value)}
         sx={(theme) => ({
           input: {
