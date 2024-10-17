@@ -101,7 +101,7 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
   }
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" position="relative">
       <NumberInput
         value={explicit ?? calculated}
         onChange={(newVal) =>
@@ -114,6 +114,7 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
           )
         }
         faded={explicit === undefined && calculated !== undefined}
+        split={overwritten ? 0.75 : 0.5}
       />
       {overwritten && (
         <OverwrittenView
@@ -169,6 +170,9 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
 function OverwrittenView({ val, clear }: { val: string; clear: () => void }) {
   let variant = "primary"
   variant = "secondary"
+  // variant = "error"
+  // variant = "warning"
+  // variant = "info"
   return (
     <Box
       position="absolute"

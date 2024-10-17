@@ -6,9 +6,10 @@ interface Props {
   value?: number
   onChange: (newValue?: number) => void
   faded?: boolean
+  split?: number
 }
 
-export default function NumberInput({ value, onChange, faded }: Props) {
+export default function NumberInput({ value, onChange, faded, split }: Props) {
   const valString = toString(value)
   const [text, setText] = useState(valString)
 
@@ -34,6 +35,7 @@ export default function NumberInput({ value, onChange, faded }: Props) {
           }
         }}
         faded={faded}
+        split={split}
       />
     </Root>
   )

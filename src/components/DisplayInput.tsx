@@ -7,6 +7,7 @@ interface Props {
   onChange: (newValue: string) => void
   variant?: Variant
   faded?: boolean
+  split?: number
 }
 
 export default function DisplayInput({
@@ -14,6 +15,7 @@ export default function DisplayInput({
   onChange,
   variant = "body1",
   faded,
+  split = 0.5,
 }: Props) {
   return (
     <FormControl fullWidth>
@@ -37,9 +39,16 @@ export default function DisplayInput({
           color: theme.palette.text.disabled,
         })}
         slotProps={{
+          input: {
+            sx: {
+              color: faded ? "orange" : "text.primary",
+              padding: 0,
+            },
+          },
           htmlInput: {
             style: {
-              color: faded ? "orange" : "inherit",
+              paddingTop: PAD * split,
+              paddingBottom: PAD * (1 - split),
             },
           },
         }}
@@ -47,3 +56,5 @@ export default function DisplayInput({
     </FormControl>
   )
 }
+
+const PAD = 23
