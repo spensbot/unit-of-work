@@ -151,12 +151,13 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
   }
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" position="relative">
       <Select
         value={explicit ?? calculated}
         onChange={(newVal) => set(newVal)}
         variants={field.selectOptions}
         faded={explicit === undefined && calculated !== undefined}
+        split={overwritten ? 0.75 : 0.5}
       />
       {overwritten && (
         <OverwrittenView val={overwritten} clear={() => set(undefined)} />
@@ -166,17 +167,32 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
 }
 
 function OverwrittenView({ val, clear }: { val: string; clear: () => void }) {
+  let variant = "primary"
+  variant = "secondary"
   return (
-    <Typography
-      sx={{
-        color: "text.disabled",
-        textDecoration: "line-through",
-        ":hover": { cursor: "pointer" },
-      }}
-      onClick={clear}
+    <Box
+      position="absolute"
+      paddingX={1}
+      paddingY={0}
+      left={-3}
+      top={-3}
+      borderRadius={100}
+      bgcolor={`${variant}.main`}
     >
-      {val}
-    </Typography>
+      <Typography
+        sx={{
+          fontSize: 15,
+          color: `${variant}.contrastText`,
+          textDecoration: "line-through",
+          ":hover": { cursor: "pointer" },
+          margin: -0.2,
+          padding: 0,
+        }}
+        onClick={clear}
+      >
+        {val}
+      </Typography>
+    </Box>
   )
 }
 

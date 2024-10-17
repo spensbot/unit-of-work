@@ -17,6 +17,7 @@ interface Props {
   label?: string
   id?: string
   faded?: boolean
+  split?: number
 }
 
 export default function Select({
@@ -27,6 +28,7 @@ export default function Select({
   label,
   id = "Select",
   faded,
+  split = 0.5,
 }: Props) {
   const labelId = `${id}-label`
 
@@ -58,7 +60,17 @@ export default function Select({
           ) as string | undefined
           onChange(updated)
         }}
-        sx={{ color: faded ? "text.disabled" : "inherit" }}
+        sx={{
+          color: faded ? "text.disabled" : "inherit",
+        }}
+        slotProps={{
+          input: {
+            sx: {
+              paddingTop: TOTAL_PAD * split,
+              paddingBottom: TOTAL_PAD * (1 - split),
+            },
+          },
+        }}
       >
         {_variants.map((variant) => {
           return (
@@ -71,3 +83,5 @@ export default function Select({
     </FormControl>
   )
 }
+
+const TOTAL_PAD = 3
