@@ -7,7 +7,7 @@ import {
 
 // I don't love this, but can't think of something better since undefined and null don't work with MUI
 const NULL_ITEM_VALUE = 0
-const NULL_ITEM_DISPLAY = "--"
+const NULL_ITEM_DISPLAY = "---"
 
 interface Props {
   value?: string
@@ -16,6 +16,7 @@ interface Props {
   displays?: string[]
   label?: string
   id?: string
+  faded?: boolean
 }
 
 export default function Select({
@@ -25,6 +26,7 @@ export default function Select({
   displays,
   label,
   id = "Select",
+  faded,
 }: Props) {
   const labelId = `${id}-label`
 
@@ -50,7 +52,13 @@ export default function Select({
         id={id}
         value={_value}
         label={label}
-        onChange={(e) => onChange(e.target.value as string)}
+        onChange={(e) => {
+          var updated = (
+            e.target.value === NULL_ITEM_VALUE ? undefined : e.target.value
+          ) as string | undefined
+          onChange(updated)
+        }}
+        sx={{ color: faded ? "text.disabled" : "inherit" }}
       >
         {_variants.map((variant) => {
           return (

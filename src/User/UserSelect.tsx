@@ -8,13 +8,14 @@ import { useActivePortfolio } from "../Portfolio/Portfolio"
 import UserView from "./UserView"
 
 const NULL_ITEM_VALUE = 0
-const NULL_ITEM_DISPLAY = "-"
+const NULL_ITEM_DISPLAY = "---"
 
 interface Props {
   userGuid?: string
   onChange: (newUserGuid: string | undefined) => void
   label?: string
   id?: string
+  faded?: boolean
 }
 
 export default function UserSelect({
@@ -22,6 +23,7 @@ export default function UserSelect({
   onChange,
   label,
   id = "UserSelect",
+  faded,
 }: Props) {
   let userGuids = useActivePortfolio((p) => p.userGuids)
 
@@ -39,7 +41,15 @@ export default function UserSelect({
         id={id}
         value={_value}
         label={label}
-        onChange={(e) => onChange(e.target.value as string)}
+        onChange={(e) => {
+          var updated = (
+            e.target.value === NULL_ITEM_VALUE ? undefined : e.target.value
+          ) as string | undefined
+          onChange(updated)
+        }}
+        sx={{
+          color: faded ? "text.disabled" : "inherit",
+        }}
       >
         {_variants.map((variantGuid) => (
           <MenuItem key={variantGuid} value={variantGuid}>

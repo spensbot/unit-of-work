@@ -5,9 +5,10 @@ import { useState } from "react"
 interface Props {
   value?: number
   onChange: (newValue?: number) => void
+  faded?: boolean
 }
 
-export default function NumberInput({ value, onChange }: Props) {
+export default function NumberInput({ value, onChange, faded }: Props) {
   const valString = toString(value)
   const [text, setText] = useState(valString)
 
@@ -32,6 +33,7 @@ export default function NumberInput({ value, onChange }: Props) {
             }
           }
         }}
+        faded={faded}
       />
     </Root>
   )

@@ -8,18 +8,17 @@ export interface FieldValInfo {
   calculated: FieldVal | undefined
 }
 
-export default function getFieldVal(unit: Unit, field: Field, portfolio: Portfolio): FieldVal | undefined {
-  const explicit = getExplicitFieldVal(unit, field)
-  const calculated = getCalculatedFieldVal(unit, field, portfolio)
-
-  return explicit ?? calculated
+export function getExplicitFieldVal<T extends FieldVal>(unit: Unit, field: Field, t: T['t']): T | undefined {
+  const val = unit.fieldValsByGuid[field.guid]
+  return (val?.t === t ? val : undefined) as T | undefined
 }
 
-export function getExplicitFieldVal(unit: Unit, field: Field): FieldVal | undefined {
-  return unit.fieldValsByGuid[field.guid]
+export function getCalculatedFieldVal<T extends FieldVal>(unit: Unit, field: Field, portfolio: Portfolio, t: T['t']): T | undefined {
+  const val = getCalculatedFieldValUntyped(unit, field, portfolio)
+  return (val?.t === t ? val : undefined) as T | undefined
 }
 
-export function getCalculatedFieldVal(unit: Unit, field: Field, portfolio: Portfolio): FieldVal | undefined {
+function getCalculatedFieldValUntyped(unit: Unit, field: Field, portfolio: Portfolio): FieldVal | undefined {
   switch (field.t) {
     case 'UserField':
       return getInheritedField(unit, field, portfolio)

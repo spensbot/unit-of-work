@@ -6,12 +6,14 @@ interface Props {
   value: string
   onChange: (newValue: string) => void
   variant?: Variant
+  faded?: boolean
 }
 
 export default function DisplayInput({
   value,
   onChange,
   variant = "body1",
+  faded,
 }: Props) {
   return (
     <FormControl fullWidth>
@@ -32,7 +34,15 @@ export default function DisplayInput({
           "& .MuiInput-underline:after": {
             borderBottom: "none", // Remove bottom underline (after focus)
           },
+          color: theme.palette.text.disabled,
         })}
+        slotProps={{
+          htmlInput: {
+            style: {
+              color: faded ? "orange" : "inherit",
+            },
+          },
+        }}
       />
     </FormControl>
   )
