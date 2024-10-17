@@ -8,8 +8,6 @@ import { FieldVal } from "../Field/FieldVal"
 export default function getActiveViewUnitGuids(state: Portfolio): string[] {
   const activeView = state.viewsByGuid[state.activeViewGuid]
 
-  console.log(`Depth: ${activeView.depth}`)
-
   // let units = state.rootUnitGuids.map(guid => state.unitsByGuid[guid])
   let units = state.rootUnitGuids.flatMap(guid => getUnitsRecursive(state.unitsByGuid[guid], activeView.depth, state))
   // const view = state.vie wsByGuid[state.activeViewGuid]

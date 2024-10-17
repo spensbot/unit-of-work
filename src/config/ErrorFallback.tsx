@@ -4,10 +4,7 @@ import { resetState, useAppDispatch } from "./store"
 import { newPortfolio } from "../Portfolio/Portfolio"
 import { FallbackProps } from "react-error-boundary"
 
-export default function ErrorFallback({
-  error,
-  resetErrorBoundary,
-}: FallbackProps) {
+export default function ErrorFallback({ resetErrorBoundary }: FallbackProps) {
   const dispatch = useAppDispatch()
   return (
     <Root>

@@ -66,7 +66,11 @@ const portfolioSlice = createSlice({
       updateActiveViewUnitGuids(state)
     },
     setField: (state, { payload }: PayloadAction<{ unitGuid: string, fieldDefGuid: string, val?: FieldVal }>) => {
-      state.unitsByGuid[payload.unitGuid].fieldValsByGuid[payload.fieldDefGuid] = payload.val
+      if (payload.val === undefined) {
+        delete state.unitsByGuid[payload.unitGuid].fieldValsByGuid[payload.fieldDefGuid]
+      } else {
+        state.unitsByGuid[payload.unitGuid].fieldValsByGuid[payload.fieldDefGuid] = payload.val
+      }
     },
     setFilter: (state, { payload }: PayloadAction<Filter | undefined>) => {
       state.viewsByGuid[state.activeViewGuid].filter = payload

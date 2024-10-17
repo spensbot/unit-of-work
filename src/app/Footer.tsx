@@ -15,5 +15,5 @@ export default function Footer() {
 const Root = styled.div`
   display: flex;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(1)};
 `

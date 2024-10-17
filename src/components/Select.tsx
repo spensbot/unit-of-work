@@ -7,11 +7,11 @@ import {
 
 // I don't love this, but can't think of something better since undefined and null don't work with MUI
 const NULL_ITEM_VALUE = 0
-const NULL_ITEM_DISPLAY = "None"
+const NULL_ITEM_DISPLAY = "--"
 
 interface Props {
-  value: string | null
-  onChange: (newValue: string | null) => void
+  value?: string
+  onChange: (newValue?: string) => void
   variants: string[]
   displays?: string[]
   label?: string

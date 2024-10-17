@@ -58,7 +58,7 @@ function SortView() {
   return (
     <SubRoot>
       <Select
-        value={sort?.fieldGuid ?? null}
+        value={sort?.fieldGuid}
         onChange={(newFieldGuid) =>
           dispatch(
             setSort(
@@ -85,7 +85,7 @@ function GroupView() {
   return (
     <SubRoot>
       <Select
-        value={group?.fieldGuid ?? null}
+        value={group?.fieldGuid}
         onChange={(newFieldGuid) =>
           dispatch(
             setGroup(

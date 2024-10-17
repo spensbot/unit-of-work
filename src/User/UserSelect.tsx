@@ -8,11 +8,11 @@ import { useActivePortfolio } from "../Portfolio/Portfolio"
 import UserView from "./UserView"
 
 const NULL_ITEM_VALUE = 0
-const NULL_ITEM_DISPLAY = "None"
+const NULL_ITEM_DISPLAY = "-"
 
 interface Props {
   userGuid?: string
-  onChange: (newUserGuid: string) => void
+  onChange: (newUserGuid: string | undefined) => void
   label?: string
   id?: string
 }

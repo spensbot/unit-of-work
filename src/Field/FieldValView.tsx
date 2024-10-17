@@ -9,6 +9,7 @@ import UserSelect from "../User/UserSelect"
 import { DatePicker } from "@mui/x-date-pickers"
 import getFieldVal from "./getFieldVal"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
+import * as f from "../util/functional"
 
 interface Props<F> {
   unitGuid: string
@@ -43,10 +44,7 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
           setField({
             unitGuid,
             fieldDefGuid: field.guid,
-            val: {
-              t: "User",
-              guid: newUserGuid,
-            },
+            val: f.mapUndefined(newUserGuid, (guid) => ({ t: "User", guid })),
           })
         )
       }
@@ -71,9 +69,8 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
           dispatch(
             setField({
               fieldDefGuid: field.guid,
-              val:
-                newVal === undefined ? undefined : { t: "Number", val: newVal },
               unitGuid,
+              val: f.mapUndefined(newVal, (val) => ({ t: "Number", val })),
             })
           )
         }
@@ -96,16 +93,13 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
   return (
     <Root>
       <Select
-        value={selectValue ?? null}
+        value={selectValue}
         onChange={(newVal) =>
           dispatch(
             setField({
               fieldDefGuid: field.guid,
-              val:
-                newVal === null
-                  ? undefined
-                  : { t: "Select", val: newVal ?? undefined },
               unitGuid,
+              val: f.mapUndefined(newVal, (val) => ({ t: "Select", val })),
             })
           )
         }

@@ -13,6 +13,9 @@
 
 ## Views 
 
+- Add View Button
+- Remove View Button
+- Change Name
 - Table
   - Implement grouping
 - Kanban
