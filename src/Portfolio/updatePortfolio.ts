@@ -31,18 +31,13 @@ function propogateRecursive(unit: Unit, portfolio: Portfolio) {
   // Propogate down
   fields.forEach((field) => {
     if (field.propogateDown === 'Inherit' && parent !== undefined) {
-      const parentVal = parent.fieldValsByGuid[field.guid]
+      const inherited = parent.fieldValsByGuid[field.guid] ?? parent.calculatedFieldValsByGuid?.[field.guid]
 
-      if (parentVal?.explicit !== undefined) {
-        if (!eqDeepSimple(unit.fieldValsByGuid[field.guid], parentVal)) {
-          unit.fieldValsByGuid[field.guid] = { 't': parentVal.t }
-          unit.fieldValsByGuid[field.guid]!.calculated = parentVal.explicit
+      if (!eqDeepSimple(unit.fieldValsByGuid[field.guid], inherited)) {
+        if (unit.calculatedFieldValsByGuid === undefined) {
+          unit.calculatedFieldValsByGuid = {}
         }
-      }
-      else if (parentVal?.calculated !== undefined) {
-        if (!eqDeepSimple(unit.fieldValsByGuid[field.guid], parentVal)) {
-          unit.fieldValsByGuid[field.guid] = parentVal
-        }
+        unit.calculatedFieldValsByGuid[field.guid] = inherited
       }
     }
   })

@@ -3,8 +3,9 @@ import parse from "../expression_language/parse/parse"
 import { Portfolio } from "../Portfolio/Portfolio"
 import { Unit } from "../Unit/Unit"
 import { Filter, Sort } from "./View"
-import { activeVal, FieldVal, primaryWeighted } from "../Field/FieldVal"
+import { FieldVal, primaryWeighted } from "../Field/FieldVal"
 import * as f from '../util/functional'
+import { Field } from "../Field/Field"
 
 export default function getActiveViewUnitGuids(state: Portfolio): string[] {
   const activeView = state.viewsByGuid[state.activeViewGuid]
@@ -28,15 +29,14 @@ function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] 
 function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
   try {
     const ast = parse(filter.expression)
-    return units.filter(u => {
+    return units.filter(unit => {
       const context: { [key: string]: any } = {
-        name: u.name,
-        description: u.description,
+        name: unit.name,
+        description: unit.description,
       }
-      for (const fieldGuid in u.fieldValsByGuid) {
+      for (const fieldGuid in unit.fieldValsByGuid) {
         const field = state.fieldsByGuid[fieldGuid]
-        const fieldVal = u.fieldValsByGuid[fieldGuid]
-        context[field.name] = getFieldVal(state, fieldVal)
+        context[field.name] = getFieldValPrimitive(state, getActiveFieldVal(unit, field))
       }
       try {
         return evaluate(ast, context)
@@ -50,26 +50,33 @@ function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
   }
 }
 
-function getFieldVal(state: Portfolio, val?: FieldVal): number | string {
+function getActiveFieldVal(unit: Unit, field: Field): FieldVal | undefined {
+  const explicit = unit.fieldValsByGuid[field.guid]
+  const calculated = unit.calculatedFieldValsByGuid?.[field.guid]
+  return explicit ?? calculated
+}
+
+function getFieldValPrimitive(state: Portfolio, val?: FieldVal): number | string {
   if (val === undefined) return 0
 
   switch (val.t) {
     case 'User':
-      return f.map(activeVal(val), v => state.usersByGuid[primaryWeighted(v)].username) ?? 0
+      return state.usersByGuid[primaryWeighted(val.guids)].username
     case 'Date':
-      return activeVal(val) ?? 0
+      return val.unix
     case 'Number':
-      return activeVal(val) ?? 0
+      return val.val
     case 'Select':
-      return f.map(activeVal(val), v => primaryWeighted(v)) ?? 0
+      return primaryWeighted(val.vals)
   }
 }
 
 function applySort(units: Unit[], sort: Sort, state: Portfolio): Unit[] {
   return [...units].sort((a, b) => {
     const fieldGuid = sort.fieldGuid
-    const aVal = getSortVal(state, fieldGuid, a.fieldValsByGuid[sort.fieldGuid])
-    const bVal = getSortVal(state, fieldGuid, b.fieldValsByGuid[sort.fieldGuid])
+    const field = state.fieldsByGuid[fieldGuid]
+    const aVal = getSortVal(state, field, a.fieldValsByGuid[fieldGuid])
+    const bVal = getSortVal(state, field, b.fieldValsByGuid[fieldGuid])
     if (aVal < bVal) {
       return -1
     } else if (aVal > bVal) {
@@ -79,14 +86,13 @@ function applySort(units: Unit[], sort: Sort, state: Portfolio): Unit[] {
   })
 }
 
-function getSortVal(state: Portfolio, fieldGuid: string, val?: FieldVal): number | string {
+function getSortVal(state: Portfolio, field: Field, val?: FieldVal): number | string {
   if (val === undefined) {
-    const field = state.fieldsByGuid[fieldGuid]
     if (field.t === 'NumberField' || field.t === 'DateField') return Infinity
     return 'z'
   }
 
-  return getFieldVal(state, val)
+  return getFieldValPrimitive(state, val)
 }
 
 // function applyGroup(units: Unit[], group: Group): Unit[] {

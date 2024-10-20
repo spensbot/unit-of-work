@@ -2,39 +2,24 @@ import * as f from '../util/functional'
 
 export type FieldVal = UserFieldVal | NumberFieldVal | DateFieldVal | SelectFieldVal
 
-interface FieldValBase<T> {
-  explicit?: T,
-  calculated?: T
-}
-
-export interface UserFieldVal extends FieldValBase<WeightedSelect> { // A human being
+export interface UserFieldVal { // A human being
   t: 'User'
+  guids: WeightedSelect
 }
 
-export interface NumberFieldVal extends FieldValBase<number> {
+export interface NumberFieldVal {
   t: 'Number'
+  val: number
 }
 
-// Unix timestamp
-export interface DateFieldVal extends FieldValBase<number> {
+export interface DateFieldVal {
   t: 'Date'
+  unix: number
 }
 
-export interface SelectFieldVal extends FieldValBase<WeightedSelect> {
+export interface SelectFieldVal {
   t: 'Select'
-}
-
-export function activeVal<T>(val: FieldValBase<T> | undefined): T | undefined {
-  if (val === undefined) return undefined
-  return val.explicit ?? val.calculated
-}
-
-export function getOverwrite<T>(val: FieldValBase<T> | undefined): T | undefined {
-  if (val === undefined) return undefined
-
-  if (val.explicit !== undefined && val.calculated !== undefined) {
-    return val.explicit
-  }
+  vals: WeightedSelect
 }
 
 // Only weight fields with limited options to limit computation

@@ -10,9 +10,7 @@ import { useActivePortfolio } from "../Portfolio/Portfolio"
 import * as f from "../util/functional"
 import { Box, Typography } from "@mui/material"
 import {
-  activeVal,
   FieldVal,
-  getOverwrite,
   NumberFieldVal,
   primaryWeighted,
   SelectFieldVal,
@@ -40,12 +38,8 @@ export default function FieldView({ unitGuid, field }: Props<Field>) {
 function UserFieldView({ unitGuid, field }: Props<UserField>) {
   const dispatch = useDispatch()
 
-  const val = useFieldVal<UserFieldVal>(unitGuid, field, "User")
-  const active = activeVal(val)
-  const explicit = val?.explicit
-  const calculated = val?.calculated
-  const overwrite = getOverwrite(val)
-  const usingCalculated = explicit === undefined && calculated !== undefined
+  const [active, isCalculated, overwrite] =
+    use_active_isCalculated_overwrite<UserFieldVal>(unitGuid, field, "User")
 
   function set(val: string | undefined) {
     dispatch(
@@ -54,24 +48,22 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
         unitGuid,
         val: f.map(val, (val) => ({
           t: "User",
-          explicit: { [val]: 1 },
+          guids: { [val]: 1 },
         })),
       })
     )
   }
 
-  console.log(f.map(active, primaryWeighted))
-
   return (
     <Box display="flex" alignItems="center">
       <UserSelect
-        userGuid={f.map(active, primaryWeighted)}
+        userGuid={f.map(active?.guids, primaryWeighted)}
         onChange={set}
-        faded={usingCalculated}
+        faded={isCalculated}
       />
       {overwrite !== undefined && (
         <OverwrittenView
-          val={primaryWeighted(overwrite)}
+          val={primaryWeighted(overwrite.guids)}
           clear={() => set(undefined)}
         />
       )}
@@ -82,11 +74,8 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
 function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
   const dispatch = useDispatch()
 
-  const val = useFieldVal<NumberFieldVal>(unitGuid, field, "Number")
-
-  const explicit = val?.explicit
-  const calculated = val?.calculated
-  const overwrite = getOverwrite(val)
+  const [active, isCalculated, overwrite] =
+    use_active_isCalculated_overwrite<NumberFieldVal>(unitGuid, field, "Number")
 
   function set(val: number | undefined) {
     dispatch(
@@ -95,7 +84,7 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
         unitGuid,
         val: f.map(val, (val) => ({
           t: "Number",
-          explicit: val,
+          val,
         })),
       })
     )
@@ -104,9 +93,9 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
   return (
     <Box display="flex" alignItems="center" position="relative">
       <NumberInput
-        value={explicit ?? calculated}
+        value={active?.val}
         onChange={set}
-        faded={explicit === undefined && calculated !== undefined}
+        faded={isCalculated}
         split={overwrite === undefined ? 0.5 : 0.75}
       />
       {overwrite && (
@@ -126,19 +115,15 @@ function DateFieldView(_props: Props<DateField>) {
 function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
   const dispatch = useAppDispatch()
 
-  const val = useFieldVal<SelectFieldVal>(unitGuid, field, "Select")
-  const active = activeVal(val)
-  const explicit = val?.explicit
-  const calculated = val?.calculated
-  const overwrite = getOverwrite(val)
-  const usingCalculated = explicit === undefined && calculated !== undefined
+  const [active, isCalculated, overwrite] =
+    use_active_isCalculated_overwrite<SelectFieldVal>(unitGuid, field, "Select")
 
   function set(val: string | undefined) {
     dispatch(
       setField({
         fieldDefGuid: field.guid,
         unitGuid,
-        val: f.map(val, (val) => ({ t: "Select", explicit: { [val]: 1 } })),
+        val: f.map(val, (val) => ({ t: "Select", vals: { [val]: 1 } })),
       })
     )
   }
@@ -149,15 +134,15 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
   return (
     <Box display="flex" alignItems="center" position="relative">
       <Select
-        value={f.map(active, primaryWeighted)}
+        value={f.map(active?.vals, primaryWeighted)}
         onChange={set}
         variants={field.selectOptions}
-        faded={usingCalculated}
+        faded={isCalculated}
         split={overwrite === undefined ? 0.5 : 0.75}
       />
       {overwrite !== undefined && (
         <OverwrittenView
-          val={primaryWeighted(overwrite)}
+          val={primaryWeighted(overwrite.vals)}
           clear={() => set(undefined)}
         />
       )}
@@ -198,14 +183,29 @@ function OverwrittenView({ val, clear }: { val: string; clear: () => void }) {
   )
 }
 
-function useFieldVal<T extends FieldVal>(
+function use_active_isCalculated_overwrite<T extends FieldVal>(
   unitGuid: string,
   field: Field,
   t: T["t"]
-): T | undefined {
-  return useActivePortfolio((p) => {
+): [T | undefined, boolean, T | undefined] {
+  const explicit = useActivePortfolio((p) => {
     const val = p.unitsByGuid[unitGuid].fieldValsByGuid[field.guid]
 
     if (val?.t === t) return val as T
   })
+
+  const calculated = useActivePortfolio((p) => {
+    const val = p.unitsByGuid[unitGuid].calculatedFieldValsByGuid?.[field.guid]
+
+    if (val?.t === t) return val as T
+  })
+
+  const overwrite =
+    explicit !== undefined && calculated !== undefined ? explicit : undefined
+
+  const isCalculated = explicit === undefined && calculated !== undefined
+
+  const active = explicit ?? calculated
+
+  return [active, isCalculated, overwrite]
 }
