@@ -13,12 +13,12 @@ export interface UserField extends FieldBase {
 
 export interface NumberField extends FieldBase {
   t: 'NumberField'
-  propogateUp?: PropogateUpStrategy<number>
+  propogateUp?: ReduceStrategy
 }
 
 export interface DateField extends FieldBase {
   t: 'DateField'
-  propogateUp?: PropogateUpStrategy<Date>
+  propogateUp?: ReduceStrategy
 }
 
 export interface SelectField extends FieldBase {
@@ -29,14 +29,10 @@ export interface SelectField extends FieldBase {
 
 export type PropogateDownStrategy = 'Inherit' // <-- Give children the same value as the nearest explicit parent
 
-export type PropogateUpStrategy<T> = AggregateStrategy<T> | GroupStrategy
+export type GroupStrategy = 'Group'
 
-export interface AggregateStrategy<T> { // Combine all children values into a single value
-  t: 'AggregateStrategy',
-  merge: (a: T, b: T) => T
-}
-
-export interface GroupStrategy { // Combine all children values into a map<T, weight>
-  t: 'GroupStrategy',
-  weightFieldGuid?: string // 
+export interface ReduceStrategy { // Combine all children values into a single value
+  t: 'Reduce',
+  function: 'Sum' | 'Max' | 'Min'
+  weightFieldGuid?: string
 }

@@ -22,7 +22,7 @@ export default function TableView() {
             <Th></Th>
             <Th>Unit</Th>
             {fieldGuids.map((guid) => {
-              return <Th key={guid}>{fieldsByGuid[guid]!.name}</Th>
+              return <Th key={guid}>{fieldsByGuid[guid].name}</Th>
             })}
             <Th style={{ textAlign: "right" }}>
               <AddFieldButton />

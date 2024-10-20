@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { newPortfolio, Portfolio } from './Portfolio'
+import { newPortfolio } from './Portfolio'
 import { Unit } from '../Unit/Unit'
 import { Filter, Sort, Group } from '../View/View'
 import { FieldVal } from '../Field/FieldVal'
-import getActiveViewUnitGuids from '../View/getActiveViewUnitGuids'
+import updatePortfolio from './updatePortfolio'
 
 const portfolioSlice = createSlice({
   name: 'portfolio',
@@ -22,7 +22,7 @@ const portfolioSlice = createSlice({
       } else {
         state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
       }
-      updateActiveViewUnitGuids(state)
+      updatePortfolio(state)
     },
     setActiveUnit: (state, { payload }: PayloadAction<{ guid?: string }>) => {
       state.activeUnitGuid = payload.guid
@@ -44,7 +44,7 @@ const portfolioSlice = createSlice({
       if (state.activeUnitGuid === payload.guid) {
         delete state.activeUnitGuid
       }
-      updateActiveViewUnitGuids(state)
+      updatePortfolio(state)
     },
     moveUnit: (state, { payload }: PayloadAction<{ guid: string, parentGuid?: string }>) => {
       const unit = state.unitsByGuid[payload.guid]
@@ -59,11 +59,11 @@ const portfolioSlice = createSlice({
       if (unit.parentGuid !== undefined) {
         state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
       }
-      updateActiveViewUnitGuids(state)
+      updatePortfolio(state)
     },
     setActiveView: (state, { payload }: PayloadAction<{ guid: string }>) => {
       state.activeViewGuid = payload.guid
-      updateActiveViewUnitGuids(state)
+      updatePortfolio(state)
     },
     setField: (state, { payload }: PayloadAction<{ unitGuid: string, fieldDefGuid: string, val?: FieldVal }>) => {
       if (payload.val === undefined) {
@@ -71,22 +71,23 @@ const portfolioSlice = createSlice({
       } else {
         state.unitsByGuid[payload.unitGuid].fieldValsByGuid[payload.fieldDefGuid] = payload.val
       }
+      updatePortfolio(state)
     },
     setFilter: (state, { payload }: PayloadAction<Filter | undefined>) => {
       state.viewsByGuid[state.activeViewGuid].filter = payload
-      updateActiveViewUnitGuids(state)
+      updatePortfolio(state)
     },
     setSort: (state, { payload }: PayloadAction<Sort | undefined>) => {
       state.viewsByGuid[state.activeViewGuid].sort = payload
-      updateActiveViewUnitGuids(state)
+      updatePortfolio(state)
     },
     setGroup: (state, { payload }: PayloadAction<Group | undefined>) => {
       state.viewsByGuid[state.activeViewGuid].group = payload
-      updateActiveViewUnitGuids(state)
+      updatePortfolio(state)
     },
     setDepth: (state, { payload }: PayloadAction<number>) => {
       state.viewsByGuid[state.activeViewGuid].depth = payload
-      updateActiveViewUnitGuids(state)
+      updatePortfolio(state)
     },
     enterErrorState: (state, _: PayloadAction) => {
       state.activeUnitGuid = "THIS UNIT ISN'T REAL. NOTHING IS REAL"
@@ -113,11 +114,3 @@ export const {
 } = portfolioSlice.actions
 
 export const portfolioReducer = portfolioSlice.reducer
-
-function updateActiveViewUnitGuids(state: Portfolio) {
-  const newGuids = getActiveViewUnitGuids(state)
-
-  if (JSON.stringify(state.activeViewUnitGuids) !== JSON.stringify(newGuids)) {
-    state.activeViewUnitGuids = newGuids
-  }
-}

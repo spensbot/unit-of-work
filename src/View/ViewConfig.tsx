@@ -69,7 +69,7 @@ function SortView() {
           )
         }
         variants={fields}
-        displays={fields.map((guid) => fieldsByGuid[guid]?.name ?? "")}
+        displays={fields.map((guid) => fieldsByGuid[guid].name ?? "")}
         label="Sort"
       />
     </SubRoot>
@@ -96,7 +96,7 @@ function GroupView() {
           )
         }
         variants={fields}
-        displays={fields.map((guid) => fieldsByGuid[guid]?.name ?? "")}
+        displays={fields.map((guid) => fieldsByGuid[guid].name ?? "")}
         label="Group"
       />
     </SubRoot>

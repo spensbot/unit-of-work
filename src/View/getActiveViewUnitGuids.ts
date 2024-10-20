@@ -3,7 +3,8 @@ import parse from "../expression_language/parse/parse"
 import { Portfolio } from "../Portfolio/Portfolio"
 import { Unit } from "../Unit/Unit"
 import { Filter, Sort } from "./View"
-import { FieldVal } from "../Field/FieldVal"
+import { activeVal, FieldVal, primaryWeighted } from "../Field/FieldVal"
+import * as f from '../util/functional'
 
 export default function getActiveViewUnitGuids(state: Portfolio): string[] {
   const activeView = state.viewsByGuid[state.activeViewGuid]
@@ -33,7 +34,7 @@ function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
         description: u.description,
       }
       for (const fieldGuid in u.fieldValsByGuid) {
-        const field = state.fieldsByGuid[fieldGuid]!
+        const field = state.fieldsByGuid[fieldGuid]
         const fieldVal = u.fieldValsByGuid[fieldGuid]
         context[field.name] = getFieldVal(state, fieldVal)
       }
@@ -54,21 +55,21 @@ function getFieldVal(state: Portfolio, val?: FieldVal): number | string {
 
   switch (val.t) {
     case 'User':
-      return state.usersByGuid[val.guid].username
+      return f.map(activeVal(val), v => state.usersByGuid[primaryWeighted(v)].username) ?? 0
     case 'Date':
-      return val.unix
+      return activeVal(val) ?? 0
     case 'Number':
-      return val.val
+      return activeVal(val) ?? 0
     case 'Select':
-      return val.val
+      return f.map(activeVal(val), v => primaryWeighted(v)) ?? 0
   }
 }
 
 function applySort(units: Unit[], sort: Sort, state: Portfolio): Unit[] {
   return [...units].sort((a, b) => {
     const fieldGuid = sort.fieldGuid
-    const aVal = sortVal(state, fieldGuid, a.fieldValsByGuid[sort.fieldGuid])
-    const bVal = sortVal(state, fieldGuid, b.fieldValsByGuid[sort.fieldGuid])
+    const aVal = getSortVal(state, fieldGuid, a.fieldValsByGuid[sort.fieldGuid])
+    const bVal = getSortVal(state, fieldGuid, b.fieldValsByGuid[sort.fieldGuid])
     if (aVal < bVal) {
       return -1
     } else if (aVal > bVal) {
@@ -78,23 +79,14 @@ function applySort(units: Unit[], sort: Sort, state: Portfolio): Unit[] {
   })
 }
 
-function sortVal(state: Portfolio, fieldGuid: string, val?: FieldVal): number | string {
+function getSortVal(state: Portfolio, fieldGuid: string, val?: FieldVal): number | string {
   if (val === undefined) {
-    const field = state.fieldsByGuid[fieldGuid]!
+    const field = state.fieldsByGuid[fieldGuid]
     if (field.t === 'NumberField' || field.t === 'DateField') return Infinity
     return 'z'
   }
 
-  switch (val.t) {
-    case 'User':
-      return state.usersByGuid[val.guid].username
-    case 'Date':
-      return val.unix
-    case 'Number':
-      return val.val
-    case 'Select':
-      return val.val
-  }
+  return getFieldVal(state, val)
 }
 
 // function applyGroup(units: Unit[], group: Group): Unit[] {
