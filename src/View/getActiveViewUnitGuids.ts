@@ -4,8 +4,8 @@ import { Portfolio } from "../Portfolio/Portfolio"
 import { Unit } from "../Unit/Unit"
 import { Filter, Sort } from "./View"
 import { FieldVal, primaryWeighted } from "../Field/FieldVal"
-import * as f from '../util/functional'
 import { Field } from "../Field/Field"
+import { getActiveFieldVal } from "../Field/getFieldVal"
 
 export default function getActiveViewUnitGuids(state: Portfolio): string[] {
   const activeView = state.viewsByGuid[state.activeViewGuid]
@@ -50,12 +50,6 @@ function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
   }
 }
 
-function getActiveFieldVal(unit: Unit, field: Field): FieldVal | undefined {
-  const explicit = unit.fieldValsByGuid[field.guid]
-  const calculated = unit.calculatedFieldValsByGuid?.[field.guid]
-  return explicit ?? calculated
-}
-
 function getFieldValPrimitive(state: Portfolio, val?: FieldVal): number | string {
   if (val === undefined) return 0
 
@@ -75,8 +69,8 @@ function applySort(units: Unit[], sort: Sort, state: Portfolio): Unit[] {
   return [...units].sort((a, b) => {
     const fieldGuid = sort.fieldGuid
     const field = state.fieldsByGuid[fieldGuid]
-    const aVal = getSortVal(state, field, a.fieldValsByGuid[fieldGuid])
-    const bVal = getSortVal(state, field, b.fieldValsByGuid[fieldGuid])
+    const aVal = getSortVal(state, field, getActiveFieldVal(a, field))
+    const bVal = getSortVal(state, field, getActiveFieldVal(b, field))
     if (aVal < bVal) {
       return -1
     } else if (aVal > bVal) {

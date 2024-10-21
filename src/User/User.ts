@@ -13,4 +13,3 @@ export function newUser(username: string, image_url?: string): User {
     image_url: image_url ?? 'https://avatars.githubusercontent.com/u/27806?v=4'
   }
 }
-

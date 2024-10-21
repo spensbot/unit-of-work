@@ -1,4 +1,5 @@
 import { FieldVal } from '../Field/FieldVal'
+import { Field } from '../Field/Field'
 import { v4 as uuidv4 } from 'uuid';
 
 export type FieldValMap = { [fieldDefGuid: string]: FieldVal | undefined }

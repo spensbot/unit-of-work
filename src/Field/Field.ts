@@ -29,10 +29,12 @@ export interface SelectField extends FieldBase {
 
 export type PropogateDownStrategy = 'Inherit' // <-- Give children the same value as the nearest explicit parent
 
-export type GroupStrategy = 'Group'
+export type GroupStrategy = {
+  t: 'Group',
+  weightFieldGuid?: string
+}
 
 export interface ReduceStrategy { // Combine all children values into a single value
   t: 'Reduce',
   function: 'Sum' | 'Max' | 'Min'
-  weightFieldGuid?: string
 }

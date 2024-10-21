@@ -1,12 +1,29 @@
 import { Unit } from "../Unit/Unit"
-import { Portfolio } from "../Portfolio/Portfolio"
 import { Field } from "./Field"
-import { FieldVal, NumberFieldVal } from "./FieldVal"
+import { FieldVal } from "./FieldVal"
 
-export interface FieldValInfo {
-  explicit: FieldVal | undefined
-  calculated: FieldVal | undefined
+function getFieldVal<T extends FieldVal>(unit: Unit, field: Field, t: T['t'], calculated?: boolean): T | undefined {
+  const vals = calculated ? unit.calculatedFieldValsByGuid : unit.fieldValsByGuid
+  const val = vals?.[field.guid]
+  return val?.t === t ? val as T : undefined
 }
+
+export function getActiveFieldValT<T extends FieldVal>(unit: Unit, field: Field, t: T['t']): T | undefined {
+  const explicit = getFieldVal(unit, field, t)
+  const calculated = getFieldVal(unit, field, t, true)
+  return explicit ?? calculated
+}
+
+export function getActiveFieldVal(unit: Unit, field: Field): FieldVal | undefined {
+  const explicit = unit.fieldValsByGuid[field.guid]
+  const calculated = unit.calculatedFieldValsByGuid?.[field.guid]
+  return explicit ?? calculated
+}
+
+// export function getActiveFieldValT<T extends FieldVal>(unit: Unit, field: Field, t: T['t']): T | undefined {
+//   const active = getActiveFieldVal(unit, field)
+//   return active?.t === t ? active as T : undefined
+// }
 
 // export function getExplicitFieldVal<T extends FieldVal>(unit: Unit, field: Field, t: T['t']): T | undefined {
 //   const val = unit.fieldValsByGuid[field.guid]

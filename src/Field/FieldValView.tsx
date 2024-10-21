@@ -38,8 +38,8 @@ export default function FieldView({ unitGuid, field }: Props<Field>) {
 function UserFieldView({ unitGuid, field }: Props<UserField>) {
   const dispatch = useDispatch()
 
-  const [active, isCalculated, overwrite] =
-    use_active_isCalculated_overwrite<UserFieldVal>(unitGuid, field, "User")
+  const [active, isCalculated, overwritten] =
+    use_active_isCalculated_overwritten<UserFieldVal>(unitGuid, field, "User")
 
   function set(val: string | undefined) {
     dispatch(
@@ -55,15 +55,15 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
   }
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" position="relative">
       <UserSelect
         userGuid={f.map(active?.guids, primaryWeighted)}
         onChange={set}
         faded={isCalculated}
       />
-      {overwrite !== undefined && (
+      {overwritten !== undefined && (
         <OverwrittenView
-          val={primaryWeighted(overwrite.guids)}
+          val={primaryWeighted(overwritten.guids)}
           clear={() => set(undefined)}
         />
       )}
@@ -74,8 +74,12 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
 function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
   const dispatch = useDispatch()
 
-  const [active, isCalculated, overwrite] =
-    use_active_isCalculated_overwrite<NumberFieldVal>(unitGuid, field, "Number")
+  const [active, isCalculated, overwritten] =
+    use_active_isCalculated_overwritten<NumberFieldVal>(
+      unitGuid,
+      field,
+      "Number"
+    )
 
   function set(val: number | undefined) {
     dispatch(
@@ -96,11 +100,11 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
         value={active?.val}
         onChange={set}
         faded={isCalculated}
-        split={overwrite === undefined ? 0.5 : 0.75}
+        split={overwritten === undefined ? 0.5 : 0.75}
       />
-      {overwrite && (
+      {overwritten && (
         <OverwrittenView
-          val={overwrite.toString()}
+          val={overwritten.val.toString()}
           clear={() => set(undefined)}
         />
       )}
@@ -115,8 +119,12 @@ function DateFieldView(_props: Props<DateField>) {
 function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
   const dispatch = useAppDispatch()
 
-  const [active, isCalculated, overwrite] =
-    use_active_isCalculated_overwrite<SelectFieldVal>(unitGuid, field, "Select")
+  const [active, isCalculated, overwritten] =
+    use_active_isCalculated_overwritten<SelectFieldVal>(
+      unitGuid,
+      field,
+      "Select"
+    )
 
   function set(val: string | undefined) {
     dispatch(
@@ -128,9 +136,6 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
     )
   }
 
-  // console.log(f.map(active, primaryWeighted))
-  // console.log(overwrite)
-
   return (
     <Box display="flex" alignItems="center" position="relative">
       <Select
@@ -138,11 +143,11 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
         onChange={set}
         variants={field.selectOptions}
         faded={isCalculated}
-        split={overwrite === undefined ? 0.5 : 0.75}
+        split={overwritten === undefined ? 0.5 : 0.75}
       />
-      {overwrite !== undefined && (
+      {overwritten !== undefined && (
         <OverwrittenView
-          val={primaryWeighted(overwrite.vals)}
+          val={primaryWeighted(overwritten.vals)}
           clear={() => set(undefined)}
         />
       )}
@@ -183,7 +188,7 @@ function OverwrittenView({ val, clear }: { val: string; clear: () => void }) {
   )
 }
 
-function use_active_isCalculated_overwrite<T extends FieldVal>(
+function use_active_isCalculated_overwritten<T extends FieldVal>(
   unitGuid: string,
   field: Field,
   t: T["t"]
@@ -200,12 +205,12 @@ function use_active_isCalculated_overwrite<T extends FieldVal>(
     if (val?.t === t) return val as T
   })
 
-  const overwrite =
-    explicit !== undefined && calculated !== undefined ? explicit : undefined
+  const overwritten =
+    explicit !== undefined && calculated !== undefined ? calculated : undefined
 
   const isCalculated = explicit === undefined && calculated !== undefined
 
   const active = explicit ?? calculated
 
-  return [active, isCalculated, overwrite]
+  return [active, isCalculated, overwritten]
 }
