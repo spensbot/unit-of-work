@@ -29,3 +29,12 @@ export type WeightedSelect = { [key: string]: number }
 export function primaryWeighted(select: WeightedSelect): string {
   return Object.entries(select).sort((a, b) => b[1] - a[1])[0][0]
 }
+
+export function normalizeWeighted(select: WeightedSelect): WeightedSelect {
+  const sum = Object.values(select).reduce((a, b) => a + b, 0)
+  const out = {} as WeightedSelect
+  for (const key in select) {
+    out[key] = select[key] / sum
+  }
+  return out
+}

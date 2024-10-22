@@ -6,7 +6,7 @@ import { Field } from "../Field/Field";
 import { eqDeepSimple } from "../util/util";
 import { getActiveFieldVal, getActiveFieldValT } from "../Field/getFieldVal"
 import * as reduce from '../Field/reduceFunctions'
-import { FieldVal, NumberFieldVal } from "../Field/FieldVal";
+import { FieldVal, normalizeWeighted, NumberFieldVal, SelectFieldVal } from "../Field/FieldVal";
 
 
 export default function updatePortfolio(portfolio: Portfolio) {
@@ -48,6 +48,24 @@ function propogateRecursive(field: Field, unit: Unit, portfolio: Portfolio, inhe
 
 function reducePassUps(field: Field, unit: Unit, passUpsIn: FieldVal[]): FieldVal | undefined {
   if (passUpsIn.length < 1) return undefined
+
+  if (field.propogateUp?.t === 'Group' && field.t === 'SelectField') {
+    const passUps = passUpsIn as SelectFieldVal[]
+    const first = passUps[0]
+    const rest = passUps.slice(1)
+    const vals = rest.reduce((acc, v) => {
+      for (const key in v.vals) {
+        acc[key] = (acc[key] ?? 0) + v.vals[key]
+      }
+      return acc
+    }, { ...first.vals })
+    console.log('vals', vals)
+    return {
+      t: 'Select',
+      vals: normalizeWeighted(vals),
+    }
+  }
+
   if (field.propogateUp?.t === 'Reduce' && field.t === 'NumberField') {
     // TODO: Fix this
     const passUps = passUpsIn as NumberFieldVal[]
