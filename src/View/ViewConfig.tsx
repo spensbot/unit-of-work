@@ -6,19 +6,22 @@ import {
   setSort,
   setGroup,
   setDepth,
+  deleteView,
 } from "../Portfolio/portfolioSlice"
 import Select from "../components/Select"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
-import { Box, Slider, TextField } from "@mui/material"
+import { Box, Button, Slider, TextField } from "@mui/material"
 import getMaxDepth from "../Portfolio/getMaxDepth"
 
-export default function ViewConfig() {
+export default function ViewConfig({ guid }: { guid: string }) {
+  const dispatch = useAppDispatch()
   return (
     <Root>
       <DepthView />
       <SortView />
       <GroupView />
       <FilterView />
+      <Button onClick={() => dispatch(deleteView({ guid }))}>Delete</Button>
     </Root>
   )
 }

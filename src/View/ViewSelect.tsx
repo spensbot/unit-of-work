@@ -1,10 +1,14 @@
 import styled from "@emotion/styled"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useAppDispatch } from "../config/store"
-import { setActiveView } from "../Portfolio/portfolioSlice"
-import { Box } from "@mui/material"
+import { addView, setActiveView } from "../Portfolio/portfolioSlice"
+import { Box, IconButton } from "@mui/material"
+import Add from "@mui/icons-material/Add"
+import { useDispatch } from "react-redux"
+import { newTableView } from "./View"
 
 export default function ViewSelect() {
+  const dispatch = useDispatch()
   const viewGuids = useActivePortfolio((p) => p.viewGuids)
 
   return (
@@ -12,6 +16,9 @@ export default function ViewSelect() {
       {viewGuids.map((guid) => (
         <ViewSelectItem key={guid} guid={guid} />
       ))}
+      <IconButton onClick={() => dispatch(addView(newTableView("New View")))}>
+        <Add />
+      </IconButton>
       <Box
         flex={1}
         sx={{
@@ -31,9 +38,11 @@ function ViewSelectItem({ guid }: { guid: string }) {
   const viewName = useActivePortfolio((p) => p.viewsByGuid[guid].name)
   const dispatch = useAppDispatch()
 
+  const isActive = activeViewGuid === guid
+
   return (
     <ItemRoot
-      isActive={guid === activeViewGuid}
+      isActive={isActive}
       onClick={() => dispatch(setActiveView({ guid: guid }))}
     >
       {viewName}

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { newPortfolio } from './Portfolio'
 import { Unit } from '../Unit/Unit'
-import { Filter, Sort, Group } from '../View/View'
+import { Filter, Sort, Group, View } from '../View/View'
 import { FieldVal } from '../Field/FieldVal'
 import updatePortfolio from './updatePortfolio'
 
@@ -91,6 +91,21 @@ const portfolioSlice = createSlice({
     },
     enterErrorState: (state, _: PayloadAction) => {
       state.activeUnitGuid = "THIS UNIT ISN'T REAL. NOTHING IS REAL"
+    },
+    addView: (state, { payload }: PayloadAction<View>) => {
+      state.viewsByGuid[payload.guid] = payload
+      state.viewGuids.push(payload.guid)
+    },
+    setViewName: (state, { payload }: PayloadAction<{ guid: string, name: string }>) => {
+      state.viewsByGuid[payload.guid].name = payload.name
+    },
+    deleteView: (state, { payload }: PayloadAction<{ guid: string }>) => {
+      if (state.viewGuids.length < 2) return
+      delete state.viewsByGuid[payload.guid]
+      state.viewGuids = state.viewGuids.filter(guid => guid !== payload.guid)
+      if (state.activeViewGuid === payload.guid) {
+        state.activeViewGuid = state.viewGuids[0]
+      }
     }
   }
 })
@@ -110,7 +125,10 @@ export const {
   setSort,
   setGroup,
   setDepth,
-  enterErrorState
+  enterErrorState,
+  addView,
+  setViewName,
+  deleteView
 } = portfolioSlice.actions
 
 export const portfolioReducer = portfolioSlice.reducer

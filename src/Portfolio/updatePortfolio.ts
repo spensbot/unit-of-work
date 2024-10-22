@@ -6,7 +6,7 @@ import { Field } from "../Field/Field";
 import { eqDeepSimple } from "../util/util";
 import { getActiveFieldVal, getActiveFieldValT } from "../Field/getFieldVal"
 import * as reduce from '../Field/reduceFunctions'
-import { FieldVal, normalizeWeighted, NumberFieldVal, SelectFieldVal } from "../Field/FieldVal";
+import { FieldVal, normalizeWeighted, NumberFieldVal, SelectFieldVal, UserFieldVal, WeightedSelect } from "../Field/FieldVal";
 
 
 export default function updatePortfolio(portfolio: Portfolio) {
@@ -51,34 +51,35 @@ function reducePassUps(field: Field, unit: Unit, passUpsIn: FieldVal[]): FieldVa
 
   if (field.propogateUp?.t === 'Group' && field.t === 'SelectField') {
     const passUps = passUpsIn as SelectFieldVal[]
-    const first = passUps[0]
-    const rest = passUps.slice(1)
-    const vals = rest.reduce((acc, v) => {
-      for (const key in v.vals) {
-        acc[key] = (acc[key] ?? 0) + v.vals[key]
-      }
-      return acc
-    }, { ...first.vals })
-    console.log('vals', vals)
     return {
       t: 'Select',
-      vals: normalizeWeighted(vals),
+      vals: reduce.select(passUps.map(n => n.vals), passUps.map(_ => 1))
+    }
+  }
+
+  if (field.propogateUp?.t === 'Group' && field.t === 'UserField') {
+    const passUps = passUpsIn as UserFieldVal[]
+    return {
+      t: 'User',
+      guids: reduce.select(passUps.map(n => n.guids), passUps.map(_ => 1))
     }
   }
 
   if (field.propogateUp?.t === 'Reduce' && field.t === 'NumberField') {
-    // TODO: Fix this
-    const passUps = passUpsIn as NumberFieldVal[]
-    const first = passUps[0]
-    const rest = passUps.slice(1)
+    // TODO: Fix this to prevent bad fieldVal types
     const func = reduce.number[field.propogateUp.function]
-    const reduced = rest.reduce((acc, val) => func(acc, val.val), first.val)
-
-    return {
-      t: 'Number',
-      val: reduced,
-    }
+    return reduceFields(passUpsIn as NumberFieldVal[], n => n.val, func, n => ({ t: 'Number', val: n }))
   }
+}
+
+function reduceFields<T, U>(fields: T[], unwrap: (field: T) => U, merge: (a: U, b: U) => U, wrap: (u: U) => T): T {
+  const first = fields[0]
+  const rest = fields.slice(1)
+  const reduced = rest.reduce((acc, field) => {
+    const unwrapped = unwrap(field)
+    return merge(acc, unwrapped)
+  }, unwrap(first))
+  return wrap(reduced)
 }
 
 function setCalculatedIfChanged(field: Field, unit: Unit, calculated: FieldVal | undefined) {

@@ -5,11 +5,14 @@ import KanbanView from "./KanbanView"
 import MapView from "./MapView"
 import { Box } from "@mui/material"
 import ViewConfig from "./ViewConfig"
+import { useActivePortfolio } from "../Portfolio/Portfolio"
 
 export default function ActiveViewView() {
+  const activeViewGuid = useActivePortfolio((p) => p.activeViewGuid)
+
   return (
     <Root>
-      <ViewConfig />
+      <ViewConfig guid={activeViewGuid} />
       <Box sx={{ padding: 2 }}>
         <ActiveViewTyped />
       </Box>

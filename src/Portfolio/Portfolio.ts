@@ -43,15 +43,18 @@ export function newPortfolio(): Portfolio {
           function: 'Sum'
         }
       },
-      'Field_4': { guid: 'Field_4', t: 'UserField', name: 'Assignee', propogateDown: 'Inherit' },
+      'Field_4': {
+        guid: 'Field_4', t: 'UserField', name: 'Assignee', propogateDown: 'Inherit', propogateUp: {
+          t: 'Group',
+          weightFieldGuid: 'Field_3'
+        }
+      },
       'Field_5': { guid: 'Field_5', t: 'DateField', name: 'End' },
     },
     layerNames: [],
-    viewGuids: ['View_1', 'View_2', 'View_3'],
+    viewGuids: ['View_1'],
     viewsByGuid: {
-      'View_1': { guid: 'View_1', mode: 'table', name: 'Everything', depth: 0 },
-      'View_2': { guid: 'View_2', mode: 'table', name: 'Solitaire Work', depth: 0 },
-      'View_3': { guid: 'View_3', mode: 'table', name: 'Cross-App Work', depth: 0 },
+      'View_1': { guid: 'View_1', mode: 'table', name: 'Everything', depth: 0 }
     },
     activeViewGuid: 'View_1',
     activeViewUnitGuids: [],
