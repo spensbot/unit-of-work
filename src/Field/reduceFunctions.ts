@@ -1,12 +1,7 @@
 import { ReduceStrategy } from "./Field"
 import { WeightedSelect } from "./FieldVal"
 
-type ReduceFunctionMap<T> = { [key in ReduceStrategy['function']]?: (a: T, b: T) => T }
-
-export const date: ReduceFunctionMap<number> = {
-  Max: (a, b) => Math.max(a, b),
-  Min: (a, b) => Math.min(a, b)
-}
+type ReduceFunctionMap<T> = { [key in ReduceStrategy['function']]: (a: T, b: T) => T }
 
 export const number: ReduceFunctionMap<number> = {
   Sum: (a, b) => a + b,

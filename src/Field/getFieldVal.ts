@@ -14,6 +14,7 @@ export function getActiveFieldValT<T extends FieldVal>(unit: Unit, field: Field,
   return explicit ?? calculated
 }
 
+// TODO: Make this return undefined if the FieldVal.t does not match the field.t
 export function getActiveFieldVal(unit: Unit, field: Field): FieldVal | undefined {
   const explicit = unit.fieldValsByGuid[field.guid]
   const calculated = unit.calculatedFieldValsByGuid?.[field.guid]
