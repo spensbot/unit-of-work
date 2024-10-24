@@ -125,7 +125,7 @@ function DepthView() {
               dispatch(setDepth(newValue))
             }
           }}
-          valueLabelDisplay="auto"
+          // valueLabelDisplay="auto"
           min={1}
           max={maxDepth}
           step={1}

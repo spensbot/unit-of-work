@@ -41,6 +41,7 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
 
   const [active, isCalculated, overwritten] =
     use_active_isCalculated_overwritten<UserFieldVal>(unitGuid, field, "User")
+  const users = useActivePortfolio((p) => p.usersByGuid)
 
   function set(val: string | undefined) {
     dispatch(
@@ -62,7 +63,11 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
       <MultiSelectView
         selectVal={{
           t: "Select",
-          vals: active!.guids,
+          vals: Object.entries(active!.guids).reduce((acc, [guid, weight]) => {
+            const name = users[guid].username
+            acc[name] = weight
+            return acc
+          }, {} as Record<string, number>),
         }}
       />
     )
@@ -76,7 +81,7 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
       />
       {overwritten !== undefined && (
         <OverwrittenView
-          val={primaryWeighted(overwritten.guids)}
+          val={users[primaryWeighted(overwritten.guids)].username}
           clear={() => set(undefined)}
         />
       )}

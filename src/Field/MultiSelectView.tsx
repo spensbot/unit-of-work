@@ -22,7 +22,7 @@ export default function MultiSelectView({
         const ratio = val / total
         const percent = Math.floor(ratio * 100)
         return (
-          <Box key={key} display="flex" gap={0.5}>
+          <Box key={key} display="flex" gap={0.5} color="text.secondary">
             <Typography sx={{ fontSize: rem(ratio), padding: 0, margin: 0 }}>
               {percent}%
             </Typography>
