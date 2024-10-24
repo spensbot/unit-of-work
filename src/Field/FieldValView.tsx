@@ -16,6 +16,7 @@ import {
   SelectFieldVal,
   UserFieldVal,
 } from "./FieldVal"
+import MultiSelectView from "./MultiSelectView"
 
 interface Props<F> {
   unitGuid: string
@@ -54,8 +55,20 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
     )
   }
 
+  const nVals = active ? Object.keys(active?.guids).length : 0
+
+  if (isCalculated && nVals > 1)
+    return (
+      <MultiSelectView
+        selectVal={{
+          t: "Select",
+          vals: active!.guids,
+        }}
+      />
+    )
+
   return (
-    <Box display="flex" alignItems="center" position="relative">
+    <Box position="relative">
       <UserSelect
         userGuid={f.map(active?.guids, primaryWeighted)}
         onChange={set}
@@ -95,7 +108,7 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
   }
 
   return (
-    <Box display="flex" alignItems="center" position="relative">
+    <Box position="relative">
       <NumberInput
         value={active?.val}
         onChange={set}
@@ -136,8 +149,12 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
     )
   }
 
+  const nVals = active ? Object.keys(active?.vals).length : 0
+
+  if (isCalculated && nVals > 1) return <MultiSelectView selectVal={active!} />
+
   return (
-    <Box display="flex" alignItems="center" position="relative">
+    <Box position="relative">
       <Select
         value={f.map(active?.vals, primaryWeighted)}
         onChange={set}
