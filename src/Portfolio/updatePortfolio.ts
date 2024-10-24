@@ -19,8 +19,15 @@ export default function updatePortfolio(portfolio: Portfolio) {
 }
 
 function propogateFieldVals(portfolio: Portfolio) {
-  portfolio.fieldGuids.forEach(fieldGuid => {
-    const field = portfolio.fieldsByGuid[fieldGuid]
+  const fields = portfolio.fieldGuids.map(guid => portfolio.fieldsByGuid[guid])
+
+  // Propogate number fields first for weighting other field's group propogation.
+  propogateFieldValsOfFields(portfolio, fields.filter(field => field.t === 'NumberField'))
+  propogateFieldValsOfFields(portfolio, fields.filter(field => field.t !== 'NumberField'))
+}
+
+function propogateFieldValsOfFields(portfolio: Portfolio, fields: Field[]) {
+  fields.forEach(field => {
     portfolio.rootUnitGuids.forEach(rootUnitGuid => {
       const rootUnit = portfolio.unitsByGuid[rootUnitGuid]
       propogateRecursive(field, rootUnit, portfolio)
@@ -35,8 +42,11 @@ function propogateRecursive(field: Field, unit: Unit, portfolio: Portfolio, inhe
 
   const children: Unit[] = unit.childrenGuids.map(guid => portfolio.unitsByGuid[guid])
   const passUps = children
-    .map(child => propogateRecursive(field, child, portfolio, passDown))
-    .filter(passUp => passUp !== undefined)
+    .map<[FieldVal | undefined, number]>(child => [
+      propogateRecursive(field, child, portfolio, passDown),
+      getWeight(child, field, portfolio)
+    ])
+    .filter(passUp => passUp[0] !== undefined) as [FieldVal, number][]
 
   const passUp = (field.propogateUp === undefined && inherit === undefined) ? undefined : reducePassUps(field, unit, passUps)
 
@@ -46,29 +56,36 @@ function propogateRecursive(field: Field, unit: Unit, portfolio: Portfolio, inhe
   return explicit ?? passUp
 }
 
-function reducePassUps(field: Field, unit: Unit, passUpsIn: FieldVal[]): FieldVal | undefined {
+function getWeight(child: Unit, field: Field, portfolio: Portfolio): number {
+  const weightFieldGuid = field.propogateUp?.t === 'Group' ? field.propogateUp.weightFieldGuid : undefined
+  const weightField = f.map(weightFieldGuid, guid => portfolio.fieldsByGuid[guid])
+  const numberFieldVal = f.map(weightField, wf => getActiveFieldValT<NumberFieldVal>(child, wf, 'Number'))
+  return numberFieldVal?.val ?? 0
+}
+
+function reducePassUps(field: Field, unit: Unit, passUpsIn: [FieldVal, number][]): FieldVal | undefined {
   if (passUpsIn.length < 1) return undefined
 
   if (field.propogateUp?.t === 'Group' && field.t === 'SelectField') {
-    const passUps = passUpsIn as SelectFieldVal[]
+    const passUps = passUpsIn as [SelectFieldVal, number][]
     return {
       t: 'Select',
-      vals: reduce.select(passUps.map(n => n.vals), passUps.map(_ => 1))
+      vals: reduce.select(passUps.map(([f, _]) => f.vals), passUps.map(([_, weight]) => weight))
     }
   }
 
   if (field.propogateUp?.t === 'Group' && field.t === 'UserField') {
-    const passUps = passUpsIn as UserFieldVal[]
+    const passUps = passUpsIn as [UserFieldVal, number][]
     return {
       t: 'User',
-      guids: reduce.select(passUps.map(n => n.guids), passUps.map(_ => 1))
+      guids: reduce.select(passUps.map(([f, _]) => f.guids), passUps.map(([_, weight]) => weight))
     }
   }
 
   if (field.propogateUp?.t === 'Reduce' && field.t === 'NumberField') {
     // TODO: Fix this to prevent bad fieldVal types
     const func = reduce.number[field.propogateUp.function]
-    return reduceFields(passUpsIn as NumberFieldVal[], n => n.val, func, n => ({ t: 'Number', val: n }))
+    return reduceFields(passUpsIn.map(([val, _]) => val) as NumberFieldVal[], n => n.val, func, n => ({ t: 'Number', val: n }))
   }
 }
 

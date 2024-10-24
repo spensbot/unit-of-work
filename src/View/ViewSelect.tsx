@@ -1,4 +1,3 @@
-import styled from "@emotion/styled"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useAppDispatch } from "../config/store"
 import {
@@ -46,7 +45,7 @@ function ViewSelectItem({ guid }: { guid: string }) {
   return (
     <Box
       bgcolor={isActive ? "background.paper" : "background.default"}
-      sx={{ px: 1, py: 0.2 }}
+      sx={{ px: 1, py: 0.2, cursor: isActive ? undefined : "pointer" }}
       onClick={() => dispatch(setActiveView({ guid: guid }))}
       display="flex"
       alignItems="center"
