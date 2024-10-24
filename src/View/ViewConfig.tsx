@@ -21,7 +21,7 @@ export default function ViewConfig({ guid }: { guid: string }) {
       <SortView />
       <GroupView />
       <FilterView />
-      <Button onClick={() => dispatch(deleteView({ guid }))}>Delete</Button>
+      {/* <Button onClick={() => dispatch(deleteView({ guid }))}>Delete</Button> */}
     </Root>
   )
 }

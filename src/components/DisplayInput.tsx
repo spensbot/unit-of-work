@@ -41,7 +41,7 @@ export default function DisplayInput({
         slotProps={{
           input: {
             sx: {
-              color: faded ? "orange" : "text.primary",
+              color: faded ? "text.secondary" : "text.primary",
               padding: 0,
             },
           },

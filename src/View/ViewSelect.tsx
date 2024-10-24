@@ -1,18 +1,25 @@
 import styled from "@emotion/styled"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useAppDispatch } from "../config/store"
-import { addView, setActiveView } from "../Portfolio/portfolioSlice"
+import {
+  addView,
+  deleteView,
+  setActiveView,
+  setViewName,
+} from "../Portfolio/portfolioSlice"
 import { Box, IconButton } from "@mui/material"
 import Add from "@mui/icons-material/Add"
 import { useDispatch } from "react-redux"
 import { newTableView } from "./View"
+import DisplayInput from "../components/DisplayInput"
+import DeleteIcon from "@mui/icons-material/Delete"
 
 export default function ViewSelect() {
   const dispatch = useDispatch()
   const viewGuids = useActivePortfolio((p) => p.viewGuids)
 
   return (
-    <Root>
+    <Box display="flex" alignItems="center" gap={1}>
       {viewGuids.map((guid) => (
         <ViewSelectItem key={guid} guid={guid} />
       ))}
@@ -25,13 +32,9 @@ export default function ViewSelect() {
           backgroundColor: "background.default",
         }}
       />
-    </Root>
+    </Box>
   )
 }
-
-const Root = styled.div`
-  display: flex;
-`
 
 function ViewSelectItem({ guid }: { guid: string }) {
   const activeViewGuid = useActivePortfolio((p) => p.activeViewGuid)
@@ -41,19 +44,26 @@ function ViewSelectItem({ guid }: { guid: string }) {
   const isActive = activeViewGuid === guid
 
   return (
-    <ItemRoot
-      isActive={isActive}
+    <Box
+      bgcolor={isActive ? "background.paper" : "background.default"}
+      sx={{ px: 1, py: 0.2 }}
       onClick={() => dispatch(setActiveView({ guid: guid }))}
+      display="flex"
+      alignItems="center"
     >
-      {viewName}
-    </ItemRoot>
+      {isActive ? (
+        <>
+          <DisplayInput
+            value={viewName}
+            onChange={(name) => dispatch(setViewName({ guid, name }))}
+          />
+          <IconButton onClick={() => dispatch(deleteView({ guid }))}>
+            <DeleteIcon />
+          </IconButton>
+        </>
+      ) : (
+        viewName
+      )}
+    </Box>
   )
 }
-
-const ItemRoot = styled.button<{ isActive: boolean }>`
-  background-color: ${({ theme, isActive }) =>
-    isActive
-      ? theme.palette.background.paper
-      : theme.palette.background.default};
-  padding: ${({ theme }) => theme.spacing(0.5) + " " + theme.spacing(2)};
-`
