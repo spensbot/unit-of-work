@@ -15,7 +15,6 @@ export interface View {
 }
 
 export type Group = {
-  by: 'field' | 'parent'
   fieldGuid: string
 }
 

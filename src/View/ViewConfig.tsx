@@ -10,8 +10,9 @@ import {
 } from "../Portfolio/portfolioSlice"
 import Select from "../components/Select"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
-import { Box, Button, Slider, TextField } from "@mui/material"
+import { Box, Button, Chip, Slider, TextField } from "@mui/material"
 import getMaxDepth from "../Portfolio/getMaxDepth"
+import AddViewConfigButton from "./AddViewConfigButton"
 
 export default function ViewConfig({ guid }: { guid: string }) {
   const dispatch = useAppDispatch()
@@ -21,7 +22,7 @@ export default function ViewConfig({ guid }: { guid: string }) {
       <SortView />
       <GroupView />
       <FilterView />
-      {/* <Button onClick={() => dispatch(deleteView({ guid }))}>Delete</Button> */}
+      <AddViewConfigButton />
     </Root>
   )
 }
@@ -55,55 +56,37 @@ function FilterView() {
 function SortView() {
   const dispatch = useAppDispatch()
   const sort = useActiveView((v) => v.sort)
-  const fields = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
 
+  if (sort === undefined) return null
+
+  const sortField = fieldsByGuid[sort.fieldGuid].name
+
+  const label = `Sort: ${sortField} ${sort.ascending ? "↑" : "↓"}`
+
   return (
-    <SubRoot>
-      <Select
-        value={sort?.fieldGuid}
-        onChange={(newFieldGuid) =>
-          dispatch(
-            setSort(
-              newFieldGuid
-                ? { fieldGuid: newFieldGuid, ascending: true }
-                : undefined
-            )
-          )
-        }
-        variants={fields}
-        displays={fields.map((guid) => fieldsByGuid[guid].name ?? "")}
-        label="Sort"
-      />
-    </SubRoot>
+    <Chip
+      label={label}
+      onDelete={() => dispatch(setSort())}
+      onClick={() => {
+        dispatch(setSort({ ...sort, ascending: !sort.ascending }))
+      }}
+    />
   )
 }
 
 function GroupView() {
   const dispatch = useAppDispatch()
   const group = useActiveView((v) => v.group)
-  const fields = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
 
-  return (
-    <SubRoot>
-      <Select
-        value={group?.fieldGuid}
-        onChange={(newFieldGuid) =>
-          dispatch(
-            setGroup(
-              newFieldGuid
-                ? { by: "field", fieldGuid: newFieldGuid }
-                : undefined
-            )
-          )
-        }
-        variants={fields}
-        displays={fields.map((guid) => fieldsByGuid[guid].name ?? "")}
-        label="Group"
-      />
-    </SubRoot>
-  )
+  if (group === undefined) return null
+
+  const groupField = fieldsByGuid[group.fieldGuid].name
+
+  const label = `Group: ${groupField}`
+
+  return <Chip label={label} onDelete={() => dispatch(setGroup())} />
 }
 
 function DepthView() {

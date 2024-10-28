@@ -73,7 +73,7 @@ export default function AddFieldView({ close }: { close: () => void }) {
           close()
         }}
       >
-        Save
+        Add
       </Button>
     </Box>
   )
@@ -162,7 +162,7 @@ function ReduceStrategyView({
 
   return (
     <Select
-      label="Reduce"
+      label="Propogate Up"
       value={field.propogateUp?.func}
       onChange={set}
       variants={["Sum", "Max", "Min"]}
