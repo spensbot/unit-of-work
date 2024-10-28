@@ -38,7 +38,7 @@ export type GroupStrategy = {
 
 export interface ReduceStrategy { // Combine all children values into a single value
   t: 'Reduce',
-  function: 'Sum' | 'Max' | 'Min'
+  func: 'Sum' | 'Max' | 'Min'
 }
 
 export const field_ts = ['UserField', 'NumberField', 'DateField', 'SelectField'] as const

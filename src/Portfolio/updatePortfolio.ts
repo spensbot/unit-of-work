@@ -84,7 +84,7 @@ function reducePassUps(field: Field, unit: Unit, passUpsIn: [FieldVal, number][]
 
   if (field.propogateUp?.t === 'Reduce' && field.t === 'NumberField') {
     // TODO: Fix this to prevent bad fieldVal types
-    const func = reduce.number[field.propogateUp.function]
+    const func = reduce.number[field.propogateUp.func]
     return reduceFields(passUpsIn.map(([val, _]) => val) as NumberFieldVal[], n => n.val, func, n => ({ t: 'Number', val: n }))
   }
 }

@@ -40,7 +40,7 @@ export function newPortfolio(): Portfolio {
       'Field_3': {
         guid: 'Field_3', t: 'NumberField', name: 'Days', propogateUp: {
           t: 'Reduce',
-          function: 'Sum'
+          func: 'Sum'
         }
       },
       'Field_4': {
