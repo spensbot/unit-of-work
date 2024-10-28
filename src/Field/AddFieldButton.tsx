@@ -28,7 +28,7 @@ export default function AddFieldButton() {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <AddFieldView />
+        <AddFieldView close={handleClose} />
       </Popover>
     </>
   )

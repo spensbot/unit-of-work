@@ -1,12 +1,18 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Button, Input, Typography } from "@mui/material"
 import { useState } from "react"
-import { Field, field_ts, newField, PropogateDownStrategy } from "./Field"
+import {
+  Field,
+  field_ts,
+  newField,
+  PropogateDownStrategy,
+  SelectField,
+} from "./Field"
 import Select from "../components/Select"
 import DisplayInput from "../components/DisplayInput"
 import { useAppDispatch } from "../config/store"
 import { addField } from "../Portfolio/portfolioSlice"
 
-export default function AddFieldView() {
+export default function AddFieldView({ close }: { close: () => void }) {
   const [field, setField] = useState<Field>(newField("NumberField"))
   const dispatch = useAppDispatch()
 
@@ -46,13 +52,49 @@ export default function AddFieldView() {
         onChange={(t) => t && setT(t)}
         variants={field_ts}
       />
+      {field.t === "SelectField" && (
+        <SelectOptions field={field} setField={setField} />
+      )}
       <Button
         color="primary"
         variant="contained"
-        onClick={() => dispatch(addField(field))}
+        onClick={() => {
+          dispatch(addField(field))
+          close()
+        }}
       >
         Save
       </Button>
+    </Box>
+  )
+}
+
+function SelectOptions({
+  field,
+  setField,
+}: {
+  field: SelectField
+  setField: (field: Field) => void
+}) {
+  const [newOption, setNewOption] = useState("")
+
+  const addOption = () => {
+    if (!field.selectOptions.includes(newOption)) {
+      setField({ ...field, selectOptions: [...field.selectOptions, newOption] })
+    }
+  }
+
+  return (
+    <Box>
+      {field.selectOptions.map((option) => (
+        <Box key={option}>{option}</Box>
+      ))}
+      <Box display="flex">
+        <DisplayInput value={newOption} onChange={setNewOption} />
+        <Button disabled={newOption.length === 0} onClick={addOption}>
+          Add
+        </Button>
+      </Box>
     </Box>
   )
 }

@@ -78,7 +78,7 @@ function AddUnitButton() {
         alignSelf: "flex-end",
       }}
     >
-      Add Root Unit
+      Add Unit
     </Button>
   )
 }
