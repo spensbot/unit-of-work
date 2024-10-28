@@ -6,9 +6,7 @@ import {
   setSort,
   setGroup,
   setDepth,
-  deleteView,
 } from "../Portfolio/portfolioSlice"
-import Select from "../components/Select"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { Box, Button, Chip, Slider, TextField } from "@mui/material"
 import getMaxDepth from "../Portfolio/getMaxDepth"
@@ -37,20 +35,15 @@ const Root = styled.div`
 function FilterView() {
   const dispatch = useAppDispatch()
   const filter = useActiveView((v) => v.filter)
+  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
 
-  const onChange = (newVal: string) => {
-    dispatch(setFilter({ expression: newVal }))
-  }
+  if (filter === undefined) return null
 
-  return (
-    <TextField
-      size="small"
-      label="Filter"
-      value={filter?.expression ?? ""}
-      onChange={(e) => onChange(e.target.value)}
-      fullWidth
-    />
-  )
+  const filterField = fieldsByGuid[filter.fieldGuid].name
+
+  const label = `${filterField} == ${filter.value}`
+
+  return <Chip label={label} onDelete={() => dispatch(setGroup())} />
 }
 
 function SortView() {

@@ -18,8 +18,10 @@ export type Group = {
   fieldGuid: string
 }
 
+// This filter is trash for display purposes (for now)
 export interface Filter {
-  expression: string
+  fieldGuid: string
+  value: string
 }
 
 export interface Sort {

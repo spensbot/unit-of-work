@@ -2,10 +2,11 @@ import { Box, Button, IconButton } from "@mui/material"
 import Select from "../components/Select"
 import { useState } from "react"
 import { useAppDispatch } from "../config/store"
-import { Group, Sort } from "./View"
+import { Filter, Group, Sort } from "./View"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
-import { setGroup, setSort } from "../Portfolio/portfolioSlice"
+import { setFilter, setGroup, setSort } from "../Portfolio/portfolioSlice"
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material"
+import { SelectField } from "../Field/Field"
 
 type ConfigType = "Sort" | "Group" | "Filter"
 const configTypes: readonly ConfigType[] = ["Sort", "Group", "Filter"]
@@ -130,5 +131,52 @@ function AddGroupView({ close }: Props) {
 }
 
 function AddFilterView({ close }: Props) {
-  return <Box>Filter</Box>
+  const [filter, setLocalFilter] = useState<Filter>()
+  const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
+  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
+  const fields = fieldGuids
+    .map((guid) => fieldsByGuid[guid])
+    .filter((f) => f.t === "SelectField")
+  const displays = fields.map((f) => f.name)
+  const dispatch = useAppDispatch()
+
+  const valueOptions =
+    filter && (fieldsByGuid[filter.fieldGuid] as SelectField).selectOptions
+
+  const setValue = (value?: string) => {
+    if (!filter || !value) return
+    setLocalFilter({ fieldGuid: filter.fieldGuid, value })
+  }
+
+  const setFieldGuid = (guid?: string) => {
+    if (!guid) return
+    setLocalFilter({ fieldGuid: guid, value: filter?.value ?? "" })
+  }
+
+  const onAdd = () => {
+    if (!filter) return
+    dispatch(setFilter(filter))
+    close()
+  }
+
+  return (
+    <>
+      <Select
+        value={filter?.fieldGuid}
+        onChange={setFieldGuid}
+        variants={fieldGuids}
+        displays={displays}
+      />
+      {valueOptions && (
+        <Select
+          value={filter?.value}
+          onChange={setValue}
+          variants={valueOptions}
+        />
+      )}
+      <Button disabled={!filter} onClick={onAdd}>
+        Add
+      </Button>
+    </>
+  )
 }
