@@ -1,3 +1,5 @@
+import { v4 as uuidV4 } from 'uuid'
+
 interface FieldBase {
   guid: string
   name: string
@@ -37,4 +39,17 @@ export type GroupStrategy = {
 export interface ReduceStrategy { // Combine all children values into a single value
   t: 'Reduce',
   function: 'Sum' | 'Max' | 'Min'
+}
+
+export const field_ts = ['UserField', 'NumberField', 'DateField', 'SelectField'] as const
+
+export function newField(t: Field['t']): Field {
+  const guid = uuidV4()
+  const name = 'Field Name'
+
+  if (t === 'SelectField') {
+    return { guid, name, t, selectOptions: [] }
+  } else {
+    return { guid, name, t }
+  }
 }

@@ -1,7 +1,7 @@
 import { UserField, NumberField, DateField, SelectField, Field } from "./Field"
 import Select from "../components/Select"
 import { useAppDispatch } from "../config/store"
-import { setField } from "../Portfolio/portfolioSlice"
+import { setFieldVal } from "../Portfolio/portfolioSlice"
 import NumberInput from "../components/NumberInput"
 import { useDispatch } from "react-redux"
 import UserSelect from "../User/UserSelect"
@@ -23,7 +23,7 @@ interface Props<F> {
   field: F
 }
 
-export default function FieldView({ unitGuid, field }: Props<Field>) {
+export default function FieldValView({ unitGuid, field }: Props<Field>) {
   switch (field.t) {
     case "UserField":
       return <UserFieldView unitGuid={unitGuid} field={field} />
@@ -45,7 +45,7 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
 
   function set(val: string | undefined) {
     dispatch(
-      setField({
+      setFieldVal({
         fieldDefGuid: field.guid,
         unitGuid,
         val: f.map(val, (val) => ({
@@ -101,7 +101,7 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
 
   function set(val: number | undefined) {
     dispatch(
-      setField({
+      setFieldVal({
         fieldDefGuid: field.guid,
         unitGuid,
         val: f.map(val, (val) => ({
@@ -146,7 +146,7 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
 
   function set(val: string | undefined) {
     dispatch(
-      setField({
+      setFieldVal({
         fieldDefGuid: field.guid,
         unitGuid,
         val: f.map(val, (val) => ({ t: "Select", vals: { [val]: 1 } })),

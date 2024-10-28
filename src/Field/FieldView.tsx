@@ -1,8 +1,21 @@
-import styled from "@emotion/styled"
-import { Field } from "./Field"
+import { Box } from "@mui/material"
+import EditFieldButton from "./EditFieldButton"
+import { useActivePortfolio } from "../Portfolio/Portfolio"
+import { useHover } from "../hooks/useHover"
 
-export default function FieldView({ def }: { def: Field }) {
-  return <Root>{def.name}</Root>
+export default function FieldView({ guid }: { guid: string }) {
+  const field = useActivePortfolio((p) => p.fieldsByGuid[guid])
+  const [hoverRef, isHover] = useHover()
+
+  return (
+    <Box
+      ref={hoverRef}
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      {field.name}
+      <EditFieldButton guid={guid} visible={!isHover} />
+    </Box>
+  )
 }
-
-const Root = styled.div``

@@ -9,10 +9,10 @@ import {
 const NULL_ITEM_VALUE = 0
 const NULL_ITEM_DISPLAY = "---"
 
-interface Props {
-  value?: string
-  onChange: (newValue?: string) => void
-  variants: string[]
+interface Props<T> {
+  value?: T
+  onChange: (newValue?: T) => void
+  variants: readonly T[]
   displays?: string[]
   label?: string
   id?: string
@@ -20,7 +20,7 @@ interface Props {
   split?: number
 }
 
-export default function Select({
+export default function Select<T extends string>({
   value,
   onChange,
   variants,
@@ -29,7 +29,7 @@ export default function Select({
   id = "Select",
   faded,
   split = 0.5,
-}: Props) {
+}: Props<T>) {
   const labelId = `${id}-label`
 
   if (displays !== undefined) {
@@ -57,7 +57,7 @@ export default function Select({
         onChange={(e) => {
           var updated = (
             e.target.value === NULL_ITEM_VALUE ? undefined : e.target.value
-          ) as string | undefined
+          ) as T | undefined
           onChange(updated)
         }}
         sx={{

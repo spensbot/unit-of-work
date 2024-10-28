@@ -6,8 +6,8 @@ import { newUnit } from "../Unit/Unit"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useAppDispatch } from "../config/store"
 import Box from "@mui/material/Box"
-import { IconButton } from "@mui/material"
-import Add from "@mui/icons-material/Add"
+import FieldView from "../Field/FieldView"
+import AddFieldButton from "../Field/AddFieldButton"
 
 export default function TableView() {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
@@ -22,7 +22,11 @@ export default function TableView() {
             <Th></Th>
             <Th>Unit</Th>
             {fieldGuids.map((guid) => {
-              return <Th key={guid}>{fieldsByGuid[guid].name}</Th>
+              return (
+                <Th key={guid}>
+                  <FieldView key={guid} guid={guid} />
+                </Th>
+              )
             })}
             <Th style={{ textAlign: "right" }}>
               <AddFieldButton />
@@ -58,23 +62,6 @@ const Tr = styled.tr`
 const Th = styled.th`
   text-align: left;
 `
-
-function AddFieldButton() {
-  return (
-    <IconButton>
-      <Add />
-    </IconButton>
-    // <Button
-    //   variant="contained"
-    //   // onClick={() => dispatch(addUnit({ unit: newUnit() }))}
-    //   sx={{
-    //     alignSelf: "flex-end",
-    //   }}
-    // >
-    //   Add Field
-    // </Button>
-  )
-}
 
 function AddUnitButton() {
   const dispatch = useAppDispatch()
