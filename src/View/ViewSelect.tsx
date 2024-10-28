@@ -40,6 +40,7 @@ function ViewSelectItem({ guid }: { guid: string }) {
   const viewName = useActivePortfolio((p) => p.viewsByGuid[guid].name)
   const dispatch = useAppDispatch()
 
+  const isSolo = useActivePortfolio((p) => p.viewGuids.length === 1)
   const isActive = activeViewGuid === guid
 
   return (
@@ -56,9 +57,11 @@ function ViewSelectItem({ guid }: { guid: string }) {
             value={viewName}
             onChange={(name) => dispatch(setViewName({ guid, name }))}
           />
-          <IconButton onClick={() => dispatch(deleteView({ guid }))}>
-            <DeleteIcon />
-          </IconButton>
+          {!isSolo && (
+            <IconButton onClick={() => dispatch(deleteView({ guid }))}>
+              <DeleteIcon />
+            </IconButton>
+          )}
         </>
       ) : (
         viewName

@@ -20,6 +20,7 @@ export default function ViewConfig({ guid }: { guid: string }) {
       <SortView />
       <GroupView />
       <FilterView />
+      <Box flexGrow={1} />
       <AddViewConfigButton />
     </Root>
   )

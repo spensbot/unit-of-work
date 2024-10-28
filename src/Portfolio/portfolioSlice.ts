@@ -92,6 +92,7 @@ const portfolioSlice = createSlice({
     addView: (state, { payload }: PayloadAction<View>) => {
       state.viewsByGuid[payload.guid] = payload
       state.viewGuids.push(payload.guid)
+      state.activeViewGuid = payload.guid
     },
     setActiveView: (state, { payload }: PayloadAction<{ guid: string }>) => {
       state.activeViewGuid = payload.guid
