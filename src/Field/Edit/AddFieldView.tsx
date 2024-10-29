@@ -1,4 +1,10 @@
-import { Box, Button, Typography } from "@mui/material"
+import {
+  Box,
+  Button,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from "@mui/material"
 import { useMemo, useState } from "react"
 import {
   DateField,
@@ -10,18 +16,58 @@ import {
   ReduceStrategy,
   SelectField,
   UserField,
-} from "./Field"
-import Select from "../components/Select"
-import DisplayInput from "../components/DisplayInput"
-import { useAppDispatch } from "../config/store"
-import { addField } from "../Portfolio/portfolioSlice"
-import { useActivePortfolio } from "../Portfolio/Portfolio"
+} from "../Field"
+import Select from "../../components/Select"
+import DisplayInput from "../../components/DisplayInput"
+import { useAppDispatch } from "../../config/store"
+import { addField } from "../../Portfolio/portfolioSlice"
+import { useActivePortfolio } from "../../Portfolio/Portfolio"
+import SelectGroup from "../../components/SelectGroup"
+import SuggestedFieldView from "./SuggestedFieldView"
+import FieldTypeSelect from "./FieldTypeSelect"
 
 export default function AddFieldView({ close }: { close: () => void }) {
+  const [mode, setMode] = useState<"Custom" | "Suggested">("Suggested")
   const [field, setField] = useState<Field>(newField("NumberField"))
-  const dispatch = useAppDispatch()
 
-  console.log(field)
+  return (
+    <Box
+      padding={2}
+      display="flex"
+      flexDirection="column"
+      alignItems="end"
+      gap={2}
+      minWidth={300}
+    >
+      <SelectGroup
+        value={mode}
+        onChange={setMode}
+        variants={["Custom", "Suggested"]}
+      />
+      {mode === "Custom" ? (
+        <CustomFieldView close={close} field={field} setField={setField} />
+      ) : (
+        <SuggestedFieldView
+          setField={(newField) => {
+            setField(newField)
+            setMode("Custom")
+          }}
+        />
+      )}
+    </Box>
+  )
+}
+
+function CustomFieldView({
+  close,
+  field,
+  setField,
+}: {
+  close: () => void
+  field: Field
+  setField: (field: Field) => void
+}) {
+  const dispatch = useAppDispatch()
 
   const setName = (name: string) => setField({ ...field, name })
   const setPropogateDown = (propogateDown?: PropogateDownStrategy) =>
@@ -36,19 +82,14 @@ export default function AddFieldView({ close }: { close: () => void }) {
   }
 
   return (
-    <Box
-      padding={2}
-      display="flex"
-      flexDirection="column"
-      alignItems="end"
-      gap={2}
-      minWidth={300}
-    >
-      <Select
+    <>
+      <SelectGroup
         value={field.t}
         onChange={(t) => t && setT(t)}
         variants={field_ts}
+        displays={field_ts.map((t) => t.replace("Field", ""))}
       />
+      {/* <FieldTypeSelect t={field.t} setT={setT} /> */}
       <DisplayInput value={field.name} onChange={setName} />
       <Select
         label="Propogate Down"
@@ -75,7 +116,7 @@ export default function AddFieldView({ close }: { close: () => void }) {
       >
         Add
       </Button>
-    </Box>
+    </>
   )
 }
 

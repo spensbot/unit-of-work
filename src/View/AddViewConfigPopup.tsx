@@ -7,6 +7,7 @@ import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { setFilter, setGroup, setSort } from "../Portfolio/portfolioSlice"
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material"
 import { SelectField } from "../Field/Field"
+import SelectGroup from "../components/SelectGroup"
 
 type ConfigType = "Sort" | "Group" | "Filter"
 const configTypes: readonly ConfigType[] = ["Sort", "Group", "Filter"]
@@ -27,7 +28,7 @@ export default function AddViewConfigPopup({ close }: Props) {
       minWidth={300}
       gap={2}
     >
-      <Select
+      <SelectGroup
         value={configType}
         onChange={(type) => type && setConfigType(type)}
         variants={configTypes}

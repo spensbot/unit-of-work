@@ -27,27 +27,11 @@ function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] 
 }
 
 function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
-  try {
-    const ast = parse(filter.expression)
-    return units.filter(unit => {
-      const context: { [key: string]: any } = {
-        name: unit.name,
-        description: unit.description,
-      }
-      for (const fieldGuid in unit.fieldValsByGuid) {
-        const field = state.fieldsByGuid[fieldGuid]
-        context[field.name] = getFieldValPrimitive(state, getActiveFieldVal(unit, field))
-      }
-      try {
-        return evaluate(ast, context)
-      } catch (e) {
-        // console.error(`Filter Expression Evaluation Error: ${e}`)
-        return false
-      }
-    })
-  } catch (e) {
-    return units
-  }
+  return units.filter(unit => {
+    const fieldVal = unit.fieldValsByGuid[filter.fieldGuid]
+
+    return getFieldValPrimitive(state, fieldVal) === filter.value
+  })
 }
 
 function getFieldValPrimitive(state: Portfolio, val?: FieldVal): number | string {
@@ -66,15 +50,17 @@ function getFieldValPrimitive(state: Portfolio, val?: FieldVal): number | string
 }
 
 function applySort(units: Unit[], sort: Sort, state: Portfolio): Unit[] {
+  const mult = sort.ascending ? 1 : -1
+
   return [...units].sort((a, b) => {
     const fieldGuid = sort.fieldGuid
     const field = state.fieldsByGuid[fieldGuid]
     const aVal = getSortVal(state, field, getActiveFieldVal(a, field))
     const bVal = getSortVal(state, field, getActiveFieldVal(b, field))
     if (aVal < bVal) {
-      return -1
+      return -1 * mult
     } else if (aVal > bVal) {
-      return 1
+      return 1 * mult
     }
     return 0
   })

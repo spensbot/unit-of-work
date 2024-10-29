@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material"
-import { useAppDispatch } from "../config/store"
-import { addField, deleteField } from "../Portfolio/portfolioSlice"
+import { useAppDispatch } from "../../config/store"
+import { addField, deleteField } from "../../Portfolio/portfolioSlice"
 
 export default function EditFieldView({ guid }: { guid: string }) {
   const dispatch = useAppDispatch()

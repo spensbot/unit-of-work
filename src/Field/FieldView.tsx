@@ -1,5 +1,5 @@
 import { Box } from "@mui/material"
-import EditFieldButton from "./EditFieldButton"
+import EditFieldButton from "./Edit/EditFieldButton"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useHover } from "../hooks/useHover"
 

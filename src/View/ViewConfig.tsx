@@ -44,7 +44,7 @@ function FilterView() {
 
   const label = `${filterField} == ${filter.value}`
 
-  return <Chip label={label} onDelete={() => dispatch(setGroup())} />
+  return <Chip label={label} onDelete={() => dispatch(setFilter())} />
 }
 
 function SortView() {

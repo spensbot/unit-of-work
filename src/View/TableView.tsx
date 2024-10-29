@@ -7,7 +7,7 @@ import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useAppDispatch } from "../config/store"
 import Box from "@mui/material/Box"
 import FieldView from "../Field/FieldView"
-import AddFieldButton from "../Field/AddFieldButton"
+import AddFieldButton from "../Field/Edit/AddFieldButton"
 
 export default function TableView() {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
@@ -42,6 +42,7 @@ export default function TableView() {
       </Table>
       <Box height={(theme) => theme.spacing(2)} />
       <AddUnitButton />
+      <AddUnitButtonRandomized />
     </Root>
   )
 }
@@ -74,11 +75,92 @@ function AddUnitButton() {
         dispatch(addUnit({ unit }))
         dispatch(setActiveUnit({ guid: unit.guid }))
       }}
-      sx={{
-        alignSelf: "flex-end",
-      }}
     >
       Add Unit
     </Button>
   )
+}
+
+function AddUnitButtonRandomized() {
+  const dispatch = useAppDispatch()
+  const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
+  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
+  const userGuids = useActivePortfolio((p) => p.userGuids)
+
+  const fields = fieldGuids.map((guid) => fieldsByGuid[guid])
+
+  return (
+    <Button
+      fullWidth
+      onClick={() => {
+        const unit = newUnit()
+        unit.name = randomName()
+        fields.forEach((field) => {
+          switch (field.t) {
+            case "DateField":
+              break
+            case "NumberField":
+              unit.fieldValsByGuid[field.guid] = {
+                t: "Number",
+                val: Math.floor(Math.random() * 100),
+              }
+              break
+            case "SelectField":
+              const option = getRandomVal(field.selectOptions)
+              unit.fieldValsByGuid[field.guid] = {
+                t: "Select",
+                vals: {
+                  [option]: 1,
+                },
+              }
+              break
+            case "UserField":
+              const userGuid = getRandomVal(userGuids)
+              unit.fieldValsByGuid[field.guid] = {
+                t: "User",
+                guids: {
+                  [userGuid]: 1,
+                },
+              }
+              break
+          }
+        })
+        dispatch(addUnit({ unit }))
+        dispatch(setActiveUnit({ guid: unit.guid }))
+      }}
+    >
+      🤪 Add Unit (Randomized)
+    </Button>
+  )
+}
+
+function randomName() {
+  const verbs = ["Jump", "Run", "Skip", "Hop", "Dance", "Sing", "Swim", "Fly"]
+  const adjectives = [
+    "Red",
+    "Blue",
+    "Green",
+    "Yellow",
+    "Orange",
+    "Purple",
+    "Pink",
+  ]
+  const nouns = [
+    "Dog",
+    "Cat",
+    "Bird",
+    "Fish",
+    "Elephant",
+    "Giraffe",
+    "Lion",
+    "Tiger",
+  ]
+
+  return `${getRandomVal(verbs)} the ${getRandomVal(adjectives)} ${getRandomVal(
+    nouns
+  )}`
+}
+
+function getRandomVal<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]
 }
