@@ -14,6 +14,7 @@ import AddViewConfigButton from "./AddViewConfigButton"
 
 export default function ViewConfig({ guid }: { guid: string }) {
   const dispatch = useAppDispatch()
+  const canConfig = useActivePortfolio((p) => p.fieldGuids.length > 0)
   return (
     <Root>
       <DepthView />
@@ -21,7 +22,7 @@ export default function ViewConfig({ guid }: { guid: string }) {
       <GroupView />
       <FilterView />
       <Box flexGrow={1} />
-      <AddViewConfigButton />
+      {canConfig && <AddViewConfigButton />}
     </Root>
   )
 }
