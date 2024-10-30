@@ -72,6 +72,10 @@ const portfolioSlice = createSlice({
       state.fieldsByGuid[payload.guid] = payload
       updatePortfolio(state)
     },
+    setField: (state, { payload }: PayloadAction<Field>) => {
+      state.fieldsByGuid[payload.guid] = payload
+      updatePortfolio(state)
+    },
     deleteField: (state, { payload }: PayloadAction<{ guid: string }>) => {
       state.fieldGuids = state.fieldGuids.filter(guid => guid !== payload.guid)
       delete state.fieldsByGuid[payload.guid]
@@ -148,6 +152,7 @@ export const {
 
   // Field
   addField,
+  setField,
   deleteField,
 
   // Field Val

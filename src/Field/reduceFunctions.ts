@@ -1,7 +1,7 @@
 import { ReduceStrategy } from "./Field"
 import { WeightedSelect } from "./FieldVal"
 
-type ReduceFunctionMap<T> = { [key in ReduceStrategy['function']]: (a: T, b: T) => T }
+type ReduceFunctionMap<T> = { [key in ReduceStrategy['func']]: (a: T, b: T) => T }
 
 export const number: ReduceFunctionMap<number> = {
   Sum: (a, b) => a + b,
