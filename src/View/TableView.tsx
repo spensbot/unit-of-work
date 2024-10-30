@@ -102,7 +102,7 @@ function AddUnitButtonRandomized() {
             case "NumberField":
               unit.fieldValsByGuid[field.guid] = {
                 t: "Number",
-                val: Math.floor(Math.random() * 100),
+                val: randomModifiedFibonacci(),
               }
               break
             case "SelectField":
@@ -134,31 +134,36 @@ function AddUnitButtonRandomized() {
   )
 }
 
+function randomModifiedFibonacci(): number {
+  const fib = [1, 2, 3, 5, 8, 13, 20, 40, 100]
+  return fib[Math.floor(Math.random() * fib.length)]
+}
+
 function randomName() {
-  const verbs = ["Jump", "Run", "Skip", "Hop", "Dance", "Sing", "Swim", "Fly"]
-  const adjectives = [
-    "Red",
-    "Blue",
-    "Green",
-    "Yellow",
-    "Orange",
-    "Purple",
-    "Pink",
+  const verbs = [
+    "Build",
+    "Fix",
+    "Optimize",
+    "Refactor",
+    "Test",
+    "Deploy",
+    "Monitor",
+    "Document",
+    "Design",
+    "Review",
   ]
   const nouns = [
-    "Dog",
-    "Cat",
-    "Bird",
-    "Fish",
-    "Elephant",
-    "Giraffe",
-    "Lion",
-    "Tiger",
+    "App",
+    "Website",
+    "Database",
+    "API",
+    "Server",
+    "Client",
+    "Framework",
+    "Library",
   ]
 
-  return `${getRandomVal(verbs)} the ${getRandomVal(adjectives)} ${getRandomVal(
-    nouns
-  )}`
+  return `${getRandomVal(verbs)} the ${getRandomVal(nouns)}`
 }
 
 function getRandomVal<T>(arr: T[]): T {
