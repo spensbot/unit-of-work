@@ -27,7 +27,7 @@ export default function EditFieldView({ field, setField }: Props) {
       gap={2}
       minWidth={300}
     >
-      <FieldEditor field={fieldEdit} setField={setFieldEdit} />
+      <FieldEditor mode="Edit" field={fieldEdit} setField={setFieldEdit} />
       <Button variant="contained" onClick={() => setField(fieldEdit)}>
         Save
       </Button>

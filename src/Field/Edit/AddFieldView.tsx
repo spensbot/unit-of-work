@@ -28,7 +28,7 @@ export default function AddFieldView({ close }: { close: () => void }) {
       />
       {mode === "Custom" ? (
         <>
-          <FieldEditor field={field} setField={setField} />
+          <FieldEditor mode="Create" field={field} setField={setField} />
           <Button
             color="primary"
             variant="contained"
