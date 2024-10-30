@@ -1,10 +1,10 @@
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Button } from "@mui/material"
 import { useAppDispatch } from "../../config/store"
-import { addField, deleteField } from "../../Portfolio/portfolioSlice"
+import { deleteField } from "../../Portfolio/portfolioSlice"
 import FieldEditor from "./FieldEditor"
 import { useState } from "react"
 import { Field } from "../Field"
-import { useActivePortfolio } from "../../Portfolio/Portfolio"
+import PopoverBox from "../../components/PopoverBox"
 
 interface Props {
   field: Field
@@ -20,13 +20,7 @@ export default function EditFieldView({ field, setField }: Props) {
   }
 
   return (
-    <Box
-      padding={2}
-      display="flex"
-      flexDirection="column"
-      gap={2}
-      minWidth={300}
-    >
+    <PopoverBox>
       <FieldEditor mode="Edit" field={fieldEdit} setField={setFieldEdit} />
       <Box display="flex" alignSelf="stretch" gap={2}>
         <Button
@@ -45,6 +39,6 @@ export default function EditFieldView({ field, setField }: Props) {
           Delete
         </Button>
       </Box>
-    </Box>
+    </PopoverBox>
   )
 }

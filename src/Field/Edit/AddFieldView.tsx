@@ -6,6 +6,7 @@ import { addField } from "../../Portfolio/portfolioSlice"
 import SelectGroup from "../../components/SelectGroup"
 import SuggestedFieldView from "./SuggestedFieldView"
 import FieldEditor from "./FieldEditor"
+import PopoverBox from "../../components/PopoverBox"
 
 export default function AddFieldView({ close }: { close: () => void }) {
   const [mode, setMode] = useState<"Custom" | "Suggested">("Suggested")
@@ -13,14 +14,7 @@ export default function AddFieldView({ close }: { close: () => void }) {
   const dispatch = useAppDispatch()
 
   return (
-    <Box
-      padding={2}
-      display="flex"
-      flexDirection="column"
-      alignItems="end"
-      gap={2}
-      minWidth={300}
-    >
+    <PopoverBox>
       <SelectGroup
         value={mode}
         onChange={setMode}
@@ -48,6 +42,6 @@ export default function AddFieldView({ close }: { close: () => void }) {
           }}
         />
       )}
-    </Box>
+    </PopoverBox>
   )
 }

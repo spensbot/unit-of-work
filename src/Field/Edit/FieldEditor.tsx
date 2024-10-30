@@ -15,6 +15,8 @@ import Select from "../../components/Select"
 import DisplayInput from "../../components/DisplayInput"
 import { useActivePortfolio } from "../../Portfolio/Portfolio"
 import SelectGroup from "../../components/SelectGroup"
+import PropogateUpIcon from "../../icons/PropogateUpIcon"
+import PropogateDownIcon from "../../icons/PropogateDownIcon"
 
 type FieldEditMode = "Edit" | "Create"
 
@@ -51,18 +53,22 @@ export default function FieldEditor({
       )}
       {/* <FieldTypeSelect t={field.t} setT={setT} /> */}
       <DisplayInput value={field.name} onChange={setName} />
-      <Select
-        label="Propogate Down"
-        value={field.propogateDown}
-        onChangeMaybe={setPropogateDown}
-        variants={["Inherit"]}
-      />
       {(field.t === "UserField" || field.t === "SelectField") && (
         <GroupStrategyView field={field} setField={setField} />
       )}
       {(field.t === "NumberField" || field.t === "DateField") && (
         <ReduceStrategyView field={field} setField={setField} />
       )}
+      <Box display="flex" alignItems="center">
+        <PropogateDownIcon />
+        <Select
+          label="Propogate Down"
+          value={field.propogateDown}
+          onChangeMaybe={setPropogateDown}
+          variants={["Inherit"]}
+        />
+      </Box>
+
       {field.t === "SelectField" && mode === "Create" && (
         <SelectOptions field={field} setField={setField} />
       )}
@@ -133,13 +139,16 @@ function GroupStrategyView({
   const weightField = field.propogateUp?.weightFieldGuid
 
   return (
-    <Select
-      label="Propogate Up Weighted By"
-      value={field.propogateUp ? weightField ?? BY_TASK : undefined}
-      onChangeMaybe={setWeightFieldGuid}
-      variants={[...weightFieldGuids, BY_TASK]}
-      displays={[...displays, "Task"]}
-    />
+    <Box display="flex" alignItems="center">
+      <PropogateUpIcon />
+      <Select
+        label="Propogate Up Weighted By"
+        value={field.propogateUp ? weightField ?? BY_TASK : undefined}
+        onChangeMaybe={setWeightFieldGuid}
+        variants={[...weightFieldGuids, BY_TASK]}
+        displays={[...displays, "Task"]}
+      />
+    </Box>
   )
 }
 
@@ -157,11 +166,14 @@ function ReduceStrategyView({
   }
 
   return (
-    <Select
-      label="Propogate Up"
-      value={field.propogateUp?.func}
-      onChangeMaybe={set}
-      variants={["Sum", "Max", "Min"]}
-    />
+    <Box display="flex" alignItems="center">
+      <PropogateUpIcon />
+      <Select
+        label="Propogate Up"
+        value={field.propogateUp?.func}
+        onChangeMaybe={set}
+        variants={["Sum", "Max", "Min"]}
+      />
+    </Box>
   )
 }

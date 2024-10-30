@@ -7,9 +7,12 @@ import {
   setDepth,
 } from "../Portfolio/portfolioSlice"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
-import { Box, Chip, Slider } from "@mui/material"
+import { Box, Chip, Popover, Slider } from "@mui/material"
 import getMaxDepth from "../Portfolio/getMaxDepth"
 import AddViewConfigButton from "./Edit/AddViewConfigButton"
+import usePopover from "../hooks/usePopover"
+import FilterEditor from "./Edit/FilterEditor"
+import PopoverBox from "../components/PopoverBox"
 
 export default function ViewConfig() {
   const canConfig = useActivePortfolio((p) => p.fieldGuids.length > 0)
@@ -29,6 +32,7 @@ function FilterView() {
   const dispatch = useAppDispatch()
   const filter = useActiveView((v) => v.filter)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
+  const [anchor, open, close, isOpen] = usePopover()
 
   if (filter === undefined) return null
 
@@ -36,7 +40,31 @@ function FilterView() {
 
   const label = `${filterField} == ${filter.value}`
 
-  return <Chip label={label} onDelete={() => dispatch(setFilter())} />
+  return (
+    <>
+      <Chip
+        label={label}
+        onDelete={() => dispatch(setFilter())}
+        onClick={open}
+      />
+      <Popover
+        open={isOpen}
+        anchorEl={anchor}
+        onClose={close}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <PopoverBox>
+          <FilterEditor
+            filter={filter}
+            setFilter={(newFilter) => {
+              dispatch(setFilter(newFilter))
+            }}
+          />
+        </PopoverBox>
+      </Popover>
+    </>
+  )
 }
 
 function SortView() {

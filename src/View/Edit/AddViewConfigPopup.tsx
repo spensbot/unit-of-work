@@ -8,6 +8,7 @@ import { setFilter, setGroup, setSort } from "../../Portfolio/portfolioSlice"
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material"
 import SelectGroup from "../../components/SelectGroup"
 import FilterEditor from "./FilterEditor"
+import PopoverBox from "../../components/PopoverBox"
 
 type ConfigType = "Sort" | "Group" | "Filter"
 const configTypes: readonly ConfigType[] = ["Sort", "Group", "Filter"]
@@ -20,14 +21,7 @@ export default function AddViewConfigPopup({ close }: Props) {
   const [configType, setConfigType] = useState<ConfigType>("Sort")
 
   return (
-    <Box
-      padding={2}
-      display="flex"
-      flexDirection="column"
-      alignItems="end"
-      minWidth={300}
-      gap={2}
-    >
+    <PopoverBox>
       <SelectGroup
         value={configType}
         onChange={(type) => type && setConfigType(type)}
@@ -36,7 +30,7 @@ export default function AddViewConfigPopup({ close }: Props) {
       {configType === "Sort" && <AddSortView close={close} />}
       {configType === "Group" && <AddGroupView close={close} />}
       {configType === "Filter" && <AddFilterView close={close} />}
-    </Box>
+    </PopoverBox>
   )
 }
 
