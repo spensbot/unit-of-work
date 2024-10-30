@@ -1,32 +1,21 @@
-import AddIcon from "@mui/icons-material/Add"
-import { Button, IconButton, Popover } from "@mui/material"
-import { useState } from "react"
+import { Button, Popover } from "@mui/material"
 import AddViewConfigPopup from "./AddViewConfigPopup"
+import usePopover from "../../hooks/usePopover"
 
 export default function AddViewConfigButton() {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
-  const open = Boolean(anchorEl)
+  const [anchor, open, close, isOpen] = usePopover()
 
   return (
     <>
-      <Button onClick={handleClick}>Configure View</Button>
+      <Button onClick={open}>Configure View</Button>
       <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
+        open={isOpen}
+        anchorEl={anchor}
+        onClose={close}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <AddViewConfigPopup close={handleClose} />
+        <AddViewConfigPopup close={close} />
       </Popover>
     </>
   )

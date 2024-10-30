@@ -1,34 +1,24 @@
 import AddIcon from "@mui/icons-material/Add"
 import { IconButton, Popover } from "@mui/material"
-import { useState } from "react"
 import AddFieldView from "./AddFieldView"
+import usePopover from "../../hooks/usePopover"
 
 export default function AddFieldButton() {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
-  const open = Boolean(anchorEl)
+  const [anchor, open, close, isOpen] = usePopover()
 
   return (
     <>
-      <IconButton onClick={handleClick}>
+      <IconButton onClick={open}>
         <AddIcon />
       </IconButton>
       <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
+        open={isOpen}
+        anchorEl={anchor}
+        onClose={close}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <AddFieldView close={handleClose} />
+        <AddFieldView close={close} />
       </Popover>
     </>
   )

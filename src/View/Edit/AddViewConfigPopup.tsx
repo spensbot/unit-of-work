@@ -6,8 +6,8 @@ import { Filter, Group, Sort } from "../View"
 import { useActivePortfolio } from "../../Portfolio/Portfolio"
 import { setFilter, setGroup, setSort } from "../../Portfolio/portfolioSlice"
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material"
-import { SelectField } from "../../Field/Field"
 import SelectGroup from "../../components/SelectGroup"
+import FilterEditor from "./FilterEditor"
 
 type ConfigType = "Sort" | "Group" | "Filter"
 const configTypes: readonly ConfigType[] = ["Sort", "Group", "Filter"]
@@ -125,6 +125,7 @@ function AddGroupView({ close }: Props) {
 }
 
 function AddFilterView({ close }: Props) {
+  const dispatch = useAppDispatch()
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
   const fields = fieldGuids
@@ -135,22 +136,6 @@ function AddFilterView({ close }: Props) {
     value: fields[0].selectOptions[0],
   })
 
-  const displays = fields.map((f) => f.name)
-  const dispatch = useAppDispatch()
-
-  const valueOptions =
-    filter && (fieldsByGuid[filter.fieldGuid] as SelectField).selectOptions
-
-  const setValue = (value?: string) => {
-    if (!filter || !value) return
-    setLocalFilter({ fieldGuid: filter.fieldGuid, value })
-  }
-
-  const setFieldGuid = (guid?: string) => {
-    if (!guid) return
-    setLocalFilter({ fieldGuid: guid, value: filter?.value ?? "" })
-  }
-
   const onAdd = () => {
     if (!filter) return
     dispatch(setFilter(filter))
@@ -159,19 +144,7 @@ function AddFilterView({ close }: Props) {
 
   return (
     <>
-      <Select
-        value={filter?.fieldGuid}
-        onChange={setFieldGuid}
-        variants={fields.map((f) => f.guid)}
-        displays={displays}
-      />
-      {valueOptions && (
-        <Select
-          value={filter?.value}
-          onChange={setValue}
-          variants={valueOptions}
-        />
-      )}
+      <FilterEditor filter={filter} setFilter={setLocalFilter} />
       <Button disabled={!filter} onClick={onAdd}>
         Add
       </Button>
