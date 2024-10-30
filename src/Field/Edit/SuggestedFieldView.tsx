@@ -8,14 +8,6 @@ export default function SuggestedFieldView({
 }: {
   setField: (field: Field) => void
 }) {
-  useEffect(() => {
-    console.log("Use Effect")
-
-    return () => {
-      console.log("Cleanup")
-    }
-  }, [])
-
   return (
     <>
       {suggestedFields.map((field, index) => (

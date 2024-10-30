@@ -107,7 +107,6 @@ const portfolioSlice = createSlice({
       updatePortfolio(state)
     },
     setGroup: (state, { payload }: PayloadAction<Group | undefined>) => {
-      console.log(payload)
       state.viewsByGuid[state.activeViewGuid].group = payload
       updatePortfolio(state)
     },
