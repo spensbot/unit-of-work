@@ -12,7 +12,7 @@ export default function FieldView({ guid }: { guid: string }) {
 
   const up = field.propogateUp !== undefined
   const down = field.propogateDown !== undefined
-  const dir: PropogateDir =
+  const dir: PropogateDir | undefined =
     up && down ? "both" : up ? "up" : down ? "down" : undefined
 
   return (
