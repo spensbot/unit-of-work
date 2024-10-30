@@ -28,12 +28,23 @@ export default function EditFieldView({ field, setField }: Props) {
       minWidth={300}
     >
       <FieldEditor mode="Edit" field={fieldEdit} setField={setFieldEdit} />
-      <Button variant="contained" onClick={() => setField(fieldEdit)}>
-        Save
-      </Button>
-      <Button color="error" variant="contained" onClick={onDelete}>
-        Delete Field
-      </Button>
+      <Box display="flex" alignSelf="stretch" gap={2}>
+        <Button
+          sx={{ flex: "1 0 auto" }}
+          variant="contained"
+          onClick={() => setField(fieldEdit)}
+        >
+          Save
+        </Button>
+        <Button
+          sx={{ flex: "1 0 auto" }}
+          color="error"
+          variant="contained"
+          onClick={onDelete}
+        >
+          Delete
+        </Button>
+      </Box>
     </Box>
   )
 }

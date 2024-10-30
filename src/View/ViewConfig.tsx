@@ -1,4 +1,3 @@
-import styled from "@emotion/styled"
 import { useActiveView } from "./View"
 import { useAppDispatch } from "../config/store"
 import {
@@ -8,31 +7,23 @@ import {
   setDepth,
 } from "../Portfolio/portfolioSlice"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
-import { Box, Button, Chip, Slider, TextField } from "@mui/material"
+import { Box, Chip, Slider } from "@mui/material"
 import getMaxDepth from "../Portfolio/getMaxDepth"
-import AddViewConfigButton from "./AddViewConfigButton"
+import AddViewConfigButton from "./Edit/AddViewConfigButton"
 
-export default function ViewConfig({ guid }: { guid: string }) {
-  const dispatch = useAppDispatch()
+export default function ViewConfig() {
   const canConfig = useActivePortfolio((p) => p.fieldGuids.length > 0)
   return (
-    <Root>
+    <Box display="flex" alignItems="center" gap={2} padding={2}>
       <DepthView />
       <SortView />
       <GroupView />
       <FilterView />
       <Box flexGrow={1} />
       {canConfig && <AddViewConfigButton />}
-    </Root>
+    </Box>
   )
 }
-
-const Root = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-`
 
 function FilterView() {
   const dispatch = useAppDispatch()
@@ -94,27 +85,20 @@ function DepthView() {
   }
 
   return (
-    <SubRoot>
-      <Box width={30 * (maxDepth - 1)} marginX={2}>
-        <Slider
-          value={depth}
-          onChange={(_, newValue) => {
-            if (!Array.isArray(newValue)) {
-              dispatch(setDepth(newValue))
-            }
-          }}
-          // valueLabelDisplay="auto"
-          min={1}
-          max={maxDepth}
-          step={1}
-          marks
-        />
-      </Box>
-    </SubRoot>
+    <Box width={30 * (maxDepth - 1)} marginX={2}>
+      <Slider
+        value={depth}
+        onChange={(_, newValue) => {
+          if (!Array.isArray(newValue)) {
+            dispatch(setDepth(newValue))
+          }
+        }}
+        // valueLabelDisplay="auto"
+        min={1}
+        max={maxDepth}
+        step={1}
+        marks
+      />
+    </Box>
   )
 }
-
-const SubRoot = styled.div`
-  /* width: ${({ theme }) => theme.spacing(15)}; */
-  /* min-width: ${({ theme }) => theme.spacing(15)}; */
-`

@@ -30,12 +30,12 @@ export default function DisplayInput({
             fontWeight: theme.typography[variant].fontWeight,
             padding: theme.spacing(1),
           },
-          "& .MuiInput-underline:before": {
-            borderBottom: "none", // Remove bottom underline (before focus)
-          },
-          "& .MuiInput-underline:after": {
-            borderBottom: "none", // Remove bottom underline (after focus)
-          },
+          // "& .MuiInput-underline:before": {
+          //   borderBottom: "none", // Remove bottom underline (before focus)
+          // },
+          // "& .MuiInput-underline:after": {
+          //   borderBottom: "none", // Remove bottom underline (after focus)
+          // },
           color: theme.palette.text.disabled,
         })}
         slotProps={{
