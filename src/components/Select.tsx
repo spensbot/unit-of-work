@@ -6,12 +6,13 @@ import {
 } from "@mui/material"
 
 // I don't love this, but can't think of something better since undefined and null don't work with MUI
-const NULL_ITEM_VALUE = 0
+const NULL_ITEM_VALUE = ""
 const NULL_ITEM_DISPLAY = "---"
 
 interface Props<T> {
   value?: T
-  onChange: (newValue?: T) => void
+  onChangeMaybe?: (newValue?: T) => void
+  onChange?: (newValue: T) => void
   variants: readonly T[]
   displays?: string[]
   label?: string
@@ -22,6 +23,7 @@ interface Props<T> {
 
 export default function Select<T extends string>({
   value,
+  onChangeMaybe,
   onChange,
   variants,
   displays,
@@ -30,6 +32,9 @@ export default function Select<T extends string>({
   faded,
   split = 0.5,
 }: Props<T>) {
+  const isMaybe = onChangeMaybe !== undefined
+  const _onChange = onChangeMaybe ?? onChange
+
   const labelId = `${id}-label`
 
   if (displays !== undefined) {
@@ -39,11 +44,8 @@ export default function Select<T extends string>({
   }
 
   const _value = value ?? NULL_ITEM_VALUE
-  const _variants: (string | 0)[] = [...variants, NULL_ITEM_VALUE]
-  const _displays: (string | 0)[] = [
-    ...(displays ?? variants),
-    NULL_ITEM_DISPLAY,
-  ]
+  const _variants = isMaybe ? [...variants, NULL_ITEM_VALUE] : [...variants]
+  const _displays = [...(displays ?? variants), NULL_ITEM_DISPLAY]
 
   return (
     <FormControl fullWidth>
@@ -52,13 +54,13 @@ export default function Select<T extends string>({
         size="small"
         labelId={labelId}
         id={id}
-        value={_value}
+        value={isMaybe ? _value : _value}
         label={label}
         onChange={(e) => {
           var updated = (
             e.target.value === NULL_ITEM_VALUE ? undefined : e.target.value
           ) as T | undefined
-          onChange(updated)
+          if (_onChange !== undefined) _onChange(updated as T)
         }}
         sx={{
           color: faded ? "text.disabled" : "inherit",

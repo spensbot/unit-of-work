@@ -162,7 +162,7 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
     <Box position="relative">
       <Select
         value={f.map(active?.vals, primaryWeighted)}
-        onChange={set}
+        onChangeMaybe={set}
         variants={field.selectOptions}
         faded={isCalculated}
         split={overwritten === undefined ? 0.5 : 0.75}

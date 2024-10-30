@@ -41,22 +41,21 @@ export default function AddViewConfigPopup({ close }: Props) {
 }
 
 function AddSortView({ close }: Props) {
-  const [sort, setLocalSort] = useState<Sort>()
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
   const fields = fieldGuids.map((guid) => fieldsByGuid[guid])
   const displays = fields.map((f) => f.name)
   const dispatch = useAppDispatch()
+  const [sort, setLocalSort] = useState<Sort>({
+    fieldGuid: fieldGuids[0],
+    ascending: false,
+  })
 
-  const setFieldGuid = (guid?: string) => {
-    if (!guid) return
-    setLocalSort({ ascending: sort?.ascending ?? false, fieldGuid: guid })
-  }
+  const setFieldGuid = (fieldGuid: string) =>
+    setLocalSort({ ...sort, fieldGuid })
 
-  const setAscending = (ascending: boolean) => {
-    if (!sort) return
+  const setAscending = (ascending: boolean) =>
     setLocalSort({ ...sort, ascending })
-  }
 
   const onAdd = () => {
     if (!sort) return
@@ -67,18 +66,13 @@ function AddSortView({ close }: Props) {
   return (
     <>
       <Select
-        value={sort?.fieldGuid}
+        value={sort.fieldGuid}
         onChange={setFieldGuid}
         variants={fieldGuids}
         displays={displays}
       />
-      <AscendingButton
-        ascending={sort?.ascending ?? false}
-        setAscending={setAscending}
-      />
-      <Button disabled={!sort} onClick={onAdd}>
-        Add
-      </Button>
+      <AscendingButton ascending={sort.ascending} setAscending={setAscending} />
+      <Button onClick={onAdd}>Add</Button>
     </>
   )
 }
@@ -98,20 +92,21 @@ function AscendingButton({
 }
 
 function AddGroupView({ close }: Props) {
-  const [group, setLocalGroup] = useState<Group>()
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
   const fields = fieldGuids.map((guid) => fieldsByGuid[guid])
   const displays = fields.map((f) => f.name)
+  const [group, setLocalGroup] = useState<Group>({
+    fieldGuid: fieldGuids[0],
+  })
+
   const dispatch = useAppDispatch()
 
-  const setFieldGuid = (guid?: string) => {
-    if (!guid) return
+  const setFieldGuid = (guid: string) => {
     setLocalGroup({ fieldGuid: guid })
   }
 
   const onAdd = () => {
-    if (!group) return
     dispatch(setGroup(group))
     close()
   }
@@ -119,25 +114,27 @@ function AddGroupView({ close }: Props) {
   return (
     <>
       <Select
-        value={group?.fieldGuid}
+        value={group.fieldGuid}
         onChange={setFieldGuid}
         variants={fieldGuids}
         displays={displays}
       />
-      <Button disabled={!group} onClick={onAdd}>
-        Add
-      </Button>
+      <Button onClick={onAdd}>Add</Button>
     </>
   )
 }
 
 function AddFilterView({ close }: Props) {
-  const [filter, setLocalFilter] = useState<Filter>()
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
   const fields = fieldGuids
     .map((guid) => fieldsByGuid[guid])
     .filter((f) => f.t === "SelectField")
+  const [filter, setLocalFilter] = useState<Filter>({
+    fieldGuid: fields[0].guid,
+    value: fields[0].selectOptions[0],
+  })
+
   const displays = fields.map((f) => f.name)
   const dispatch = useAppDispatch()
 
@@ -165,7 +162,7 @@ function AddFilterView({ close }: Props) {
       <Select
         value={filter?.fieldGuid}
         onChange={setFieldGuid}
-        variants={fieldGuids}
+        variants={fields.map((f) => f.guid)}
         displays={displays}
       />
       {valueOptions && (

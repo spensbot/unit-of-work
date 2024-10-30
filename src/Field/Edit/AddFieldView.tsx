@@ -1,15 +1,10 @@
-import {
-  Box,
-  Button,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material"
+import { Box, Button } from "@mui/material"
 import { useMemo, useState } from "react"
 import {
   DateField,
   Field,
   field_ts,
+  GroupStrategy,
   newField,
   NumberField,
   PropogateDownStrategy,
@@ -24,11 +19,11 @@ import { addField } from "../../Portfolio/portfolioSlice"
 import { useActivePortfolio } from "../../Portfolio/Portfolio"
 import SelectGroup from "../../components/SelectGroup"
 import SuggestedFieldView from "./SuggestedFieldView"
-import FieldTypeSelect from "./FieldTypeSelect"
 
 export default function AddFieldView({ close }: { close: () => void }) {
   const [mode, setMode] = useState<"Custom" | "Suggested">("Suggested")
   const [field, setField] = useState<Field>(newField("NumberField"))
+  const dispatch = useAppDispatch()
 
   return (
     <Box
@@ -49,8 +44,8 @@ export default function AddFieldView({ close }: { close: () => void }) {
       ) : (
         <SuggestedFieldView
           setField={(newField) => {
-            setField(newField)
-            setMode("Custom")
+            dispatch(addField(newField))
+            close()
           }}
         />
       )}
@@ -94,7 +89,7 @@ function CustomFieldView({
       <Select
         label="Propogate Down"
         value={field.propogateDown}
-        onChange={setPropogateDown}
+        onChangeMaybe={setPropogateDown}
         variants={["Inherit"]}
       />
       {field.t === "SelectField" && (
@@ -153,37 +148,42 @@ function GroupStrategyView({
   field,
   setField,
 }: SubProps<SelectField | UserField>) {
+  const BY_TASK = "task"
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
 
-  const weightFields = useMemo(
-    () =>
-      fieldGuids
-        .map((guid) => fieldsByGuid[guid])
-        .filter((f) => f.t === "NumberField"),
-    [fieldGuids, fieldsByGuid]
-  )
+  const weightFields = fieldGuids
+    .map((guid) => fieldsByGuid[guid])
+    .filter((f) => f.t === "NumberField")
 
   const weightFieldGuids = weightFields.map((f) => f.guid)
   const displays = weightFields.map((f) => f.name)
 
   const setWeightFieldGuid = (weightFieldGuid?: string) => {
+    const propogateUp =
+      weightFieldGuid === undefined
+        ? undefined
+        : ({
+            t: "Group",
+            weightFieldGuid:
+              weightFieldGuid === BY_TASK ? undefined : weightFieldGuid,
+          } as GroupStrategy)
+
     setField({
       ...field,
-      propogateUp: {
-        t: "Group",
-        weightFieldGuid,
-      },
+      propogateUp,
     })
   }
 
+  const weightField = field.propogateUp?.weightFieldGuid
+
   return (
     <Select
-      label="Weight Field"
-      value={field.propogateUp?.weightFieldGuid}
-      onChange={setWeightFieldGuid}
-      variants={weightFieldGuids}
-      displays={displays}
+      label="Propogate Up Weighted By"
+      value={field.propogateUp ? weightField ?? BY_TASK : undefined}
+      onChangeMaybe={setWeightFieldGuid}
+      variants={[...weightFieldGuids, BY_TASK]}
+      displays={[...displays, "Task"]}
     />
   )
 }
@@ -205,7 +205,7 @@ function ReduceStrategyView({
     <Select
       label="Propogate Up"
       value={field.propogateUp?.func}
-      onChange={set}
+      onChangeMaybe={set}
       variants={["Sum", "Max", "Min"]}
     />
   )
