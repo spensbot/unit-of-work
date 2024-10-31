@@ -4,7 +4,7 @@ import usePopover from "../../hooks/usePopover"
 
 export default function AddViewConfigButton() {
   // const [anchor, open, close, isOpen] = usePopover()
-  const [open, Popover] = usePopover()
+  const [open, Popover, close] = usePopover()
 
   return (
     <>

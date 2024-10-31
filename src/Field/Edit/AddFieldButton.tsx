@@ -4,7 +4,7 @@ import AddFieldView from "./AddFieldView"
 import usePopover from "../../hooks/usePopover"
 
 export default function AddFieldButton() {
-  const [open, Popover] = usePopover()
+  const [open, Popover, close] = usePopover()
 
   return (
     <>

@@ -2,12 +2,13 @@ import { Popover } from "@mui/material"
 import { useState } from "react"
 
 type Open = (event: React.MouseEvent<HTMLElement>) => void
+type Close = () => void
 
 interface Props {
   children: React.ReactNode
 }
 
-export default function usePopover(): [Open, React.FC<Props>] {
+export default function usePopover(): [Open, React.FC<Props>, Close] {
   const [anchor, setAnchor] = useState<HTMLElement | null>(null)
 
   const open = (event: React.MouseEvent<HTMLElement>) => {
@@ -34,5 +35,5 @@ export default function usePopover(): [Open, React.FC<Props>] {
     )
   }
 
-  return [open, container]
+  return [open, container, close]
 }
