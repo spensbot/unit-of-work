@@ -20,10 +20,18 @@ export default function getActiveViewUnitGuids(state: Portfolio): string[] {
   return units.map(u => u.guid)
 }
 
-function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] {
+// Returns all units, including the given unit and all its children, recursively.
+function getUnitsRecursiveWithOverlap(unit: Unit, depth: number, state: Portfolio): Unit[] {
   if (depth < 2) return [unit]
 
-  return [unit, ...unit.childrenGuids.flatMap(guid => getUnitsRecursive(state.unitsByGuid[guid], depth - 1, state))]
+  return [unit, ...unit.childrenGuids.flatMap(guid => getUnitsRecursiveWithOverlap(state.unitsByGuid[guid], depth - 1, state))]
+}
+
+// Returns the unit's children if it has any, otherwise returns the unit itself.
+function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] {
+  if (depth < 2 || unit.childrenGuids.length < 1) return [unit]
+
+  return unit.childrenGuids.flatMap(guid => getUnitsRecursive(state.unitsByGuid[guid], depth - 1, state))
 }
 
 function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {

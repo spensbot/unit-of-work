@@ -9,7 +9,7 @@ export default function createRandomizedUnit(portfolio: Portfolio, parentGuid?: 
   const userGuids = portfolio.userGuids
 
   fields.forEach((field) => {
-    if (field.propogateDown) return
+    if (parentGuid !== undefined && field.propogateDown) return
 
     switch (field.t) {
       case "DateField":
