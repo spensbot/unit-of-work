@@ -6,6 +6,7 @@ import {
   setUnitDescription,
   setActiveUnit,
   addUnit,
+  addUnitRandomized,
 } from "../Portfolio/portfolioSlice"
 import { useAppDispatch } from "../config/store"
 import { Close } from "@mui/icons-material"
@@ -40,6 +41,13 @@ export default function ActiveUnitView() {
         }
       >
         Add Child Unit
+      </Button>
+      <Button
+        onClick={() => {
+          dispatch(addUnitRandomized({ parentGuid: guid }))
+        }}
+      >
+        🤪 Add Child (Randomized)
       </Button>
     </Root>
   )
