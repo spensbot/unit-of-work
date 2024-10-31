@@ -12,11 +12,12 @@ import { useAppDispatch } from "../config/store"
 import Box from "@mui/material/Box"
 import FieldView from "../Field/FieldView"
 import AddFieldButton from "../Field/Edit/AddFieldButton"
+import { Grouping } from "./Grouping"
+import { Typography } from "@mui/material"
 
 export default function TableView() {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
-  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
-  const viewUnits = useActivePortfolio((p) => p.activeViewUnitGuids)
+  const grouping = useActivePortfolio((p) => p.activeViewGrouping)
 
   return (
     <Root>
@@ -38,9 +39,7 @@ export default function TableView() {
           </Tr>
         </thead>
         <tbody>
-          {viewUnits.map((unitGuid) => {
-            return <UnitViewTr key={unitGuid} guid={unitGuid} />
-          })}
+          <GroupingView grouping={grouping} />
         </tbody>
         <tfoot />
       </Table>
@@ -48,6 +47,32 @@ export default function TableView() {
       <AddUnitButton />
       <AddUnitButtonRandomized />
     </Root>
+  )
+}
+
+function GroupingView({ grouping }: { grouping: Grouping }) {
+  return (
+    <>
+      {grouping.members.map((member) => {
+        if (typeof member === "string") {
+          return <UnitViewTr key={member} guid={member} />
+        } else {
+          return (
+            <>
+              <Tr>
+                <td />
+                <td>
+                  <Typography variant="h6" sx={{ paddingTop: 2 }}>
+                    {member.name}
+                  </Typography>
+                </td>
+              </Tr>
+              <GroupingView key={member.name} grouping={member} />
+            </>
+          )
+        }
+      })}
+    </>
   )
 }
 
@@ -87,11 +112,6 @@ function AddUnitButton() {
 
 function AddUnitButtonRandomized() {
   const dispatch = useAppDispatch()
-  const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
-  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
-  const userGuids = useActivePortfolio((p) => p.userGuids)
-
-  const fields = fieldGuids.map((guid) => fieldsByGuid[guid])
 
   return (
     <Button

@@ -3,6 +3,7 @@ import { View } from '../View/View'
 import { Unit } from '../Unit/Unit'
 import { useAppSelector } from '../config/store'
 import { User } from '../User/User'
+import { Grouping } from '../View/Grouping'
 
 export interface Portfolio { // Collection, Domain, Portfolio, Universe
   name: string
@@ -19,6 +20,7 @@ export interface Portfolio { // Collection, Domain, Portfolio, Universe
   activeViewUnitGuids: string[]
   userGuids: string[]
   usersByGuid: { [guid: string]: User }
+  activeViewGrouping: Grouping
 }
 
 export function newPortfolio(): Portfolio {
@@ -63,7 +65,8 @@ export function newPortfolio(): Portfolio {
       'User_1': { guid: 'User_1', username: 'Alice', image_url: 'https://i.pravatar.cc/150?img=1' },
       'User_2': { guid: 'User_2', username: 'Bob', image_url: 'https://i.pravatar.cc/150?img=2' },
       'User_3': { guid: 'User_3', username: 'Charlie', image_url: 'https://i.pravatar.cc/150?img=6' }
-    }
+    },
+    activeViewGrouping: { t: 'Grouping', members: [], fieldValsByGuid: {} }
   }
 }
 

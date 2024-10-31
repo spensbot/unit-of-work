@@ -8,11 +8,9 @@ import ViewConfig from "./ViewConfig"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 
 export default function ActiveViewView() {
-  const activeViewGuid = useActivePortfolio((p) => p.activeViewGuid)
-
   return (
     <Root>
-      <ViewConfig guid={activeViewGuid} />
+      <ViewConfig />
       <Box sx={{ padding: 2 }}>
         <ActiveViewTyped />
       </Box>

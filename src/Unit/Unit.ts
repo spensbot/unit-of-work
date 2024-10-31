@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export type FieldValMap = { [fieldDefGuid: string]: FieldVal | undefined }
 
 export interface Unit { // A Unit of work
+  t: 'Unit'
   guid: string
   parentGuid?: string
   childrenGuids: string[]
@@ -16,6 +17,7 @@ export interface Unit { // A Unit of work
 
 export function newUnit(parentGuid?: string): Unit {
   return {
+    t: 'Unit',
     guid: uuidv4(),
     childrenGuids: [],
     name: '',

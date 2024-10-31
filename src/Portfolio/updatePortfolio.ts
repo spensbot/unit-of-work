@@ -4,9 +4,10 @@ import { Portfolio } from "./Portfolio";
 import * as f from '../util/functional'
 import { Field } from "../Field/Field";
 import { eqDeepSimple } from "../util/util";
-import { getActiveFieldVal, getActiveFieldValT } from "../Field/getFieldVal"
-import * as reduce from '../Field/reduceFunctions'
-import { FieldVal, normalizeWeighted, NumberFieldVal, SelectFieldVal, UserFieldVal, WeightedSelect } from "../Field/FieldVal";
+import { getActiveFieldValT } from "../Field/getFieldVal"
+import { reduceFieldVals } from "../Field/reduceFunctions";
+import { FieldVal, NumberFieldVal } from "../Field/FieldVal";
+import getActiveViewGrouping from "../View/getActiveViewGrouping";
 
 
 export default function updatePortfolio(portfolio: Portfolio) {
@@ -15,6 +16,11 @@ export default function updatePortfolio(portfolio: Portfolio) {
   const newGuids = getActiveViewUnitGuids(portfolio)
   if (!eqDeepSimple(portfolio.activeViewUnitGuids, newGuids)) {
     portfolio.activeViewUnitGuids = newGuids
+  }
+
+  const newGrouping = getActiveViewGrouping(portfolio)
+  if (!eqDeepSimple(portfolio.activeViewGrouping, newGrouping)) {
+    portfolio.activeViewGrouping = newGrouping
   }
 }
 
@@ -48,7 +54,7 @@ function propogateRecursive(field: Field, unit: Unit, portfolio: Portfolio, inhe
     ])
     .filter(passUp => passUp[0] !== undefined) as [FieldVal, number][]
 
-  const passUp = (field.propogateUp === undefined && inherit === undefined) ? undefined : reducePassUps(field, unit, passUps)
+  const passUp = (field.propogateUp === undefined && inherit === undefined) ? undefined : reduceFieldVals(field, passUps)
 
   const calculated = inherit ?? passUp
   setCalculatedIfChanged(field, unit, calculated)
@@ -61,42 +67,6 @@ function getWeight(child: Unit, field: Field, portfolio: Portfolio): number {
   const weightField = f.map(weightFieldGuid, guid => portfolio.fieldsByGuid[guid])
   const numberFieldVal = f.map(weightField, wf => getActiveFieldValT<NumberFieldVal>(child, wf, 'Number'))
   return numberFieldVal?.val ?? 0
-}
-
-function reducePassUps(field: Field, unit: Unit, passUpsIn: [FieldVal, number][]): FieldVal | undefined {
-  if (passUpsIn.length < 1) return undefined
-
-  if (field.propogateUp?.t === 'Group' && field.t === 'SelectField') {
-    const passUps = passUpsIn as [SelectFieldVal, number][]
-    return {
-      t: 'Select',
-      vals: reduce.select(passUps.map(([f, _]) => f.vals), passUps.map(([_, weight]) => weight))
-    }
-  }
-
-  if (field.propogateUp?.t === 'Group' && field.t === 'UserField') {
-    const passUps = passUpsIn as [UserFieldVal, number][]
-    return {
-      t: 'User',
-      guids: reduce.select(passUps.map(([f, _]) => f.guids), passUps.map(([_, weight]) => weight))
-    }
-  }
-
-  if (field.propogateUp?.t === 'Reduce' && field.t === 'NumberField') {
-    // TODO: Fix this to prevent bad fieldVal types
-    const func = reduce.number[field.propogateUp.func]
-    return reduceFields(passUpsIn.map(([val, _]) => val) as NumberFieldVal[], n => n.val, func, n => ({ t: 'Number', val: n }))
-  }
-}
-
-function reduceFields<T, U>(fields: T[], unwrap: (field: T) => U, merge: (a: U, b: U) => U, wrap: (u: U) => T): T {
-  const first = fields[0]
-  const rest = fields.slice(1)
-  const reduced = rest.reduce((acc, field) => {
-    const unwrapped = unwrap(field)
-    return merge(acc, unwrapped)
-  }, unwrap(first))
-  return wrap(reduced)
 }
 
 function setCalculatedIfChanged(field: Field, unit: Unit, calculated: FieldVal | undefined) {
