@@ -1,5 +1,5 @@
 import EditIcon from "@mui/icons-material/Edit"
-import { IconButton, Popover } from "@mui/material"
+import { IconButton } from "@mui/material"
 import EditFieldView from "./EditFieldView"
 import { useActivePortfolio } from "../../Portfolio/Portfolio"
 import { useAppDispatch } from "../../config/store"
@@ -14,7 +14,7 @@ interface Props {
 export default function EditFieldButton({ guid, visible }: Props) {
   const field = useActivePortfolio((p) => p.fieldsByGuid[guid])
   const dispatch = useAppDispatch()
-  const [anchor, open, close, isOpen] = usePopover()
+  const [open, Popover] = usePopover()
 
   return (
     <>
@@ -24,13 +24,7 @@ export default function EditFieldButton({ guid, visible }: Props) {
       >
         <EditIcon />
       </IconButton>
-      <Popover
-        open={isOpen}
-        anchorEl={anchor}
-        onClose={close}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
+      <Popover>
         <EditFieldView
           field={field}
           setField={(newField) => {

@@ -1,20 +1,15 @@
-import { Button, Popover } from "@mui/material"
+import { Button } from "@mui/material"
 import AddViewConfigPopup from "./AddViewConfigPopup"
 import usePopover from "../../hooks/usePopover"
 
 export default function AddViewConfigButton() {
-  const [anchor, open, close, isOpen] = usePopover()
+  // const [anchor, open, close, isOpen] = usePopover()
+  const [open, Popover] = usePopover()
 
   return (
     <>
-      <Button onClick={open}>Configure View</Button>
-      <Popover
-        open={isOpen}
-        anchorEl={anchor}
-        onClose={close}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
+      <Button onClick={open}>View</Button>
+      <Popover>
         <AddViewConfigPopup close={close} />
       </Popover>
     </>

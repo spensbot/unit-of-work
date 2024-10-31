@@ -5,6 +5,7 @@ import { Filter, Sort, Group, View } from '../View/View'
 import { FieldVal } from '../Field/FieldVal'
 import updatePortfolio from './updatePortfolio'
 import { Field } from '../Field/Field'
+import createRandomizedUnit from '../Unit/createRandomizedUnit'
 
 const portfolioSlice = createSlice({
   name: 'portfolio',
@@ -23,6 +24,17 @@ const portfolioSlice = createSlice({
       state.unitsByGuid[unit.guid] = unit
       if (unit.parentGuid === undefined) {
         state.rootUnitGuids.push(unit.guid)
+      } else {
+        state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
+      }
+      updatePortfolio(state)
+    },
+    addUnitRandomized: (state, { payload: { parentGuid } }: PayloadAction<{ parentGuid?: string }>) => {
+      const unit = createRandomizedUnit(state, parentGuid)
+      state.unitsByGuid[unit.guid] = unit
+      if (unit.parentGuid === undefined) {
+        state.rootUnitGuids.push(unit.guid)
+        state.activeUnitGuid = unit.guid
       } else {
         state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
       }
@@ -144,6 +156,7 @@ export const {
 
   // Unit
   addUnit,
+  addUnitRandomized,
   setActiveUnit,
   setUnitName,
   setUnitDescription,

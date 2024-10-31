@@ -1,7 +1,11 @@
 import styled from "@emotion/styled"
 import UnitViewTr from "../Unit/UnitViewTr"
 import Button from "@mui/material/Button"
-import { addUnit, setActiveUnit } from "../Portfolio/portfolioSlice"
+import {
+  addUnit,
+  addUnitRandomized,
+  setActiveUnit,
+} from "../Portfolio/portfolioSlice"
 import { newUnit } from "../Unit/Unit"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { useAppDispatch } from "../config/store"
@@ -93,79 +97,10 @@ function AddUnitButtonRandomized() {
     <Button
       fullWidth
       onClick={() => {
-        const unit = newUnit()
-        unit.name = randomName()
-        fields.forEach((field) => {
-          switch (field.t) {
-            case "DateField":
-              break
-            case "NumberField":
-              unit.fieldValsByGuid[field.guid] = {
-                t: "Number",
-                val: randomModifiedFibonacci(),
-              }
-              break
-            case "SelectField":
-              const option = getRandomVal(field.selectOptions)
-              unit.fieldValsByGuid[field.guid] = {
-                t: "Select",
-                vals: {
-                  [option]: 1,
-                },
-              }
-              break
-            case "UserField":
-              const userGuid = getRandomVal(userGuids)
-              unit.fieldValsByGuid[field.guid] = {
-                t: "User",
-                guids: {
-                  [userGuid]: 1,
-                },
-              }
-              break
-          }
-        })
-        dispatch(addUnit({ unit }))
-        dispatch(setActiveUnit({ guid: unit.guid }))
+        dispatch(addUnitRandomized({ parentGuid: undefined }))
       }}
     >
       🤪 Add Unit (Randomized)
     </Button>
   )
-}
-
-function randomModifiedFibonacci(): number {
-  const fib = [1, 2, 3, 5, 8, 13, 20, 40, 100]
-  return fib[Math.floor(Math.random() * fib.length)]
-}
-
-function randomName() {
-  const verbs = [
-    "Build",
-    "Fix",
-    "Optimize",
-    "Refactor",
-    "Test",
-    "Deploy",
-    "Monitor",
-    "Document",
-    "Design",
-    "Review",
-  ]
-  const nouns = [
-    "App",
-    "Website",
-    "Database",
-    "API",
-    "Server",
-    "Client",
-    "Framework",
-    "Library",
-  ]
-
-  return `${getRandomVal(verbs)} the ${getRandomVal(nouns)}`
-}
-
-function getRandomVal<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)]
 }
