@@ -12,6 +12,12 @@ export default function MultiSelectView({ vals }: { vals: WeightedSelect }) {
   const total = Object.values(vals).reduce((a, b) => a + b, 0)
   const sorted = Object.entries(vals).sort((a, b) => b[1] - a[1])
 
+  if (Object.keys(vals).length === 0) {
+    return null
+  }
+
+  const isAlone = Object.keys(vals).length === 1
+
   return (
     <Box display="flex" flexDirection="column" position="relative" px={0.5}>
       {sorted.map(([key, val]) => {
@@ -19,9 +25,11 @@ export default function MultiSelectView({ vals }: { vals: WeightedSelect }) {
         const percent = Math.floor(ratio * 100)
         return (
           <Box key={key} display="flex" gap={0.5} color="text.secondary">
-            <Typography sx={{ fontSize: rem(ratio), padding: 0, margin: 0 }}>
-              {percent}%
-            </Typography>
+            {!isAlone && (
+              <Typography sx={{ fontSize: rem(ratio), padding: 0, margin: 0 }}>
+                {percent}%
+              </Typography>
+            )}
             <Typography sx={{ fontSize: rem(ratio) }}>{key}</Typography>
           </Box>
         )
