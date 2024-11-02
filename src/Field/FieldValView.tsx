@@ -61,14 +61,7 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
   if (isCalculated && nVals > 1)
     return (
       <MultiSelectView
-        selectVal={{
-          t: "Select",
-          vals: Object.entries(active!.guids).reduce((acc, [guid, weight]) => {
-            const name = users[guid].username
-            acc[name] = weight
-            return acc
-          }, {} as Record<string, number>),
-        }}
+        vals={f.mapKeys(active!.guids, (guid) => users[guid].username)}
       />
     )
 
@@ -156,7 +149,7 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
 
   const nVals = active ? Object.keys(active?.vals).length : 0
 
-  if (isCalculated && nVals > 1) return <MultiSelectView selectVal={active!} />
+  if (isCalculated && nVals > 1) return <MultiSelectView vals={active!.vals} />
 
   return (
     <Box position="relative">

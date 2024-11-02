@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import UnitViewTr from "../Unit/UnitViewTr"
+import UnitViewTr, { GroupTotalViewTr } from "../Unit/UnitViewTr"
 import Button from "@mui/material/Button"
 import {
   addUnit,
@@ -14,6 +14,7 @@ import FieldView from "../Field/FieldView"
 import AddFieldButton from "../Field/Edit/AddFieldButton"
 import { Grouping } from "./Grouping"
 import { Typography } from "@mui/material"
+import { Fragment } from "react/jsx-runtime"
 
 export default function TableView() {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
@@ -51,6 +52,10 @@ export default function TableView() {
 }
 
 function GroupingView({ grouping }: { grouping: Grouping }) {
+  const isBottom = grouping.members
+    .map((m) => typeof m === "string")
+    .every(Boolean)
+
   return (
     <>
       {grouping.members.map((member) => {
@@ -58,7 +63,7 @@ function GroupingView({ grouping }: { grouping: Grouping }) {
           return <UnitViewTr key={member} guid={member} />
         } else {
           return (
-            <>
+            <Fragment key={member.name}>
               <Tr>
                 <td />
                 <td>
@@ -68,10 +73,16 @@ function GroupingView({ grouping }: { grouping: Grouping }) {
                 </td>
               </Tr>
               <GroupingView key={member.name} grouping={member} />
-            </>
+            </Fragment>
           )
         }
       })}
+      {isBottom && (
+        <GroupTotalViewTr
+          key={grouping.name ?? "RootGroupTotal"}
+          grouping={grouping}
+        />
+      )}
     </>
   )
 }

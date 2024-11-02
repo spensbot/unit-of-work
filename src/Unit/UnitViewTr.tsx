@@ -12,6 +12,8 @@ import { Box, IconButton } from "@mui/material"
 import DragHandleIcon from "@mui/icons-material/DragHandle"
 import { memo } from "react"
 import { Delete } from "@mui/icons-material"
+import { Grouping } from "../View/Grouping"
+import FieldTotalView from "../Field/FieldTotalView"
 
 export default memo(UnitViewTr)
 
@@ -52,6 +54,24 @@ function UnitViewTr({ guid }: { guid: string }) {
           <Delete />
         </IconButton>
       </Td>
+    </Root>
+  )
+}
+
+export function GroupTotalViewTr({ grouping }: { grouping: Grouping }) {
+  const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
+
+  return (
+    <Root isActive={false}>
+      <td></td>
+      <td></td>
+      {fieldGuids.map((fieldGuid) => {
+        return (
+          <td key={fieldGuid}>
+            <FieldTotalView total={grouping.fieldTotalsByGuid[fieldGuid]} />
+          </td>
+        )
+      })}
     </Root>
   )
 }

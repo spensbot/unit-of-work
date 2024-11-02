@@ -47,10 +47,10 @@ function applySortToGrouping(grouping: UnitGrouping, sort: Sort, state: Portfoli
   grouping.members.sort((a, b) => {
     const aVal = (a.t === 'Unit')
       ? getFieldValSortPrimitive(state, field, getActiveFieldVal(a, field))
-      : getFieldValSortPrimitive(state, field, a.fieldValsByGuid[fieldGuid])
+      : getFieldValSortPrimitive(state, field, a.fieldTotalsByGuid[fieldGuid])
     const bVal = (b.t === 'Unit')
       ? getFieldValSortPrimitive(state, field, getActiveFieldVal(b, field))
-      : getFieldValSortPrimitive(state, field, b.fieldValsByGuid[fieldGuid])
+      : getFieldValSortPrimitive(state, field, b.fieldTotalsByGuid[fieldGuid])
     if (aVal < bVal) {
       return -1 * mult
     } else if (aVal > bVal) {
@@ -72,39 +72,48 @@ function applyGroup(state: Portfolio, units: Unit[], group?: Group): UnitGroupin
   if (group === undefined) return {
     t: 'UnitGrouping',
     members: units,
-    fieldValsByGuid: {}
+    fieldTotalsByGuid: getFieldTotalsByGuid(state, units)
   }
 
-  const unitGrouping: UnitGrouping = {
-    t: 'UnitGrouping',
-    members: [],
-    fieldValsByGuid: {}
-  }
+  let members: (Unit | UnitGrouping)[] = []
   const field = state.fieldsByGuid[group.fieldGuid]
   const groupedUnits = f.groupByFunc(units, unit => getFieldValPrimitive(state, getActiveFieldVal(unit, field)))
   for (const key in groupedUnits) {
+
     const grouping: UnitGrouping = {
       t: 'UnitGrouping',
       name: key,
       members: groupedUnits[key],
-      fieldValsByGuid: {}
+      fieldTotalsByGuid: getFieldTotalsByGuid(state, groupedUnits[key])
     }
-    for (const fieldGuid of state.fieldGuids) {
-      const field = state.fieldsByGuid[fieldGuid]
-      const val = calculateGroupingField(state, grouping, field)
-      if (val !== undefined) grouping.fieldValsByGuid[fieldGuid] = val
-    }
-    unitGrouping.members.push(grouping)
+    members.push(grouping)
   }
 
-  return unitGrouping
+  return {
+    t: 'UnitGrouping',
+    members: members,
+    fieldTotalsByGuid: getFieldTotalsByGuid(state, members)
+  }
 }
 
-function calculateGroupingField(state: Portfolio, grouping: UnitGrouping, field: Field): FieldVal | undefined {
+function getFieldTotalsByGuid(state: Portfolio, items: (Unit | UnitGrouping)[]): { [fieldGuid: string]: FieldVal } {
+  const fieldTotals: { [fieldGuid: string]: FieldVal } = {}
+  for (const fieldGuid of state.fieldGuids) {
+    const field = state.fieldsByGuid[fieldGuid]
+    const val = calculateGroupingField(state, items, field)
+    if (val !== undefined) fieldTotals[fieldGuid] = val
+  }
+  return fieldTotals
+}
+
+function calculateGroupingField(state: Portfolio, items: (Unit | UnitGrouping)[], field: Field): FieldVal | undefined {
   if (field.propogateUp) {
-    const vals = grouping.members.map(member => {
-      if (member.t === 'Unit') return getActiveFieldVal(member, field)
-      return calculateGroupingField(state, member, field)
+    const vals = items.map(item => {
+      if (item.t === 'Unit') {
+        return getActiveFieldVal(item, field)
+      } else {
+        return calculateGroupingField(state, item.members, field)
+      }
     }).filter(f => f !== undefined)
     // TODO: Implement weights
     return reduceFieldVals(field, vals.map(val => [val, 1]))

@@ -27,3 +27,25 @@ export function groupByFunc<T, K extends string | number>(array: T[], keyFunc: (
     return result;
   }, {} as Record<K, T[]>);
 }
+
+export function mapValues<K extends string | number | symbol, T, U>(
+  obj: Record<K, T>,
+  f: (val: T) => U
+): Record<K, U> {
+  const result: Record<K, U> = {} as Record<K, U>;
+  for (const key in obj) {
+    result[key] = f(obj[key]);
+  }
+  return result;
+}
+
+export function mapKeys<K extends string | number | symbol, U extends string | number | symbol, T>(
+  obj: Record<K, T>,
+  f: (key: K) => U
+): Record<U, T> {
+  const result: Record<U, T> = {} as Record<U, T>;
+  for (const key in obj) {
+    result[f(key)] = obj[key];
+  }
+  return result;
+}

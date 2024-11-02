@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material"
-import { SelectFieldVal } from "./FieldVal"
+import { SelectFieldVal, WeightedSelect } from "./FieldVal"
 
 const BASE_REM = 0.7
 const REM_RANGE = 0.4
@@ -8,13 +8,9 @@ function rem(ratio: number): string {
   return `${BASE_REM + ratio * REM_RANGE}rem`
 }
 
-export default function MultiSelectView({
-  selectVal,
-}: {
-  selectVal: SelectFieldVal
-}) {
-  const total = Object.values(selectVal.vals).reduce((a, b) => a + b, 0)
-  const sorted = Object.entries(selectVal.vals).sort((a, b) => b[1] - a[1])
+export default function MultiSelectView({ vals }: { vals: WeightedSelect }) {
+  const total = Object.values(vals).reduce((a, b) => a + b, 0)
+  const sorted = Object.entries(vals).sort((a, b) => b[1] - a[1])
 
   return (
     <Box display="flex" flexDirection="column" position="relative" px={0.5}>

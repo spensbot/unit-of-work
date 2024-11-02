@@ -66,7 +66,7 @@ export function newPortfolio(): Portfolio {
       'User_2': { guid: 'User_2', username: 'Bob', image_url: 'https://i.pravatar.cc/150?img=2' },
       'User_3': { guid: 'User_3', username: 'Charlie', image_url: 'https://i.pravatar.cc/150?img=6' }
     },
-    activeViewGrouping: { t: 'Grouping', members: [], fieldValsByGuid: {} }
+    activeViewGrouping: { t: 'Grouping', members: [], fieldTotalsByGuid: {} }
   }
 }
 

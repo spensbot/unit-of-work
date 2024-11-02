@@ -6,14 +6,14 @@ export interface Grouping {
   t: 'Grouping'
   name?: string // Root grouping has no name
   members: (string | Grouping)[]
-  fieldValsByGuid: { [fieldGuid: string]: FieldVal }
+  fieldTotalsByGuid: { [fieldGuid: string]: FieldVal }
 }
 
 export interface UnitGrouping {
   t: 'UnitGrouping'
   name?: string
   members: (Unit | UnitGrouping)[]
-  fieldValsByGuid: { [fieldGuid: string]: FieldVal }
+  fieldTotalsByGuid: { [fieldGuid: string]: FieldVal }
 }
 
 export function MapGrouping(unitGrouping: UnitGrouping, state: Portfolio): Grouping {
@@ -24,6 +24,6 @@ export function MapGrouping(unitGrouping: UnitGrouping, state: Portfolio): Group
       if (member.t === 'Unit') return member.guid
       return MapGrouping(member, state)
     }),
-    fieldValsByGuid: unitGrouping.fieldValsByGuid
+    fieldTotalsByGuid: unitGrouping.fieldTotalsByGuid
   }
 }
