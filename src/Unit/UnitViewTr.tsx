@@ -25,10 +25,10 @@ function UnitViewTr({ guid }: { guid: string }) {
 
   return (
     <Root isActive={isActive}>
-      <UnitDepth guid={guid} />
       <Td>
         <Box display="flex" alignItems="center">
           {UnitSelect(guid)}
+          <UnitDepth guid={guid} />
           <DisplayInput
             value={name}
             onChange={(name) =>
@@ -77,11 +77,13 @@ export function GroupTotalViewTr({ grouping }: { grouping: Grouping }) {
 }
 
 const Root = styled.tr<{ isActive: boolean }>`
+  border: ${(props) =>
+    props.isActive
+      ? `2px solid ${props.theme.palette.primary.main}`
+      : `2px solid transparent`};
+
   border-bottom: ${(props) =>
     !props.isActive && `1px solid ${props.theme.palette.divider}`};
-
-  border: ${(props) =>
-    props.isActive && `2px solid ${props.theme.palette.primary.main}`};
   /* background-color: green; */
 `
 
@@ -131,13 +133,11 @@ function UnitDepth({ guid }: { guid: string }) {
   const depth = useActivePortfolio((p) => getDepth(guid, p))
 
   return (
-    <Td>
-      <Box display="flex" gap="0.2rem">
-        {Array.from({ length: depth + 1 }).map((_, i) => (
-          <DepthIcon key={i} />
-        ))}
-      </Box>
-    </Td>
+    <Box display="flex" gap="0.2rem">
+      {Array.from({ length: depth + 1 }).map((_, i) => (
+        <DepthIcon key={i} />
+      ))}
+    </Box>
   )
 }
 
