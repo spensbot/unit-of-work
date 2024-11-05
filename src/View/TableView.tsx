@@ -25,7 +25,6 @@ export default function TableView() {
       <Table>
         <thead>
           <Tr>
-            <Th></Th>
             <Th>Unit</Th>
             {fieldGuids.map((guid) => {
               return (

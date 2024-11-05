@@ -27,7 +27,7 @@ function UnitViewTr({ guid }: { guid: string }) {
     <Root isActive={isActive}>
       <Td>
         <Box display="flex" alignItems="center">
-          {UnitSelect(guid)}
+          <UnitSelect guid={guid} />
           <UnitDepth guid={guid} />
           <DisplayInput
             value={name}
@@ -63,7 +63,6 @@ export function GroupTotalViewTr({ grouping }: { grouping: Grouping }) {
 
   return (
     <Root isActive={false}>
-      <td></td>
       <td></td>
       {fieldGuids.map((fieldGuid) => {
         return (
@@ -111,7 +110,7 @@ function UnitField({
   )
 }
 
-function UnitSelect(guid: string) {
+function UnitSelect({ guid }: { guid: string }) {
   const dispatch = useAppDispatch()
 
   return (
