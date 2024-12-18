@@ -9,10 +9,12 @@ import GlobalStyle from "./config/GlobalStyle.tsx"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { beginSaveLoad } from "./config/saveload.ts"
+import { beginBackupSystem } from "./config/backupSystem.ts"
 import { ErrorBoundary } from "react-error-boundary"
 import ErrorFallback from "./config/ErrorFallback.tsx"
 
 beginSaveLoad()
+beginBackupSystem(1000 * 60 * 60) // backup every hour
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
