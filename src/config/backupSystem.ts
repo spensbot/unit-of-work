@@ -19,8 +19,6 @@ function loadBackupList(): number[] {
 function logBackupInfo() {
   const backupList = loadBackupList()
   Log.Info(`Attempting backup. Total backups: ${backupList.length}. Last: ${debugTimestamp(backupList[backupList.length - 1])}. First: ${debugTimestamp(backupList[0])}`)
-  Log.Temp(`Last backup: ${JSON.stringify(loadLastBackup())}`)
-  Log.Temp(`Last backup portfolio name: ${loadLastBackup()?.portfolio.name}`)
 }
 
 function debugTimestamp(timestamp: number): string {

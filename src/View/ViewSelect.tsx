@@ -12,6 +12,9 @@ import { useDispatch } from "react-redux"
 import { newTableView } from "./View"
 import DisplayInput from "../components/DisplayInput"
 import DeleteIcon from "@mui/icons-material/Delete"
+import { loadFromFile, saveToFile } from "../config/saveloadFile"
+import SaveIcon from "@mui/icons-material/Save"
+import LoadIcon from "@mui/icons-material/FileUpload"
 
 export default function ViewSelect() {
   const dispatch = useDispatch()
@@ -31,6 +34,8 @@ export default function ViewSelect() {
           backgroundColor: "background.default",
         }}
       />
+      <SaveButton />
+      <LoadButton />
     </Box>
   )
 }
@@ -67,5 +72,21 @@ function ViewSelectItem({ guid }: { guid: string }) {
         viewName
       )}
     </Box>
+  )
+}
+
+function SaveButton() {
+  return (
+    <IconButton onClick={saveToFile}>
+      <SaveIcon />
+    </IconButton>
+  )
+}
+
+function LoadButton() {
+  return (
+    <IconButton onClick={loadFromFile}>
+      <LoadIcon />
+    </IconButton>
   )
 }
