@@ -63,3 +63,17 @@ Portfolios are similar to Jira Company-Managed Projects (as opposed to Team-Mana
 Unit of work's structure makes it simple to view many rich representations of ticket status' without any maintenance (it requires lots of work to do the same in one of the simple PM softwares)
 
 Unit of work is still very simple, making it more understandable, user-friendly, and requiring less maintenance than Jira (hopefully)
+
+## Run Locally (Dev env. Takes about 15 seconds)
+
+Unit of Work doesn't (yet) work with a backend.
+
+Atm you can only work on a project in the local filesystem. Work is saved in local storage by default. Save/load buttons at the top right allow you to save your work to a file.
+
+```shell
+git clone git@github.com:spensbot/unit-of-work.git
+cd unit-of-work
+npm i
+npm start
+```
+
