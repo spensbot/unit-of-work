@@ -46,7 +46,7 @@ function UnitViewTr({ guid }: { guid: string }) {
         <UnitField
           key={guid + fieldGuid}
           unitGuid={guid}
-          fieldDefGuid={fieldGuid}
+          fieldGuid={fieldGuid}
         />
       ))}
       <Td style={{ textAlign: "right" }}>
@@ -96,15 +96,15 @@ const Td = styled.td``
 
 function UnitField({
   unitGuid,
-  fieldDefGuid,
+  fieldGuid,
 }: {
   unitGuid: string
-  fieldDefGuid: string
+  fieldGuid: string
 }) {
-  const field = useActivePortfolio((p) => p.fieldsByGuid[fieldDefGuid])
+  const field = useActivePortfolio((p) => p.fieldsByGuid[fieldGuid])
 
   return (
-    <Td key={fieldDefGuid}>
+    <Td key={fieldGuid}>
       <FieldValView unitGuid={unitGuid} field={field!} />
     </Td>
   )

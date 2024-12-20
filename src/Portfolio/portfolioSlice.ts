@@ -6,6 +6,7 @@ import { FieldVal } from '../Field/FieldVal'
 import updatePortfolio from './updatePortfolio'
 import { Field } from '../Field/Field'
 import createRandomizedUnit from '../Unit/createRandomizedUnit'
+import { Log } from '../util/Log'
 
 const portfolioSlice = createSlice({
   name: 'portfolio',
@@ -77,6 +78,27 @@ const portfolioSlice = createSlice({
       }
       updatePortfolio(state)
     },
+    applyFieldToChildren: (state, { payload }: PayloadAction<{ unitGuid: string, fieldGuid: string }>) => {
+      const parent = state.unitsByGuid[payload.unitGuid]
+      const field = state.fieldsByGuid[payload.fieldGuid]
+
+      const parentFieldVal = parent.fieldValsByGuid[payload.fieldGuid]
+
+      if (field.propogateDown !== 'Inherit') return Log.Error('Field does not propogate down')
+      if (parentFieldVal === undefined) return Log.Error('Parent does not have field value')
+      if (parent.childrenGuids.length === 0) return Log.Error('Parent has no children')
+
+      parent.childrenGuids.forEach(childGuid => {
+        const child = state.unitsByGuid[childGuid]
+        if (child.fieldValsByGuid[payload.fieldGuid] === undefined) {
+          child.fieldValsByGuid[payload.fieldGuid] = parentFieldVal
+        }
+      })
+
+      delete parent.fieldValsByGuid[payload.fieldGuid]
+
+      updatePortfolio(state)
+    },
 
     // Field
     addField: (state, { payload }: PayloadAction<Field>) => {
@@ -95,11 +117,11 @@ const portfolioSlice = createSlice({
     },
 
     // Field Val
-    setFieldVal: (state, { payload }: PayloadAction<{ unitGuid: string, fieldDefGuid: string, val?: FieldVal }>) => {
+    setFieldVal: (state, { payload }: PayloadAction<{ unitGuid: string, fieldGuid: string, val?: FieldVal }>) => {
       if (payload.val === undefined) {
-        delete state.unitsByGuid[payload.unitGuid].fieldValsByGuid[payload.fieldDefGuid]
+        delete state.unitsByGuid[payload.unitGuid].fieldValsByGuid[payload.fieldGuid]
       } else {
-        state.unitsByGuid[payload.unitGuid].fieldValsByGuid[payload.fieldDefGuid] = payload.val
+        state.unitsByGuid[payload.unitGuid].fieldValsByGuid[payload.fieldGuid] = payload.val
       }
       updatePortfolio(state)
     },
@@ -162,6 +184,7 @@ export const {
   setUnitDescription,
   moveUnit,
   deleteUnit,
+  applyFieldToChildren,
 
   // Field
   addField,

@@ -13,6 +13,8 @@ import { Close } from "@mui/icons-material"
 import UnitViewTr from "./UnitViewTr"
 import { newUnit } from "./Unit"
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp"
+import FieldView, { ActiveUnitFieldView } from "../Field/FieldView"
+import AddFieldButton from "../Field/Edit/AddFieldButton"
 
 export default function ActiveUnitView() {
   const guid = useActivePortfolio((p) => p.activeUnitGuid)
@@ -54,11 +56,30 @@ export default function ActiveUnitView() {
 }
 
 function Children({ guid }: { guid: string }) {
+  const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
+
   const childrenGuids = useActivePortfolio(
     (p) => p.unitsByGuid[guid].childrenGuids
   )
   return (
     <table>
+      <thead>
+        <tr>
+          <th>Child</th>
+          {fieldGuids.map((fieldGuid) => {
+            return (
+              <th key={fieldGuid}>
+                <ActiveUnitFieldView
+                  key={fieldGuid}
+                  unitGuid={guid}
+                  fieldGuid={fieldGuid}
+                />
+              </th>
+            )
+          })}
+          <th />
+        </tr>
+      </thead>
       <tbody>
         {childrenGuids.map((childGuid) => (
           <UnitViewTr key={childGuid} guid={childGuid} />

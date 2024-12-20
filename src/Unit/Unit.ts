@@ -2,7 +2,7 @@ import { FieldVal } from '../Field/FieldVal'
 import { Field } from '../Field/Field'
 import { v4 as uuidv4 } from 'uuid';
 
-export type FieldValMap = { [fieldDefGuid: string]: FieldVal | undefined }
+export type FieldValMap = { [fieldGuid: string]: FieldVal | undefined }
 
 export interface Unit { // A Unit of work
   t: 'Unit'

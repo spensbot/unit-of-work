@@ -14,7 +14,7 @@ import { ErrorBoundary } from "react-error-boundary"
 import ErrorFallback from "./config/ErrorFallback.tsx"
 
 beginSaveLoad()
-beginBackupSystem(1000 * 60 * 60) // backup every hour
+beginBackupSystem(1000 * 60 * 20) // backup every 20 minutes
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

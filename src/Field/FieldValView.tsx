@@ -46,7 +46,7 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
   function set(val: string | undefined) {
     dispatch(
       setFieldVal({
-        fieldDefGuid: field.guid,
+        fieldGuid: field.guid,
         unitGuid,
         val: f.map(val, (val) => ({
           t: "User",
@@ -95,7 +95,7 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
   function set(val: number | undefined) {
     dispatch(
       setFieldVal({
-        fieldDefGuid: field.guid,
+        fieldGuid: field.guid,
         unitGuid,
         val: f.map(val, (val) => ({
           t: "Number",
@@ -140,7 +140,7 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
   function set(val: string | undefined) {
     dispatch(
       setFieldVal({
-        fieldDefGuid: field.guid,
+        fieldGuid: field.guid,
         unitGuid,
         val: f.map(val, (val) => ({ t: "Select", vals: { [val]: 1 } })),
       })
