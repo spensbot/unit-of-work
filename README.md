@@ -66,9 +66,7 @@ Unit of work is still very simple, making it more understandable, user-friendly,
 
 ## Run Locally (Dev env. Takes about 15 seconds)
 
-Unit of Work doesn't (yet) work with a backend.
-
-Atm you can only work on a project in the local filesystem. Work is saved in local storage by default. Save/load buttons at the top right allow you to save your work to a file.
+Unit of Work doesn't (yet) work with a backend. Work is saved in local storage by default. Save/load buttons at the top right allow you to save your work to a file.
 
 ```shell
 git clone git@github.com:spensbot/unit-of-work.git
