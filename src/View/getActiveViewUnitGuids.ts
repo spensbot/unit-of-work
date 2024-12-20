@@ -34,11 +34,16 @@ function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] 
 }
 
 function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
-  return units.filter(unit => {
-    const fieldVal = unit.fieldValsByGuid[filter.fieldGuid]
+  if (filter.fieldGuid === 'ROOT_UNIT') {
+    return units.filter(unit => getRootParent(unit, state).guid === filter.value)
+  }
+  else {
+    return units.filter(unit => {
+      const fieldVal = unit.fieldValsByGuid[filter.fieldGuid]
 
-    return getFieldValPrimitive(state, fieldVal) === filter.value
-  })
+      return getFieldValPrimitive(state, fieldVal) === filter.value
+    })
+  }
 }
 
 function applySort(units: Unit[], sort: Sort, state: Portfolio): Unit[] {
@@ -56,4 +61,12 @@ function applySort(units: Unit[], sort: Sort, state: Portfolio): Unit[] {
     }
     return 0
   })
+}
+
+export function getRootParent(unit: Unit, state: Portfolio): Unit {
+  let parent = unit
+  while (parent.parentGuid !== undefined) {
+    parent = state.unitsByGuid[parent.parentGuid]
+  }
+  return parent
 }

@@ -8,6 +8,7 @@ import * as f from '../util/functional'
 import { reduceFieldVals } from "../Field/reduceFunctions"
 import { Grouping, MapGrouping, UnitGrouping } from "./Grouping"
 import { getFieldValPrimitive, getFieldValSortPrimitive } from "./getFieldValPrimitive"
+import { getRootParent } from "./getActiveViewUnitGuids"
 
 export default function getActiveViewGrouping(state: Portfolio): Grouping {
   const activeView = state.viewsByGuid[state.activeViewGuid]
@@ -31,13 +32,16 @@ function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] 
 }
 
 function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
-  return units.filter(unit => {
-    const fieldVal = getActiveFieldVal(unit, state.fieldsByGuid[filter.fieldGuid])
+  if (filter.fieldGuid === 'ROOT_UNIT') {
+    return units.filter(unit => getRootParent(unit, state).guid === filter.value)
+  } else {
+    return units.filter(unit => {
+      const fieldVal = getActiveFieldVal(unit, state.fieldsByGuid[filter.fieldGuid])
 
-    return getFieldValPrimitive(state, fieldVal) === filter.value
-  })
+      return getFieldValPrimitive(state, fieldVal) === filter.value
+    })
+  }
 }
-
 
 function applySortToGrouping(grouping: UnitGrouping, sort: Sort, state: Portfolio): UnitGrouping {
   const mult = sort.ascending ? 1 : -1

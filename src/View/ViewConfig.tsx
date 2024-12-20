@@ -33,12 +33,21 @@ function FilterView() {
   const filter = useActiveView((v) => v.filter)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
   const [open, Popover] = usePopover()
+  const rootUnitName = useActivePortfolio((p) => {
+    if (filter?.value === undefined) return null
+    const rootUnit = p.unitsByGuid[filter?.value]
+    return rootUnit.name
+  })
 
   if (filter === undefined) return null
 
-  const filterField = fieldsByGuid[filter.fieldGuid].name
-
-  const label = `${filterField} == ${filter.value}`
+  let label = ""
+  if (filter.fieldGuid === "ROOT_UNIT") {
+    label = `Root Unit == ${rootUnitName}`
+  } else {
+    const filterField = fieldsByGuid[filter.fieldGuid].name
+    label = `${filterField} == ${filter.value}`
+  }
 
   return (
     <>

@@ -20,7 +20,7 @@ export type Group = {
 
 // This filter is trash for display purposes (for now)
 export interface Filter {
-  fieldGuid: string
+  fieldGuid: string | 'ROOT_UNIT'
   value: string
 }
 
