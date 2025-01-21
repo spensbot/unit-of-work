@@ -60,3 +60,11 @@ export function zip<T, U>(a: T[], b: U[]): [T, U][] {
 
   return result;
 }
+
+export function range1(n: number): number[] {
+  return Array.from({ length: n }, (_, i) => i);
+}
+
+export function range2(start: number, end: number): number[] {
+  return Array.from({ length: end - start }, (_, i) => i + start);
+}
