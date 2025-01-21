@@ -49,3 +49,14 @@ export function mapKeys<K extends string | number | symbol, U extends string | n
   }
   return result;
 }
+
+export function zip<T, U>(a: T[], b: U[]): [T, U][] {
+  const n = Math.min(a.length, b.length);
+
+  const result: [T, U][] = [];
+  for (let i = 0; i < n; i++) {
+    result.push([a[i], b[i]]);
+  }
+
+  return result;
+}

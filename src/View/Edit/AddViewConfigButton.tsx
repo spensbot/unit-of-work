@@ -1,4 +1,5 @@
-import { Button } from "@mui/material"
+import { IconButton } from "@mui/material"
+import SettingsIcon from "@mui/icons-material/Settings"
 import AddViewConfigPopup from "./AddViewConfigPopup"
 import usePopover from "../../hooks/usePopover"
 
@@ -8,7 +9,10 @@ export default function AddViewConfigButton() {
 
   return (
     <>
-      <Button onClick={open}>View</Button>
+      <IconButton onClick={open}>
+        <SettingsIcon />
+      </IconButton>
+      {/* <Button onClick={open}>View</Button> */}
       <Popover>
         <AddViewConfigPopup close={close} />
       </Popover>

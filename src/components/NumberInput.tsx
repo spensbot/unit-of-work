@@ -1,6 +1,8 @@
 import styled from "@emotion/styled"
 import DisplayInput from "./DisplayInput"
 import { useState } from "react"
+import { Box } from "@mui/material"
+import { Log } from "../util/Log"
 
 interface Props {
   value?: number
@@ -19,8 +21,12 @@ export default function NumberInput({ value, onChange, faded, split }: Props) {
     setText(valString)
   }
 
+  if (isError) {
+    Log.Temp(`Error parsing number: ${text}`)
+  }
+
   return (
-    <Root isError={isError}>
+    <Box bgcolor={isError ? "error.dark" : "inherit"}>
       <DisplayInput
         value={text}
         onChange={(newText) => {
@@ -37,7 +43,7 @@ export default function NumberInput({ value, onChange, faded, split }: Props) {
         faded={faded}
         split={split}
       />
-    </Root>
+    </Box>
   )
 }
 
@@ -50,9 +56,3 @@ function parseNum(text: string): number | null {
   if (isNaN(num)) return null
   return num
 }
-
-const Root = styled.div<{ isError: boolean }>`
-  color: ${(props) => props.theme.palette.error.main};
-  background-color: ${(props) =>
-    props.isError && props.theme.palette.error.dark};
-`
