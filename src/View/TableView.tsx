@@ -15,6 +15,7 @@ import AddFieldButton from "../Field/Edit/AddFieldButton"
 import { Grouping } from "./Grouping"
 import { Typography } from "@mui/material"
 import { Fragment } from "react/jsx-runtime"
+import isDebug from "../isDebug"
 
 export default function TableView() {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
@@ -122,6 +123,8 @@ function AddUnitButton() {
 
 function AddUnitButtonRandomized() {
   const dispatch = useAppDispatch()
+
+  if (!isDebug) return null
 
   return (
     <Button

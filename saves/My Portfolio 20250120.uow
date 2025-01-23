@@ -7,7 +7,8 @@
       "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
       "33fc4291-dacf-4d8f-82a4-1f79fcb9b701",
       "9346b4da-cfe7-4cfc-a948-4dbe857710e2",
-      "1bde0029-e9f4-4c04-9052-aed73765fa16"
+      "1bde0029-e9f4-4c04-9052-aed73765fa16",
+      "8c7e9965-8d20-4684-959d-58290c91b976"
     ],
     "unitsByGuid": {
       "ab2d1101-d952-4f41-bb01-2da7fe3495d7": {
@@ -578,7 +579,15 @@
           "5ae71633-cae8-4adc-80a2-baf4815ed55e",
           "c09cf82e-7230-46ba-976b-501d1c6cc2de",
           "3347a3f1-2c15-4618-a375-e825a7d60d54",
-          "ef99f266-cad4-4098-9099-dab7f9ac3c4b"
+          "ef99f266-cad4-4098-9099-dab7f9ac3c4b",
+          "40535df1-51b0-4213-ab45-b920b039e380",
+          "48a56a3e-5793-48be-96a0-ae57c48d51ba",
+          "ac629542-bea3-4baf-8fe1-53b0d910c9a9",
+          "42749bb4-3cb2-402b-a1c1-d964a343e490",
+          "fc5a77bb-5d5d-4560-bb05-ee174c694fb0",
+          "bfc3834b-e005-4795-9438-01042bbb0224",
+          "bd38c8b6-b08c-4445-a035-04345d912a1a",
+          "c749c315-120a-4ba5-9063-c2d29481fb50"
         ],
         "name": "Unit of Work",
         "description": "",
@@ -593,7 +602,7 @@
         "calculatedFieldValsByGuid": {
           "Field_3": {
             "t": "Number",
-            "val": 36
+            "val": 74
           },
           "1c09110a-ec3d-4c2d-8a60-bab88fc23f6c": {
             "t": "Select",
@@ -605,8 +614,8 @@
           "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
             "t": "Select",
             "vals": {
-              "Todo": 0.6666666666666666,
-              "Complete": 0.3333333333333333
+              "Todo": 0.8378378378378379,
+              "Complete": 0.16216216216216217
             }
           }
         }
@@ -1139,6 +1148,261 @@
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
         "calculatedFieldValsByGuid": {}
+      },
+      "8c7e9965-8d20-4684-959d-58290c91b976": {
+        "t": "Unit",
+        "guid": "8c7e9965-8d20-4684-959d-58290c91b976",
+        "childrenGuids": [],
+        "name": "Polyglot",
+        "description": "An AI-powered language learning app for intermediate learners.",
+        "fieldValsByGuid": {
+          "4c53f3db-50ca-4b4e-be30-058a8b04cc0f": {
+            "t": "Select",
+            "vals": {
+              "1 Low": 1
+            }
+          }
+        },
+        "calculatedFieldValsByGuid": {}
+      },
+      "40535df1-51b0-4213-ab45-b920b039e380": {
+        "t": "Unit",
+        "guid": "40535df1-51b0-4213-ab45-b920b039e380",
+        "childrenGuids": [],
+        "name": "New Units always visible in view",
+        "description": "When clicking Add Unit. The new unit should be created with appropriate fields so that it is visible in the current view.",
+        "fieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          },
+          "Field_3": {
+            "t": "Number",
+            "val": 2
+          }
+        },
+        "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
+        "calculatedFieldValsByGuid": {}
+      },
+      "48a56a3e-5793-48be-96a0-ae57c48d51ba": {
+        "t": "Unit",
+        "guid": "48a56a3e-5793-48be-96a0-ae57c48d51ba",
+        "childrenGuids": [
+          "7eec09ae-ce51-44a9-9e20-7f12c8524363",
+          "1b142224-31f6-42c0-97a8-8885d1f1a2de",
+          "59e0b6d0-2a3d-4969-9cee-70a253d55ae7"
+        ],
+        "name": "Better Filters",
+        "description": "",
+        "fieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          }
+        },
+        "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
+        "calculatedFieldValsByGuid": {
+          "Field_3": {
+            "t": "Number",
+            "val": 10
+          }
+        }
+      },
+      "7eec09ae-ce51-44a9-9e20-7f12c8524363": {
+        "t": "Unit",
+        "guid": "7eec09ae-ce51-44a9-9e20-7f12c8524363",
+        "childrenGuids": [],
+        "name": "&& Filters",
+        "description": "",
+        "fieldValsByGuid": {
+          "Field_3": {
+            "t": "Number",
+            "val": 4
+          }
+        },
+        "parentGuid": "48a56a3e-5793-48be-96a0-ae57c48d51ba",
+        "calculatedFieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          }
+        }
+      },
+      "1b142224-31f6-42c0-97a8-8885d1f1a2de": {
+        "t": "Unit",
+        "guid": "1b142224-31f6-42c0-97a8-8885d1f1a2de",
+        "childrenGuids": [],
+        "name": "|| Filters",
+        "description": "",
+        "fieldValsByGuid": {
+          "Field_3": {
+            "t": "Number",
+            "val": 4
+          }
+        },
+        "parentGuid": "48a56a3e-5793-48be-96a0-ae57c48d51ba",
+        "calculatedFieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          }
+        }
+      },
+      "59e0b6d0-2a3d-4969-9cee-70a253d55ae7": {
+        "t": "Unit",
+        "guid": "59e0b6d0-2a3d-4969-9cee-70a253d55ae7",
+        "childrenGuids": [],
+        "name": "! Filters",
+        "description": "",
+        "fieldValsByGuid": {
+          "Field_3": {
+            "t": "Number",
+            "val": 2
+          }
+        },
+        "parentGuid": "48a56a3e-5793-48be-96a0-ae57c48d51ba",
+        "calculatedFieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          }
+        }
+      },
+      "ac629542-bea3-4baf-8fe1-53b0d910c9a9": {
+        "t": "Unit",
+        "guid": "ac629542-bea3-4baf-8fe1-53b0d910c9a9",
+        "childrenGuids": [],
+        "name": "View children drop-down",
+        "description": "When viewing units in a table view, you should be able to expand any unit to view it's children and add children.",
+        "fieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          },
+          "Field_3": {
+            "t": "Number",
+            "val": 8
+          }
+        },
+        "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
+        "calculatedFieldValsByGuid": {}
+      },
+      "42749bb4-3cb2-402b-a1c1-d964a343e490": {
+        "t": "Unit",
+        "guid": "42749bb4-3cb2-402b-a1c1-d964a343e490",
+        "childrenGuids": [],
+        "name": "Ability to change unit parent",
+        "description": "Need the ability to move units around from 1 parent to another. \n\nThere is a simple way to do this for POC purposes. Just have a \"move unit\" button, that toggles a unit for moving so then you can navigate to any new unit and select a \"make parent\" button or something.",
+        "fieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          },
+          "Field_3": {
+            "t": "Number",
+            "val": 2
+          }
+        },
+        "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
+        "calculatedFieldValsByGuid": {}
+      },
+      "fc5a77bb-5d5d-4560-bb05-ee174c694fb0": {
+        "t": "Unit",
+        "guid": "fc5a77bb-5d5d-4560-bb05-ee174c694fb0",
+        "childrenGuids": [],
+        "name": "Temp View / Unit View",
+        "description": "Allow users to create a dedicated view of a unit at the click of a button. The Unit should be set as a filter for the view, so you see it's children.\n\nBy default the view should be temporary, and should require a user to hit \"save\" to persist it in the view toolbar.",
+        "fieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          },
+          "Field_3": {
+            "t": "Number",
+            "val": 4
+          }
+        },
+        "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
+        "calculatedFieldValsByGuid": {}
+      },
+      "bfc3834b-e005-4795-9438-01042bbb0224": {
+        "t": "Unit",
+        "guid": "bfc3834b-e005-4795-9438-01042bbb0224",
+        "childrenGuids": [],
+        "name": "Calculated Fields",
+        "description": "There should be a number of restrictions on calculated fields:\n- Numbers only\n- Only calculated based on number fields\n- Not propagate-able (so there is a clear order-of-operation of propagate, then calculate",
+        "fieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          },
+          "Field_3": {
+            "t": "Number",
+            "val": 4
+          }
+        },
+        "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
+        "calculatedFieldValsByGuid": {}
+      },
+      "bd38c8b6-b08c-4445-a035-04345d912a1a": {
+        "t": "Unit",
+        "guid": "bd38c8b6-b08c-4445-a035-04345d912a1a",
+        "childrenGuids": [],
+        "name": "Customizable Hierarchy View",
+        "description": "",
+        "fieldValsByGuid": {
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          },
+          "Field_3": {
+            "t": "Number",
+            "val": 4
+          }
+        },
+        "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
+        "calculatedFieldValsByGuid": {}
+      },
+      "c749c315-120a-4ba5-9063-c2d29481fb50": {
+        "t": "Unit",
+        "guid": "c749c315-120a-4ba5-9063-c2d29481fb50",
+        "childrenGuids": [],
+        "name": "Select Field Colors",
+        "description": "",
+        "fieldValsByGuid": {
+          "Field_3": {
+            "t": "Number",
+            "val": 4
+          },
+          "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
+            "t": "Select",
+            "vals": {
+              "Todo": 1
+            }
+          }
+        },
+        "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
+        "calculatedFieldValsByGuid": {}
       }
     },
     "fieldGuids": [
@@ -1219,7 +1483,7 @@
         "mode": "table",
         "guid": "9c5d61de-31dd-4fdf-87f9-1d40118cf091",
         "name": "Unit of Work",
-        "depth": 2,
+        "depth": 1,
         "filter": {
           "fieldGuid": "ROOT_UNIT",
           "value": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08"
@@ -1232,7 +1496,8 @@
       "1bde0029-e9f4-4c04-9052-aed73765fa16",
       "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
       "33fc4291-dacf-4d8f-82a4-1f79fcb9b701",
-      "9346b4da-cfe7-4cfc-a948-4dbe857710e2"
+      "9346b4da-cfe7-4cfc-a948-4dbe857710e2",
+      "8c7e9965-8d20-4684-959d-58290c91b976"
     ],
     "userGuids": [
       "User_1",
@@ -1263,23 +1528,23 @@
         "1bde0029-e9f4-4c04-9052-aed73765fa16",
         "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
         "33fc4291-dacf-4d8f-82a4-1f79fcb9b701",
-        "9346b4da-cfe7-4cfc-a948-4dbe857710e2"
+        "9346b4da-cfe7-4cfc-a948-4dbe857710e2",
+        "8c7e9965-8d20-4684-959d-58290c91b976"
       ],
       "fieldTotalsByGuid": {
         "Field_3": {
           "t": "Number",
-          "val": 144
+          "val": 182
         },
         "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
           "t": "Select",
           "vals": {
-            "Complete": 0.35555555555555557,
+            "Complete": 0.2984984984984985,
             "In Progress": 0.04444444444444444,
-            "Todo": 0.6
+            "Todo": 0.6570570570570571
           }
         }
       }
-    },
-    "activeUnitGuid": "01b7aa55-457d-4802-87bf-1edd2f1933a2"
+    }
   }
 }
