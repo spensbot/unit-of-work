@@ -19,6 +19,9 @@ const portfolioSlice = createSlice({
     setDescription: (state, { payload }: PayloadAction<string>) => {
       state.description = payload
     },
+    setLevelName: (state, { payload: { i, newName } }: PayloadAction<{ i: number, newName: string }>) => {
+      state.levelNames[i] = newName
+    },
 
     // Unit
     addUnit: (state, { payload: { unit } }: PayloadAction<{ unit: Unit }>) => {
@@ -175,6 +178,7 @@ export const {
   // Portfolio
   setName,
   setDescription,
+  setLevelName,
 
   // Unit
   addUnit,

@@ -1,3 +1,4 @@
+import migrate from "./migrate"
 import { resetState, store } from "./store"
 
 const KEY = "store"
@@ -9,6 +10,6 @@ export function beginSaveLoad() {
 
   const existingState = localStorage.getItem(KEY)
   if (existingState) {
-    store.dispatch(resetState(JSON.parse(existingState)))
+    store.dispatch(resetState(migrate(JSON.parse(existingState))))
   }
 }

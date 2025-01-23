@@ -8,6 +8,7 @@ import { getActiveFieldValT } from "../Field/getFieldVal"
 import { reduceFieldVals } from "../Field/reduceFunctions";
 import { FieldVal, NumberFieldVal } from "../Field/FieldVal";
 import getActiveViewGrouping from "../View/getActiveViewGrouping";
+import getMaxDepth from "./getMaxDepth";
 
 
 export default function updatePortfolio(portfolio: Portfolio) {
@@ -22,6 +23,8 @@ export default function updatePortfolio(portfolio: Portfolio) {
   if (!eqDeepSimple(portfolio.activeViewGrouping, newGrouping)) {
     portfolio.activeViewGrouping = newGrouping
   }
+
+  updateLevelNames(portfolio)
 }
 
 function propogateFieldVals(portfolio: Portfolio) {
@@ -76,5 +79,13 @@ function setCalculatedIfChanged(field: Field, unit: Unit, calculated: FieldVal |
 
   if (!eqDeepSimple(unit.calculatedFieldValsByGuid[field.guid], calculated)) {
     unit.calculatedFieldValsByGuid[field.guid] = calculated
+  }
+}
+
+function updateLevelNames(portfolio: Portfolio) {
+  const maxDepth = getMaxDepth(portfolio)
+
+  while (portfolio.levelNames.length < maxDepth) {
+    portfolio.levelNames.push("")
   }
 }

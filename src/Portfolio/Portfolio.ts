@@ -13,7 +13,7 @@ export interface Portfolio { // Collection, Domain, Portfolio, Universe
   unitsByGuid: { [guid: string]: Unit }
   fieldGuids: string[]
   fieldsByGuid: { [guid: string]: Field }
-  layerNames: string[]
+  levelNames: string[]
   viewGuids: string[]
   viewsByGuid: { [guid: string]: View }
   activeViewGuid: string
@@ -53,7 +53,7 @@ export function newPortfolio(): Portfolio {
       },
       'Field_5': { guid: 'Field_5', t: 'DateField', name: 'End' },
     },
-    layerNames: [],
+    levelNames: [],
     viewGuids: ['View_1'],
     viewsByGuid: {
       'View_1': { guid: 'View_1', mode: 'table', name: 'Everything', depth: 0 }

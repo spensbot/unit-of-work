@@ -13,12 +13,14 @@ import AddViewConfigButton from "./Edit/AddViewConfigButton"
 import usePopover from "../hooks/usePopover"
 import FilterEditor from "./Edit/FilterEditor"
 import PopoverBox from "../components/PopoverBox"
+import HierarchyView from "./HierarchyView"
 
 export default function ViewConfig() {
   const canConfig = useActivePortfolio((p) => p.fieldGuids.length > 0)
   return (
     <Box display="flex" alignItems="center" gap={2} padding={2}>
-      <DepthView />
+      {/* <DepthView /> */}
+      <HierarchyView />
       <SortView />
       <GroupView />
       <FilterView />

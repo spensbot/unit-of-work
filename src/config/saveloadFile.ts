@@ -1,3 +1,4 @@
+import migrate from "./migrate";
 import { resetState, store } from "./store"
 
 const EXTENSION = ".uow"
@@ -30,5 +31,5 @@ export async function loadFromFile() {
   const fileContents = await file.text();
   const loadedState = JSON.parse(fileContents);
 
-  store.dispatch(resetState(loadedState));
+  store.dispatch(resetState(migrate(loadedState)));
 }

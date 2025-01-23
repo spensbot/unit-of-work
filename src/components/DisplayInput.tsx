@@ -8,6 +8,8 @@ interface Props {
   variant?: Variant
   faded?: boolean
   split?: number
+  padding?: number
+  color?: string
 }
 
 export default function DisplayInput({
@@ -16,6 +18,8 @@ export default function DisplayInput({
   variant = "body1",
   faded,
   split = 0.5,
+  padding = 23,
+  color,
 }: Props) {
   return (
     <FormControl fullWidth>
@@ -47,8 +51,9 @@ export default function DisplayInput({
           },
           htmlInput: {
             style: {
-              paddingTop: PAD * split,
-              paddingBottom: PAD * (1 - split),
+              paddingTop: padding * split,
+              paddingBottom: padding * (1 - split),
+              color: color,
             },
           },
         }}
@@ -56,5 +61,3 @@ export default function DisplayInput({
     </FormControl>
   )
 }
-
-const PAD = 23
