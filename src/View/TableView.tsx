@@ -56,9 +56,13 @@ function GroupingView({ grouping }: { grouping: Grouping }) {
     .map((m) => typeof m === "string")
     .every(Boolean)
 
+  // TODO: Add reuseable list elements and virual scrolling
+  // so an unlimited number of units can be displayed without perf issues.
+  const MAX_UNITS = 20
+
   return (
     <>
-      {grouping.members.map((member) => {
+      {grouping.members.slice(0, MAX_UNITS).map((member) => {
         if (typeof member === "string") {
           return <UnitViewTr key={member} guid={member} />
         } else {

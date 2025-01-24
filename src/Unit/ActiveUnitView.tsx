@@ -15,6 +15,7 @@ import { newUnit } from "./Unit"
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp"
 import FieldView, { ActiveUnitFieldView } from "../Field/FieldView"
 import AddFieldButton from "../Field/Edit/AddFieldButton"
+import isDebug from "../isDebug"
 
 export default function ActiveUnitView() {
   const guid = useActivePortfolio((p) => p.activeUnitGuid)
@@ -44,13 +45,7 @@ export default function ActiveUnitView() {
       >
         Add Child Unit
       </Button>
-      <Button
-        onClick={() => {
-          dispatch(addUnitRandomized({ parentGuid: guid }))
-        }}
-      >
-        🤪 Add Child (Randomized)
-      </Button>
+      <AddRandomizedChildButton guid={guid} />
     </Root>
   )
 }
@@ -132,6 +127,22 @@ function GotoParentButton({ guid }: { guid: string }) {
     >
       <ArrowCircleUpIcon sx={{ fontSize: 30 }} />
     </IconButton>
+  )
+}
+
+function AddRandomizedChildButton({ guid }: { guid: string }) {
+  const dispatch = useAppDispatch()
+
+  if (!isDebug) return null
+
+  return (
+    <Button
+      onClick={() => {
+        dispatch(addUnitRandomized({ parentGuid: guid }))
+      }}
+    >
+      🤪 Add Child (Randomized)
+    </Button>
   )
 }
 
