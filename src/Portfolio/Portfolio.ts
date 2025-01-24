@@ -21,6 +21,7 @@ export interface Portfolio { // Collection, Domain, Portfolio, Universe
   userGuids: string[]
   usersByGuid: { [guid: string]: User }
   activeViewGrouping: Grouping
+  moveUnitGuid?: string
 }
 
 export function newPortfolio(): Portfolio {

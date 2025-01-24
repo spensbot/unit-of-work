@@ -15,6 +15,7 @@ import { Delete } from "@mui/icons-material"
 import { Grouping } from "../View/Grouping"
 import FieldTotalView from "../Field/FieldTotalView"
 import UnitDepth from "./UnitDepth"
+import MoveUnitButtons from "./MoveUnitButtons"
 
 export default memo(UnitViewTr)
 
@@ -51,9 +52,7 @@ function UnitViewTr({ guid }: { guid: string }) {
         />
       ))}
       <Td style={{ textAlign: "right" }}>
-        <IconButton onClick={() => dispatch(deleteUnit({ guid }))}>
-          <Delete />
-        </IconButton>
+        <MoveUnitButtons guid={guid} />
       </Td>
     </Root>
   )

@@ -13,9 +13,9 @@ import { Close } from "@mui/icons-material"
 import UnitViewTr from "./UnitViewTr"
 import { newUnit } from "./Unit"
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp"
-import FieldView, { ActiveUnitFieldView } from "../Field/FieldView"
-import AddFieldButton from "../Field/Edit/AddFieldButton"
+import { ActiveUnitFieldView } from "../Field/FieldView"
 import isDebug from "../isDebug"
+import DeleteUnitButton from "./DeleteUnitButton"
 
 export default function ActiveUnitView() {
   const guid = useActivePortfolio((p) => p.activeUnitGuid)
@@ -28,6 +28,7 @@ export default function ActiveUnitView() {
       <Box display="flex" alignItems="center" gap={2}>
         <GotoParentButton guid={guid} />
         <Name guid={guid} />
+        <DeleteUnitButton guid={guid} />
         <IconButton onClick={() => dispatch(setActiveUnit({}))}>
           <Close />
         </IconButton>

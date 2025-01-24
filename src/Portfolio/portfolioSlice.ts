@@ -22,6 +22,9 @@ const portfolioSlice = createSlice({
     setLevelName: (state, { payload: { i, newName } }: PayloadAction<{ i: number, newName: string }>) => {
       state.levelNames[i] = newName
     },
+    setMoveUnit: (state, { payload }: PayloadAction<{ guid?: string }>) => {
+      state.moveUnitGuid = payload.guid
+    },
 
     // Unit
     addUnit: (state, { payload: { unit } }: PayloadAction<{ unit: Unit }>) => {
@@ -66,6 +69,7 @@ const portfolioSlice = createSlice({
       if (unit.parentGuid !== undefined) {
         state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
       }
+      delete state.moveUnitGuid
       updatePortfolio(state)
     },
     deleteUnit: (state, { payload }: PayloadAction<{ guid: string }>) => {
@@ -179,6 +183,7 @@ export const {
   setName,
   setDescription,
   setLevelName,
+  setMoveUnit,
 
   // Unit
   addUnit,
