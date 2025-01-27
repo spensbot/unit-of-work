@@ -1,26 +1,26 @@
 import { map } from "../../util/functional"
 
 /// A very simple Abstract Syntax Tree (AST) for a calculator
-export type CalcNode<T> = NumberSource<T> | BinaryOp<T> // Punc
+export type CalcNode = NumberSource | BinaryOp // Punc
 
 export type OperatorString = '+' | '-' | '*' | '/'
 
-export interface BinaryOp<T> {
+export interface BinaryOp {
   t: 'BinaryOp'
   op: OperatorString
-  left: CalcNode<T>
-  right: CalcNode<T>
+  left: CalcNode
+  right: CalcNode
 }
 
-export interface NumberSource<T> {
+export interface NumberSource {
   t: 'NumberSource'
-  source?: T
+  guid?: string
 }
 
-export function evaluate<T>(node: CalcNode<T>, getVal: (t: T) => number): number | undefined {
+export function evaluate(node: CalcNode, getVal: (t: string) => number): number | undefined {
   switch (node.t) {
     case 'NumberSource':
-      return map(node.source, getVal)
+      return map(node.guid, getVal)
     case 'BinaryOp':
       {
         const left = evaluate(node.left, getVal)

@@ -5,6 +5,8 @@ import { useAppSelector } from '../config/store'
 import { User } from '../User/User'
 import { Grouping } from '../View/Grouping'
 
+type GuidMap<T> = { [guid: string]: T | undefined }
+
 export interface Portfolio { // Collection, Domain, Portfolio, Universe
   name: string
   description: string

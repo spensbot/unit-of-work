@@ -34,7 +34,7 @@ export interface SelectField extends FieldBase {
 // This limitation allows for a clear order of operations (propogate, then calculate)
 export interface CalculatedField extends FieldBase {
   t: 'CalculatedField'
-  node: CalcNode<string> // <-- string is field guid
+  node: CalcNode // <-- string is field guid
   propogateUp?: undefined
 }
 

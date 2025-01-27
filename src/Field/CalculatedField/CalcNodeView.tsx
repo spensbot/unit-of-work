@@ -4,17 +4,16 @@ import { Portfolio, useActivePortfolio } from "../../Portfolio/Portfolio"
 import { createSelector } from "@reduxjs/toolkit"
 import Select from "../../components/Select"
 import { Log } from "../../util/Log"
-import { map } from "../../util/functional"
 
 interface Props<Node> {
   node: Node
-  onChange: (node: CalcNode<string>) => void
+  onChange: (node: CalcNode) => void
 }
 
 export default function CalcNodeView({
   node,
   onChange,
-}: Props<CalcNode<string> | undefined>) {
+}: Props<CalcNode | undefined>) {
   if (node === undefined) return null
 
   switch (node.t) {
@@ -28,7 +27,7 @@ export default function CalcNodeView({
   }
 }
 
-function BinaryOpView({ node, onChange }: Props<BinaryOp<string>>) {
+function BinaryOpView({ node, onChange }: Props<BinaryOp>) {
   return (
     <Box display="flex" alignItems="center">
       <CalcNodeView
@@ -48,12 +47,10 @@ function BinaryOpView({ node, onChange }: Props<BinaryOp<string>>) {
   )
 }
 
-function NumberSourceView({ node, onChange }: Props<NumberSource<string>>) {
+function NumberSourceView({ node, onChange }: Props<NumberSource>) {
   const numberFields = useActivePortfolio(selectNumberFields)
 
-  const guid = node.source
-
-  Log.Temp(`guid: ${guid}`)
+  const guid = node.guid
 
   const OPERATION = "OPERATION"
   const variants = numberFields.map((f) => f.guid)
@@ -62,8 +59,7 @@ function NumberSourceView({ node, onChange }: Props<NumberSource<string>>) {
   displays.push("Sub Operation")
 
   const onVariantChange = (guid: string) => {
-    Log.Temp(`guid: ${guid}`)
-    onChange({ ...node, source: guid })
+    onChange({ ...node, guid })
   }
 
   return (
