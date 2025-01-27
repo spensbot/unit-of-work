@@ -17,6 +17,7 @@ export function resetState(newState: RootState) {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const rootReducer: Reducer<RootState, PayloadAction<any>> = (state, action) => {
   if (action.type === RESET_STATE) {
     return {

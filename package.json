@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "tsc": "npm exec tsc",
+    "tsc": "tsc -b --noEmit",
     "test": "vitest"
   },
   "dependencies": {

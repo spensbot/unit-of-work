@@ -79,7 +79,7 @@ function applyGroup(state: Portfolio, units: Unit[], group?: Group): UnitGroupin
     fieldTotalsByGuid: getFieldTotalsByGuid(state, units)
   }
 
-  let members: (Unit | UnitGrouping)[] = []
+  const members: (Unit | UnitGrouping)[] = []
   const field = state.fieldsByGuid[group.fieldGuid]
   const groupedUnits = f.groupByFunc(units, unit => getFieldValPrimitive(state, getActiveFieldVal(unit, field)))
   for (const key in groupedUnits) {

@@ -25,7 +25,7 @@ export default function UserSelect({
   id = "UserSelect",
   faded,
 }: Props) {
-  let userGuids = useActivePortfolio((p) => p.userGuids)
+  const userGuids = useActivePortfolio((p) => p.userGuids)
 
   const labelId = `${id}-label`
 
@@ -42,7 +42,7 @@ export default function UserSelect({
         value={_value}
         label={label}
         onChange={(e) => {
-          var updated = (
+          const updated = (
             e.target.value === NULL_ITEM_VALUE ? undefined : e.target.value
           ) as string | undefined
           onChange(updated)

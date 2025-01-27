@@ -1,5 +1,3 @@
-import * as f from '../util/functional'
-
 export type FieldVal = UserFieldVal | NumberFieldVal | DateFieldVal | SelectFieldVal
 
 export interface UserFieldVal { // A human being

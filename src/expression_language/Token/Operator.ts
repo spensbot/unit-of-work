@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-explicit-any: 0 */  // --> OFF
+
 export const operators = {
   '!': (a: boolean) => !a,
   '.': (a: any, b: any) => a[b],

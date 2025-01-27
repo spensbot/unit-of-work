@@ -15,7 +15,7 @@ export default function NumberInput({ value, onChange, faded, split }: Props) {
   const valString = toString(value)
   const [text, setText] = useState(valString)
 
-  let isError = parseNum(text) === null && text !== ""
+  const isError = parseNum(text) === null && text !== ""
 
   if (!isError && text !== valString) {
     setText(valString)

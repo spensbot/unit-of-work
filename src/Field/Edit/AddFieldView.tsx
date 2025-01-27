@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material"
+import { Button } from "@mui/material"
 import { useState } from "react"
 import { Field, newField } from "../Field"
 import { useAppDispatch } from "../../config/store"

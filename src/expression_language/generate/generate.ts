@@ -11,7 +11,7 @@ export default function generate(node: Node): string {
       return `${node.val}`
     case 'Id':
       return node.val
-    case 'BinaryOp':
+    case 'BinaryOp': {
       const p_l = getPrecedence(node.left)
       const p_op = operatorPrecedence[node.op]
       const p_r = getPrecedence(node.right)
@@ -23,6 +23,7 @@ export default function generate(node: Node): string {
         right = `(${right})`
 
       return `${left} ${node.op} ${right}`
+    }
     case 'UnaryOp':
       return `${node.op}${generate(node.operand)}`
   }

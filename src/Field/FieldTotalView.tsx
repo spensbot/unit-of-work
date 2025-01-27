@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material"
 import { FieldVal, UserFieldVal } from "./FieldVal"
 import MultiSelectView from "./MultiSelectView"
-import { mapKeys, mapValues } from "../util/functional"
+import { mapKeys } from "../util/functional"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 
 export default function FieldTotalView({ total }: { total?: FieldVal }) {

@@ -1,8 +1,6 @@
 import { createTheme as muiCreateTheme, Theme as muiTheme } from "@mui/material/styles"
 
-export interface Theme extends muiTheme {
-
-}
+type Theme = muiTheme
 
 export type ThemeVariant = 'dark' | 'light'
 

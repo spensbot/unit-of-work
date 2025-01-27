@@ -1,7 +1,6 @@
 import { Button } from "@mui/material"
 import { Field } from "../Field"
 import { v4 as uuidV4 } from "uuid"
-import { useEffect } from "react"
 
 export default function SuggestedFieldView({
   setField,
@@ -10,7 +9,7 @@ export default function SuggestedFieldView({
 }) {
   return (
     <>
-      {suggestedFields.map((field, index) => (
+      {suggestedFields.map((field) => (
         <Button
           fullWidth
           variant="outlined"

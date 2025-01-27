@@ -57,7 +57,7 @@ export default function Select<T extends string>({
         value={isMaybe ? _value : _value}
         label={label}
         onChange={(e) => {
-          var updated = (
+          const updated = (
             e.target.value === NULL_ITEM_VALUE ? undefined : e.target.value
           ) as T | undefined
           if (_onChange !== undefined) _onChange(updated as T)

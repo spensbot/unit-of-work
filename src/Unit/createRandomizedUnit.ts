@@ -21,23 +21,27 @@ export default function createRandomizedUnit(portfolio: Portfolio, parentGuid?: 
         }
         break
       case "SelectField":
-        const option = getRandomVal(field.selectOptions)
-        unit.fieldValsByGuid[field.guid] = {
-          t: "Select",
-          vals: {
-            [option]: 1,
-          },
+        {
+          const option = getRandomVal(field.selectOptions)
+          unit.fieldValsByGuid[field.guid] = {
+            t: "Select",
+            vals: {
+              [option]: 1,
+            },
+          }
+          break
         }
-        break
       case "UserField":
-        const userGuid = getRandomVal(userGuids)
-        unit.fieldValsByGuid[field.guid] = {
-          t: "User",
-          guids: {
-            [userGuid]: 1,
-          },
+        {
+          const userGuid = getRandomVal(userGuids)
+          unit.fieldValsByGuid[field.guid] = {
+            t: "User",
+            guids: {
+              [userGuid]: 1,
+            },
+          }
+          break
         }
-        break
     }
   })
 

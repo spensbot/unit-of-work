@@ -1,6 +1,8 @@
 import { Node } from '../Node/Node'
 import { operators, operatorTypes, TypeOfValue } from '../Token/Operator'
 
+/* eslint @typescript-eslint/no-explicit-any: 0 */  // --> OFF
+
 export default function evaluate(node: Node, context: any): any {
   switch (node.t) {
     case 'Num':
@@ -9,11 +11,12 @@ export default function evaluate(node: Node, context: any): any {
       return expect(node.val, 'string')
     case 'Bool':
       return expect(node.val, 'boolean')
-    case 'Id':
+    case 'Id': {
       const val = context[node.val]
       if (val === undefined) throw `${node.val} does not exist`
       return context[node.val]
-    case 'BinaryOp':
+    }
+    case 'BinaryOp': {
       const left = evaluate(node.left, context)
 
       if (node.op === '.') {
@@ -33,6 +36,7 @@ export default function evaluate(node: Node, context: any): any {
         const func = operators[node.op] as (left: any, right: any) => any
         return func(left, right)
       }
+    }
     case 'UnaryOp':
       return operators['!'](expect(evaluate(node.operand, context), 'boolean'))
   }
