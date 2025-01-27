@@ -21,10 +21,6 @@ export default function NumberInput({ value, onChange, faded, split }: Props) {
     setText(valString)
   }
 
-  if (isError) {
-    Log.Temp(`Error parsing number: ${text}`)
-  }
-
   return (
     <Box bgcolor={isError ? "error.dark" : "inherit"}>
       <DisplayInput

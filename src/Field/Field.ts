@@ -1,4 +1,5 @@
 import { v4 as uuidV4 } from 'uuid'
+import { CalcNode } from './CalculatedField/CalcNode'
 
 interface FieldBase {
   guid: string
@@ -6,7 +7,7 @@ interface FieldBase {
   propogateDown?: PropogateDownStrategy
 }
 
-export type Field = UserField | NumberField | DateField | SelectField
+export type Field = UserField | NumberField | DateField | SelectField | CalculatedField
 
 export interface UserField extends FieldBase {
   t: 'UserField'
@@ -29,6 +30,14 @@ export interface SelectField extends FieldBase {
   propogateUp?: GroupStrategy
 }
 
+// Calculated fields cannot propogate.
+// This limitation allows for a clear order of operations (propogate, then calculate)
+export interface CalculatedField extends FieldBase {
+  t: 'CalculatedField'
+  node: CalcNode<string> // <-- string is field guid
+  propogateUp?: undefined
+}
+
 export type PropogateDownStrategy = 'Inherit' // <-- Give children the same value as the nearest explicit parent
 
 export type GroupStrategy = {
@@ -41,15 +50,36 @@ export interface ReduceStrategy { // Combine all children values into a single v
   func: 'Sum' | 'Max' | 'Min'
 }
 
-export const field_ts = ['UserField', 'NumberField', 'DateField', 'SelectField'] as const
+export const field_ts: Field['t'][] = ['UserField', 'NumberField', 'DateField', 'SelectField', 'CalculatedField'] as const
 
-export function newField(t: Field['t']): Field {
-  const guid = uuidV4()
-  const name = 'Field Name'
+function base() {
+  return {
+    guid: uuidV4(),
+    name: 'Field Name'
+  }
+}
 
-  if (t === 'SelectField') {
-    return { guid, name, t, selectOptions: [] }
-  } else {
-    return { guid, name, t }
+export function newSelectField(): SelectField {
+  return { ...base(), t: 'SelectField', selectOptions: [] }
+}
+
+export function newNumberField(): NumberField {
+  return { ...base(), t: 'NumberField' }
+}
+
+export function newDateField(): DateField {
+  return { ...base(), t: 'DateField' }
+}
+
+export function newUserField(): UserField {
+  return { ...base(), t: 'UserField' }
+}
+
+export function newCalculateField(): CalculatedField {
+  return {
+    guid: uuidV4(),
+    name: 'Field Name',
+    t: 'CalculatedField',
+    node: { t: 'BinaryOp', op: '+', left: { t: 'NumberSource' }, right: { t: 'NumberSource' } }
   }
 }

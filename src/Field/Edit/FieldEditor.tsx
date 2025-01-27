@@ -3,7 +3,6 @@ import { useState } from "react"
 import {
   DateField,
   Field,
-  field_ts,
   GroupStrategy,
   NumberField,
   PropogateDownStrategy,
@@ -14,9 +13,10 @@ import {
 import Select from "../../components/Select"
 import DisplayInput from "../../components/DisplayInput"
 import { useActivePortfolio } from "../../Portfolio/Portfolio"
-import SelectGroup from "../../components/SelectGroup"
 import PropogateUpIcon from "../../icons/PropogateUpIcon"
 import PropogateDownIcon from "../../icons/PropogateDownIcon"
+import CalcNodeView from "../CalculatedField/CalcNodeView"
+import FieldTypeSelect from "./FieldTypeSelect"
 
 type FieldEditMode = "Edit" | "Create"
 
@@ -36,22 +36,28 @@ export default function FieldEditor({
     const { guid, name, propogateDown } = field
     if (t === "SelectField") {
       setField({ t, guid, name, propogateDown, selectOptions: [] })
+    } else if (t === "CalculatedField") {
+      setField({
+        t,
+        guid,
+        name,
+        node: {
+          t: "BinaryOp",
+          op: "+",
+          left: { t: "NumberSource" },
+          right: { t: "NumberSource" },
+        },
+      })
     } else {
       setField({ t, guid, name, propogateDown })
     }
   }
 
+  const canPropogate = field.t !== "CalculatedField"
+
   return (
     <>
-      {mode === "Create" && (
-        <SelectGroup
-          value={field.t}
-          onChange={(t) => t && setT(t)}
-          variants={field_ts}
-          displays={field_ts.map((t) => t.replace("Field", ""))}
-        />
-      )}
-      {/* <FieldTypeSelect t={field.t} setT={setT} /> */}
+      {mode === "Create" && <FieldTypeSelect t={field.t} setT={setT} />}
       <DisplayInput value={field.name} onChange={setName} />
       {(field.t === "UserField" || field.t === "SelectField") && (
         <GroupStrategyView field={field} setField={setField} />
@@ -59,18 +65,26 @@ export default function FieldEditor({
       {(field.t === "NumberField" || field.t === "DateField") && (
         <ReduceStrategyView field={field} setField={setField} />
       )}
-      <Box display="flex" alignItems="center">
-        <PropogateDownIcon />
-        <Select
-          label="Propogate Down"
-          value={field.propogateDown}
-          onChangeMaybe={setPropogateDown}
-          variants={["Inherit"]}
-        />
-      </Box>
-
+      {canPropogate && (
+        <Box display="flex" alignItems="center">
+          <PropogateDownIcon />
+          <Select
+            label="Propogate Down"
+            value={field.propogateDown}
+            onChangeMaybe={setPropogateDown}
+            variants={["Inherit"]}
+          />
+        </Box>
+      )}
       {field.t === "SelectField" && mode === "Create" && (
         <SelectOptions field={field} setField={setField} />
+      )}
+
+      {field.t === "CalculatedField" && (
+        <CalcNodeView
+          node={field.node}
+          onChange={(node) => setField({ ...field, node })}
+        />
       )}
     </>
   )

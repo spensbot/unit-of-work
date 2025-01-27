@@ -10,6 +10,7 @@ export interface View {
   name: string
   group?: Group
   filter?: Filter
+  // filters?: Filter[]
   sort?: Sort
   depth: number // Determines how many levels of children to show
 }
@@ -23,6 +24,19 @@ export interface Filter {
   fieldGuid: string | 'ROOT_UNIT'
   value: string
 }
+
+// export type Filter = ParentUnitFilter | SelectFieldFilter
+
+// export interface ParentUnitFilter {
+//   t: 'ParentUnitFilter'
+//   parentUnitGuids: string[]
+// }
+
+// export interface SelectFieldFilter {
+//   t: 'SelectFieldFilter'
+//   fieldGuid: string
+//   values: string[]
+// }
 
 export interface Sort {
   fieldGuid: string

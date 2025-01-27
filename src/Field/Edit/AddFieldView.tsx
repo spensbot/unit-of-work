@@ -1,6 +1,6 @@
 import { Button } from "@mui/material"
 import { useState } from "react"
-import { Field, newField } from "../Field"
+import { Field, newNumberField } from "../Field"
 import { useAppDispatch } from "../../config/store"
 import { addField } from "../../Portfolio/portfolioSlice"
 import SelectGroup from "../../components/SelectGroup"
@@ -10,7 +10,7 @@ import PopoverBox from "../../components/PopoverBox"
 
 export default function AddFieldView({ close }: { close: () => void }) {
   const [mode, setMode] = useState<"Custom" | "Suggested">("Suggested")
-  const [field, setField] = useState<Field>(newField("NumberField"))
+  const [field, setField] = useState<Field>(newNumberField())
   const dispatch = useAppDispatch()
 
   return (
