@@ -8,7 +8,8 @@ function getFieldVal<T extends FieldVal>(unit: Unit, field: Field, t: T['t'], ca
   return val?.t === t ? val as T : undefined
 }
 
-export function getActiveFieldValT<T extends FieldVal>(unit: Unit, field: Field, t: T['t']): T | undefined {
+export function getActiveFieldValT<T extends FieldVal>(unit: Unit, field: Field | undefined, t: T['t']): T | undefined {
+  if (field === undefined) return undefined
   const explicit = getFieldVal(unit, field, t)
   const calculated = getFieldVal(unit, field, t, true)
   return explicit ?? calculated

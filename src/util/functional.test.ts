@@ -2,8 +2,8 @@ import * as f from './functional'
 import { expect, test } from 'vitest'
 
 test('map', () => {
-  expect(f.map(1, x => x + 1)).toEqual(2)
-  expect(f.map<number, number>(undefined, x => x + 1)).toEqual(undefined)
+  expect(f.mapUndef(1, x => x + 1)).toEqual(2)
+  expect(f.mapUndef<number, number>(undefined, x => x + 1)).toEqual(undefined)
 })
 
 test('groupBy', () => {

@@ -1,4 +1,11 @@
-import { UserField, NumberField, DateField, SelectField, Field } from "./Field"
+import {
+  UserField,
+  NumberField,
+  DateField,
+  SelectField,
+  Field,
+  CalculatedField,
+} from "./Field"
 import Select from "../components/Select"
 import { useAppDispatch } from "../config/store"
 import { setFieldVal } from "../Portfolio/portfolioSlice"
@@ -33,6 +40,8 @@ export default function FieldValView({ unitGuid, field }: Props<Field>) {
       return <DateFieldView unitGuid={unitGuid} field={field} />
     case "SelectField":
       return <SelectFieldView unitGuid={unitGuid} field={field} />
+    case "CalculatedField":
+      return <CalculatedFieldView unitGuid={unitGuid} field={field} />
   }
 }
 
@@ -48,7 +57,7 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
       setFieldVal({
         fieldGuid: field.guid,
         unitGuid,
-        val: f.map(val, (val) => ({
+        val: f.mapUndef(val, (val) => ({
           t: "User",
           guids: { [val]: 1 },
         })),
@@ -68,7 +77,7 @@ function UserFieldView({ unitGuid, field }: Props<UserField>) {
   return (
     <Box position="relative">
       <UserSelect
-        userGuid={f.map(active?.guids, primaryWeighted)}
+        userGuid={f.mapUndef(active?.guids, primaryWeighted)}
         onChange={set}
         faded={isCalculated}
       />
@@ -97,7 +106,7 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
       setFieldVal({
         fieldGuid: field.guid,
         unitGuid,
-        val: f.map(val, (val) => ({
+        val: f.mapUndef(val, (val) => ({
           t: "Number",
           val,
         })),
@@ -123,6 +132,22 @@ function NumberFieldView({ unitGuid, field }: Props<NumberField>) {
   )
 }
 
+function CalculatedFieldView({ unitGuid, field }: Props<CalculatedField>) {
+  const calculated = useActivePortfolio((p) => {
+    const val = p.unitsByGuid[unitGuid].calculatedFieldValsByGuid?.[field.guid]
+
+    if (val?.t === "Number") return val as NumberFieldVal
+  })
+
+  const text = calculated === undefined ? "-" : calculated.val.toPrecision(2)
+
+  return (
+    <Box padding={1}>
+      <Typography color="primary">{text}</Typography>
+    </Box>
+  )
+}
+
 function DateFieldView(_props: Props<DateField>) {
   return <DatePicker slotProps={{ textField: { size: "small" } }} />
 }
@@ -142,7 +167,7 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
       setFieldVal({
         fieldGuid: field.guid,
         unitGuid,
-        val: f.map(val, (val) => ({ t: "Select", vals: { [val]: 1 } })),
+        val: f.mapUndef(val, (val) => ({ t: "Select", vals: { [val]: 1 } })),
       })
     )
   }
@@ -154,7 +179,7 @@ function SelectFieldView({ unitGuid, field }: Props<SelectField>) {
   return (
     <Box position="relative">
       <Select
-        value={f.map(active?.vals, primaryWeighted)}
+        value={f.mapUndef(active?.vals, primaryWeighted)}
         onChangeMaybe={set}
         variants={field.selectOptions}
         faded={isCalculated}

@@ -1,4 +1,4 @@
-export function map<T, U>(t: T | undefined, f: (t: T) => U): U | undefined {
+export function mapUndef<T, U>(t: T | undefined, f: (t: T) => U): U | undefined {
   return t === undefined ? undefined : f(t)
 }
 
