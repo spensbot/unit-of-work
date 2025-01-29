@@ -21,7 +21,7 @@ export function getFieldValSortPrimitive(state: Portfolio, field?: Field, val?: 
   if (field === undefined) return 0
 
   if (val === undefined) {
-    if (field.t === 'NumberField' || field.t === 'DateField') return Infinity
+    if (field.t === 'NumberField' || field.t === 'DateField' || field.t === 'CalculatedField') return -Infinity
     return 'z'
   }
 

@@ -9,6 +9,7 @@ import { reduceFieldVals } from "../Field/reduceFunctions"
 import { Grouping, MapGrouping, UnitGrouping } from "./Grouping"
 import { getFieldValPrimitive, getFieldValSortPrimitive } from "./getFieldValPrimitive"
 import { getRootParent } from "./getActiveViewUnitGuids"
+import { Log } from "@/util/Log"
 
 export default function getActiveViewGrouping(state: Portfolio): Grouping {
   const activeView = state.viewsByGuid[state.activeViewGuid]
@@ -44,6 +45,14 @@ function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
 }
 
 function applySortToGrouping(grouping: UnitGrouping, sort: Sort, state: Portfolio): UnitGrouping {
+  Log.Temp(`applySortToGrouping. Members: ${grouping.members.length}`)
+
+  Log.Temp(`Sort Primitives: ${grouping.members.filter(v => v.t === 'Unit').map(member => {
+    const field = state.fieldsByGuid[sort.fieldGuid]
+    const fieldVal = getActiveFieldVal(member, field)
+    return getFieldValSortPrimitive(state, field, fieldVal)
+  })}`)
+
   const mult = sort.ascending ? 1 : -1
   const fieldGuid = sort.fieldGuid
   const field = state.fieldsByGuid[fieldGuid]
@@ -55,6 +64,7 @@ function applySortToGrouping(grouping: UnitGrouping, sort: Sort, state: Portfoli
     const bVal = (b.t === 'Unit')
       ? getFieldValSortPrimitive(state, field, getActiveFieldVal(b, field))
       : getFieldValSortPrimitive(state, field, b.fieldTotalsByGuid[fieldGuid])
+
     if (aVal < bVal) {
       return -1 * mult
     } else if (aVal > bVal) {

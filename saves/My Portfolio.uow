@@ -612,9 +612,17 @@
           "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
             "t": "Select",
             "vals": {
-              "Todo": 0.8266666666666667,
-              "Complete": 0.17333333333333334
+              "Todo": 0.7466666666666667,
+              "Complete": 0.25333333333333335
             }
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 123
+          },
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 1.64
           }
         }
       },
@@ -836,10 +844,19 @@
             "vals": {
               "1 Low": 1
             }
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 1
           }
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
-        "calculatedFieldValsByGuid": {}
+        "calculatedFieldValsByGuid": {
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 0.125
+          }
+        }
       },
       "6d86b474-73ca-4787-8a41-1c4daf2f0ea4": {
         "t": "Unit",
@@ -1148,10 +1165,19 @@
             "vals": {
               "Todo": 1
             }
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 2
           }
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
-        "calculatedFieldValsByGuid": {}
+        "calculatedFieldValsByGuid": {
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 0.125
+          }
+        }
       },
       "8c7e9965-8d20-4684-959d-58290c91b976": {
         "t": "Unit",
@@ -1185,10 +1211,19 @@
           "Field_3": {
             "t": "Number",
             "val": 2
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 40
           }
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
-        "calculatedFieldValsByGuid": {}
+        "calculatedFieldValsByGuid": {
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 20
+          }
+        }
       },
       "48a56a3e-5793-48be-96a0-ae57c48d51ba": {
         "t": "Unit",
@@ -1206,6 +1241,10 @@
             "vals": {
               "Todo": 1
             }
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 40
           }
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
@@ -1213,6 +1252,10 @@
           "Field_3": {
             "t": "Number",
             "val": 10
+          },
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 4
           }
         }
       },
@@ -1300,10 +1343,19 @@
           "Field_3": {
             "t": "Number",
             "val": 8
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 20
           }
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
-        "calculatedFieldValsByGuid": {}
+        "calculatedFieldValsByGuid": {
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 2.5
+          }
+        }
       },
       "42749bb4-3cb2-402b-a1c1-d964a343e490": {
         "t": "Unit",
@@ -1315,7 +1367,7 @@
           "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
             "t": "Select",
             "vals": {
-              "Todo": 1
+              "Complete": 1
             }
           },
           "Field_3": {
@@ -1342,10 +1394,19 @@
           "Field_3": {
             "t": "Number",
             "val": 4
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 10
           }
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
-        "calculatedFieldValsByGuid": {}
+        "calculatedFieldValsByGuid": {
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 2.5
+          }
+        }
       },
       "bfc3834b-e005-4795-9438-01042bbb0224": {
         "t": "Unit",
@@ -1357,7 +1418,7 @@
           "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
             "t": "Select",
             "vals": {
-              "Todo": 1
+              "Complete": 1
             }
           },
           "Field_3": {
@@ -1386,10 +1447,19 @@
           "Field_3": {
             "t": "Number",
             "val": 4
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 5
           }
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
-        "calculatedFieldValsByGuid": {}
+        "calculatedFieldValsByGuid": {
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 1.25
+          }
+        }
       },
       "c749c315-120a-4ba5-9063-c2d29481fb50": {
         "t": "Unit",
@@ -1407,10 +1477,19 @@
             "vals": {
               "Todo": 1
             }
+          },
+          "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+            "t": "Number",
+            "val": 5
           }
         },
         "parentGuid": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08",
-        "calculatedFieldValsByGuid": {}
+        "calculatedFieldValsByGuid": {
+          "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+            "t": "Number",
+            "val": 1.25
+          }
+        }
       },
       "684c8ef8-e63f-4509-b1ab-7ae521a381d3": {
         "t": "Unit",
@@ -1571,7 +1650,8 @@
     "fieldGuids": [
       "Field_3",
       "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5",
-      "4c53f3db-50ca-4b4e-be30-058a8b04cc0f"
+      "a2dc31e4-d37a-4051-aa55-21e0dbe34009",
+      "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6"
     ],
     "fieldsByGuid": {
       "Field_3": {
@@ -1603,16 +1683,31 @@
           "Complete"
         ]
       },
-      "4c53f3db-50ca-4b4e-be30-058a8b04cc0f": {
-        "t": "SelectField",
-        "guid": "4c53f3db-50ca-4b4e-be30-058a8b04cc0f",
-        "name": "Priority",
-        "selectOptions": [
-          "1 Low",
-          "2 Med",
-          "3 High",
-          "4 Critical"
-        ]
+      "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+        "guid": "a2dc31e4-d37a-4051-aa55-21e0dbe34009",
+        "name": "Value",
+        "t": "NumberField",
+        "propogateUp": {
+          "t": "Reduce",
+          "func": "Sum"
+        }
+      },
+      "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6": {
+        "t": "CalculatedField",
+        "guid": "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6",
+        "name": "Value / Hr",
+        "node": {
+          "t": "BinaryOp",
+          "op": "/",
+          "left": {
+            "t": "NumberSource",
+            "guid": "a2dc31e4-d37a-4051-aa55-21e0dbe34009"
+          },
+          "right": {
+            "t": "NumberSource",
+            "guid": "Field_3"
+          }
+        }
       }
     },
     "layerNames": [],
@@ -1626,11 +1721,7 @@
         "guid": "View_1",
         "mode": "table",
         "name": "Top Level",
-        "depth": 1,
-        "sort": {
-          "fieldGuid": "4c53f3db-50ca-4b4e-be30-058a8b04cc0f",
-          "ascending": false
-        }
+        "depth": 1
       },
       "d992d0d2-c662-4824-9c9c-6d6bc78e70db": {
         "mode": "table",
@@ -1646,27 +1737,33 @@
         "mode": "table",
         "guid": "9c5d61de-31dd-4fdf-87f9-1d40118cf091",
         "name": "Unit of Work",
-        "depth": 1,
+        "depth": 2,
         "filter": {
           "fieldGuid": "ROOT_UNIT",
           "value": "3703e5a0-d2e1-4d46-a1f3-4fcc444eed08"
+        },
+        "sort": {
+          "fieldGuid": "e60a8c5d-4cca-4979-8d89-ef7eaa36e5b6",
+          "ascending": false
         }
       }
     },
-    "activeViewGuid": "d992d0d2-c662-4824-9c9c-6d6bc78e70db",
+    "activeViewGuid": "9c5d61de-31dd-4fdf-87f9-1d40118cf091",
     "activeViewUnitGuids": [
-      "30dede34-b087-4f9f-ab0b-9d14c85e33e3",
-      "f3cba3d2-c6c3-4893-bee9-4d29405e4cd1",
-      "95800200-380d-43e6-838b-3b8bd9068728",
-      "ac6f971f-fa9b-4283-8135-0f400babb338",
-      "86c25c8c-0093-493e-807d-411cb3d6b110",
-      "f1195636-15fb-4d3a-9d44-47d28c3748d3",
-      "6aafabe9-acde-4fbe-8f16-aacfa6429fee",
-      "6d86b474-73ca-4787-8a41-1c4daf2f0ea4",
-      "da8552d9-0ff3-44bd-acb0-f47473782ed6",
-      "33ca726b-c0cc-4856-972e-a98f05dd384d",
-      "32edea83-0ce9-4daf-ba9c-065647214683",
-      "f2cf24dc-4f2c-4f77-9a55-94ec1aedc43f"
+      "0002ffac-fcc2-40a5-9edf-99929c817f49",
+      "5ae71633-cae8-4adc-80a2-baf4815ed55e",
+      "c09cf82e-7230-46ba-976b-501d1c6cc2de",
+      "3347a3f1-2c15-4618-a375-e825a7d60d54",
+      "40535df1-51b0-4213-ab45-b920b039e380",
+      "48a56a3e-5793-48be-96a0-ae57c48d51ba",
+      "ac629542-bea3-4baf-8fe1-53b0d910c9a9",
+      "fc5a77bb-5d5d-4560-bb05-ee174c694fb0",
+      "bd38c8b6-b08c-4445-a035-04345d912a1a",
+      "c749c315-120a-4ba5-9063-c2d29481fb50",
+      "ef99f266-cad4-4098-9099-dab7f9ac3c4b",
+      "42749bb4-3cb2-402b-a1c1-d964a343e490",
+      "bfc3834b-e005-4795-9438-01042bbb0224",
+      "3a1bbdfb-c04f-42d0-b970-a8607d8bc9f0"
     ],
     "userGuids": [
       "User_1",
@@ -1693,31 +1790,36 @@
     "activeViewGrouping": {
       "t": "Grouping",
       "members": [
-        "30dede34-b087-4f9f-ab0b-9d14c85e33e3",
-        "f3cba3d2-c6c3-4893-bee9-4d29405e4cd1",
-        "95800200-380d-43e6-838b-3b8bd9068728",
-        "ac6f971f-fa9b-4283-8135-0f400babb338",
-        "86c25c8c-0093-493e-807d-411cb3d6b110",
-        "f1195636-15fb-4d3a-9d44-47d28c3748d3",
-        "6aafabe9-acde-4fbe-8f16-aacfa6429fee",
-        "6d86b474-73ca-4787-8a41-1c4daf2f0ea4",
-        "da8552d9-0ff3-44bd-acb0-f47473782ed6",
-        "33ca726b-c0cc-4856-972e-a98f05dd384d",
-        "32edea83-0ce9-4daf-ba9c-065647214683",
-        "f2cf24dc-4f2c-4f77-9a55-94ec1aedc43f"
+        "0002ffac-fcc2-40a5-9edf-99929c817f49",
+        "5ae71633-cae8-4adc-80a2-baf4815ed55e",
+        "c09cf82e-7230-46ba-976b-501d1c6cc2de",
+        "3347a3f1-2c15-4618-a375-e825a7d60d54",
+        "40535df1-51b0-4213-ab45-b920b039e380",
+        "48a56a3e-5793-48be-96a0-ae57c48d51ba",
+        "ac629542-bea3-4baf-8fe1-53b0d910c9a9",
+        "fc5a77bb-5d5d-4560-bb05-ee174c694fb0",
+        "bd38c8b6-b08c-4445-a035-04345d912a1a",
+        "c749c315-120a-4ba5-9063-c2d29481fb50",
+        "ef99f266-cad4-4098-9099-dab7f9ac3c4b",
+        "42749bb4-3cb2-402b-a1c1-d964a343e490",
+        "bfc3834b-e005-4795-9438-01042bbb0224",
+        "3a1bbdfb-c04f-42d0-b970-a8607d8bc9f0"
       ],
       "fieldTotalsByGuid": {
         "Field_3": {
           "t": "Number",
-          "val": 60
+          "val": 75
         },
         "12a5081c-8d0b-48bd-bfca-d7ae7c597fa5": {
           "t": "Select",
           "vals": {
-            "Todo": 0.41666666666666663,
-            "Complete": 0.49999999999999994,
-            "In Progress": 0.08333333333333333
+            "Todo": 0.5714285714285713,
+            "Complete": 0.4285714285714285
           }
+        },
+        "a2dc31e4-d37a-4051-aa55-21e0dbe34009": {
+          "t": "Number",
+          "val": 123
         }
       }
     },
@@ -1726,7 +1828,6 @@
       "Epic",
       "Task",
       "Sub-Task"
-    ],
-    "activeUnitGuid": "01b7aa55-457d-4802-87bf-1edd2f1933a2"
+    ]
   }
 }
