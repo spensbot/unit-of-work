@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { uowGuid } from "../util/guid"
 
 export interface User {
   guid: string
@@ -8,7 +8,7 @@ export interface User {
 
 export function newUser(username: string, image_url?: string): User {
   return {
-    guid: uuidv4(),
+    guid: uowGuid(),
     username,
     image_url: image_url ?? 'https://avatars.githubusercontent.com/u/27806?v=4'
   }

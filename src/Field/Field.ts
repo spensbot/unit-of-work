@@ -1,4 +1,4 @@
-import { v4 as uuidV4 } from 'uuid'
+import { uowGuid } from '../util/guid'
 import { CalcNode } from './CalculatedField/CalcNode'
 
 interface FieldBase {
@@ -54,7 +54,7 @@ export const field_ts: Field['t'][] = ['UserField', 'NumberField', 'DateField', 
 
 function base() {
   return {
-    guid: uuidV4(),
+    guid: uowGuid(),
     name: 'Field Name'
   }
 }
@@ -77,7 +77,7 @@ export function newUserField(): UserField {
 
 export function newCalculateField(): CalculatedField {
   return {
-    guid: uuidV4(),
+    guid: uowGuid(),
     name: 'Field Name',
     t: 'CalculatedField',
     node: { t: 'BinaryOp', op: '+', left: { t: 'NumberSource' }, right: { t: 'NumberSource' } }

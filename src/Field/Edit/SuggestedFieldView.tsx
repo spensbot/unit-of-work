@@ -1,6 +1,6 @@
 import { Button } from "@mui/material"
 import { Field } from "../Field"
-import { v4 as uuidV4 } from "uuid"
+import { uowGuid } from "../../util/guid"
 
 export default function SuggestedFieldView({
   setField,
@@ -17,7 +17,7 @@ export default function SuggestedFieldView({
           onClick={() => {
             const f = {
               ...field,
-              guid: uuidV4(),
+              guid: uowGuid(),
             }
             setField(f)
           }}

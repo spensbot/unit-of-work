@@ -1,6 +1,6 @@
 import { FieldVal } from '../Field/FieldVal'
 import { Field } from '../Field/Field'
-import { v4 as uuidv4 } from 'uuid';
+import { uowGuid } from '../util/guid'
 
 export type FieldValMap = { [fieldGuid: string]: FieldVal | undefined }
 
@@ -18,7 +18,7 @@ export interface Unit { // A Unit of work
 export function newUnit(parentGuid?: string): Unit {
   return {
     t: 'Unit',
-    guid: uuidv4(),
+    guid: uowGuid(),
     childrenGuids: [],
     name: '',
     description: '',

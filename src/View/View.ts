@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 import { useActivePortfolio } from '../Portfolio/Portfolio';
+import { uowGuid } from '../util/guid';
 
 /**
  * Allows users to view the portfolio's units in a specified way
@@ -48,7 +48,7 @@ export const defaultView: View = newTableView('Default View')
 export function newTableView(name: string): View {
   return {
     mode: 'table',
-    guid: uuidv4(),
+    guid: uowGuid(),
     name,
     depth: 1
   }
