@@ -4,23 +4,23 @@ import { Unit } from '../Unit/Unit'
 import { useAppSelector } from '../config/store'
 import { User } from '../User/User'
 import { Grouping } from '../View/Grouping'
-import { GuaranteedGuidMap, GuidMap } from '../util/guid'
+import { GuaranteedEntities, Entities } from '../util/guid'
 
 export interface Portfolio { // Collection, Domain, Portfolio, Universe
   name: string
   description: string
   rootUnitGuids: string[]
   activeUnitGuid?: string
-  unitsByGuid: GuaranteedGuidMap<Unit>
+  unitsByGuid: GuaranteedEntities<Unit>
   fieldGuids: string[]
-  fieldsByGuid: GuaranteedGuidMap<Field>
+  fieldsByGuid: Entities<Field>
   levelNames: string[]
   viewGuids: string[]
-  viewsByGuid: GuaranteedGuidMap<View>
+  viewsByGuid: GuaranteedEntities<View>
   activeViewGuid: string
   activeViewUnitGuids: string[]
   userGuids: string[]
-  usersByGuid: GuaranteedGuidMap<User>
+  usersByGuid: GuaranteedEntities<User>
   activeViewGrouping: Grouping
   moveUnitGuid?: string
 }

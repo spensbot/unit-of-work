@@ -5,7 +5,7 @@ export default function createRandomizedUnit(portfolio: Portfolio, parentGuid?: 
   const unit = newUnit(parentGuid)
   unit.name = randomName()
 
-  const fields = portfolio.fieldGuids.map((guid) => portfolio.fieldsByGuid[guid])
+  const fields = portfolio.fieldGuids.map((guid) => portfolio.fieldsByGuid[guid]).filter((f) => f !== undefined)
   const userGuids = portfolio.userGuids
 
   fields.forEach((field) => {

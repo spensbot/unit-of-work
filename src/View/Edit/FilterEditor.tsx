@@ -14,7 +14,7 @@ export default function FilterEditor({ filter, setFilter }: Props) {
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
   const fields = fieldGuids
     .map((guid) => fieldsByGuid[guid])
-    .filter((f) => f.t === "SelectField")
+    .filter((f) => f?.t === "SelectField")
   const rootUnits = useActivePortfolio(selectRootUnits)
 
   const isRootUnit = filter.fieldGuid === "ROOT_UNIT"

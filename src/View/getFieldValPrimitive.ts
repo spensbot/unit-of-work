@@ -7,7 +7,7 @@ export function getFieldValPrimitive(state: Portfolio, val?: FieldVal): number |
 
   switch (val.t) {
     case 'User':
-      return state.usersByGuid[primaryWeighted(val.guids)].username
+      return state.usersByGuid[primaryWeighted(val.guids)]?.username ?? ''
     case 'Date':
       return val.unix
     case 'Number':
@@ -17,7 +17,9 @@ export function getFieldValPrimitive(state: Portfolio, val?: FieldVal): number |
   }
 }
 
-export function getFieldValSortPrimitive(state: Portfolio, field: Field, val?: FieldVal): number | string {
+export function getFieldValSortPrimitive(state: Portfolio, field?: Field, val?: FieldVal): number | string {
+  if (field === undefined) return 0
+
   if (val === undefined) {
     if (field.t === 'NumberField' || field.t === 'DateField') return Infinity
     return 'z'

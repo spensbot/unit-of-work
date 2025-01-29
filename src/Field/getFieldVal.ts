@@ -15,10 +15,12 @@ export function getActiveFieldValT<T extends FieldVal>(unit: Unit, field: Field,
 }
 
 // TODO: Make this return undefined if the FieldVal.t does not match the field.t
-export function getActiveFieldVal(unit: Unit, field: Field): FieldVal | undefined {
+export function getActiveFieldVal(unit: Unit, field: Field | undefined): FieldVal | undefined {
+  if (field === undefined) return undefined
   const explicit = unit.fieldValsByGuid[field.guid]
   const calculated = unit.calculatedFieldValsByGuid?.[field.guid]
-  return explicit ?? calculated
+  const active = explicit ?? calculated
+  return active
 }
 
 // export function getActiveFieldValT<T extends FieldVal>(unit: Unit, field: Field, t: T['t']): T | undefined {

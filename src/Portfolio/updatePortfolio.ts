@@ -28,7 +28,7 @@ export default function updatePortfolio(portfolio: Portfolio) {
 }
 
 function propogateFieldVals(portfolio: Portfolio) {
-  const fields = portfolio.fieldGuids.map(guid => portfolio.fieldsByGuid[guid])
+  const fields = portfolio.fieldGuids.map(guid => portfolio.fieldsByGuid[guid]).filter(f => f !== undefined)
 
   // Propogate number fields first for weighting other field's group propogation.
   propogateFieldValsOfFields(portfolio, fields.filter(field => field.t === 'NumberField'))

@@ -129,8 +129,8 @@ function GroupStrategyView({
 
   const weightFields = fieldGuids
     .map((guid) => fieldsByGuid[guid])
+    .filter((f) => f !== undefined)
     .filter((f) => f.t === "NumberField")
-
   const weightFieldGuids = weightFields.map((f) => f.guid)
   const displays = weightFields.map((f) => f.name)
 

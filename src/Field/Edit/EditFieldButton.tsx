@@ -16,6 +16,8 @@ export default function EditFieldButton({ guid, visible }: Props) {
   const dispatch = useAppDispatch()
   const [open, Popover] = usePopover()
 
+  if (!field) return null
+
   return (
     <>
       <IconButton

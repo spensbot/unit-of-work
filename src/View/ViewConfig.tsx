@@ -12,7 +12,7 @@ import getMaxDepth from "../Portfolio/getMaxDepth"
 import AddViewConfigButton from "./Edit/AddViewConfigButton"
 import usePopover from "../hooks/usePopover"
 import FilterEditor from "./Edit/FilterEditor"
-import PopoverBox from "../components/PopoverBox"
+import PopoverBox from "@/components/PopoverBox"
 import HierarchyView from "./HierarchyView"
 
 export default function ViewConfig() {
@@ -47,7 +47,7 @@ function FilterView() {
   if (filter.fieldGuid === "ROOT_UNIT") {
     label = `Root Unit == ${rootUnitName}`
   } else {
-    const filterField = fieldsByGuid[filter.fieldGuid].name
+    const filterField = fieldsByGuid[filter.fieldGuid]?.name ?? "Deleted Field"
     label = `${filterField} == ${filter.value}`
   }
 
@@ -79,7 +79,7 @@ function SortView() {
 
   if (sort === undefined) return null
 
-  const sortField = fieldsByGuid[sort.fieldGuid].name
+  const sortField = fieldsByGuid[sort.fieldGuid]?.name ?? "Deleted Field"
 
   const label = `Sort: ${sortField} ${sort.ascending ? "↑" : "↓"}`
 
@@ -101,7 +101,7 @@ function GroupView() {
 
   if (group === undefined) return null
 
-  const groupField = fieldsByGuid[group.fieldGuid].name
+  const groupField = fieldsByGuid[group.fieldGuid]?.name ?? "Deleted Field"
 
   const label = `Group: ${groupField}`
 

@@ -37,7 +37,9 @@ export default function AddViewConfigPopup({ close }: Props) {
 function AddSortView({ close }: Props) {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
-  const fields = fieldGuids.map((guid) => fieldsByGuid[guid])
+  const fields = fieldGuids
+    .map((guid) => fieldsByGuid[guid])
+    .filter((f) => f !== undefined)
   const displays = fields.map((f) => f.name)
   const dispatch = useAppDispatch()
   const [sort, setLocalSort] = useState<Sort>({
@@ -88,7 +90,9 @@ function AscendingButton({
 function AddGroupView({ close }: Props) {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
-  const fields = fieldGuids.map((guid) => fieldsByGuid[guid])
+  const fields = fieldGuids
+    .map((guid) => fieldsByGuid[guid])
+    .filter((f) => f !== undefined)
   const displays = fields.map((f) => f.name)
   const [group, setLocalGroup] = useState<Group>({
     fieldGuid: fieldGuids[0],
@@ -124,7 +128,7 @@ function AddFilterView({ close }: Props) {
   const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
   const fields = fieldGuids
     .map((guid) => fieldsByGuid[guid])
-    .filter((f) => f.t === "SelectField")
+    .filter((f) => f?.t === "SelectField")
   const [filter, setLocalFilter] = useState<Filter>({
     fieldGuid: fields[0].guid,
     value: fields[0].selectOptions[0],

@@ -77,5 +77,6 @@ const selectNumberFields = createSelector(
   (fieldGuids, fieldsByGuid) =>
     fieldGuids
       .map((guid) => fieldsByGuid[guid])
+      .filter((f) => f !== undefined)
       .filter((f) => f.t === "NumberField")
 )

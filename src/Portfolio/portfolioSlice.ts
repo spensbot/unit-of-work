@@ -91,6 +91,7 @@ const portfolioSlice = createSlice({
 
       const parentFieldVal = parent.fieldValsByGuid[payload.fieldGuid]
 
+      if (!field) return Log.Error('Field does not exist')
       if (field.propogateDown !== 'Inherit') return Log.Error('Field does not propogate down')
       if (parentFieldVal === undefined) return Log.Error('Parent does not have field value')
       if (parent.childrenGuids.length === 0) return Log.Error('Parent has no children')

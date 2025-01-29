@@ -110,7 +110,8 @@ function getFieldTotalsByGuid(state: Portfolio, items: (Unit | UnitGrouping)[]):
   return fieldTotals
 }
 
-function calculateGroupingField(state: Portfolio, items: (Unit | UnitGrouping)[], field: Field): FieldVal | undefined {
+function calculateGroupingField(state: Portfolio, items: (Unit | UnitGrouping)[], field?: Field): FieldVal | undefined {
+  if (field === undefined) return undefined
   if (field.propogateUp) {
     const vals = items.map(item => {
       if (item.t === 'Unit') {
