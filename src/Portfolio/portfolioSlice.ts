@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { newPortfolio } from './Portfolio'
 import { Unit } from '../Unit/Unit'
-import { Filter, Sort, Group, View } from '../View/View'
+import { Filter, Sort, Group, View, UnitFilter, newTableView } from '../View/View'
 import { FieldVal } from '../Field/FieldVal'
 import updatePortfolio from './updatePortfolio'
 import { Field } from '../Field/Field'
@@ -139,13 +139,38 @@ const portfolioSlice = createSlice({
       state.viewsByGuid[payload.guid] = payload
       state.viewGuids.push(payload.guid)
       state.activeViewGuid = payload.guid
+      updatePortfolio(state)
     },
     setActiveView: (state, { payload }: PayloadAction<{ guid: string }>) => {
       state.activeViewGuid = payload.guid
       updatePortfolio(state)
     },
-    setFilter: (state, { payload }: PayloadAction<Filter | undefined>) => {
-      state.viewsByGuid[state.activeViewGuid].filter = payload
+    createViewWithFocusUnit: (state, { payload }: PayloadAction<string>) => {
+      const focusUnitId = payload
+      const unitName = state.unitsByGuid[focusUnitId].name
+      const view = newTableView(unitName)
+      state.viewsByGuid[view.guid] = view
+      state.viewGuids.push(view.guid)
+      state.activeViewGuid = view.guid
+      state.viewsByGuid[state.activeViewGuid].focusUnits = [focusUnitId]
+      updatePortfolio(state)
+    },
+    setViewFocusUnits: (state, { payload }: PayloadAction<string[]>) => {
+      state.viewsByGuid[state.activeViewGuid].focusUnits = payload
+      updatePortfolio(state)
+    },
+    addFilter: (state, { payload }: PayloadAction<Filter>) => {
+      state.viewsByGuid[state.activeViewGuid].filters?.push(payload)
+      updatePortfolio(state)
+    },
+    removeFilter: (state, { payload }: PayloadAction<number>) => {
+      const filters = state.viewsByGuid[state.activeViewGuid].filters
+      filters.splice(payload, 1)
+      updatePortfolio(state)
+    },
+    modifyFilter: (state, { payload }: PayloadAction<{ i: number, filter: Filter }>) => {
+      const activeView = state.viewsByGuid[state.activeViewGuid]
+      activeView.filters[payload.i] = payload.filter
       updatePortfolio(state)
     },
     setSort: (state, { payload }: PayloadAction<Sort | undefined>) => {
@@ -170,6 +195,7 @@ const portfolioSlice = createSlice({
       if (state.activeViewGuid === payload.guid) {
         state.activeViewGuid = state.viewGuids[0]
       }
+      updatePortfolio(state)
     },
 
     // Debug
@@ -207,7 +233,11 @@ export const {
   // View 
   addView,
   setActiveView,
-  setFilter,
+  createViewWithFocusUnit,
+  setViewFocusUnits,
+  addFilter,
+  removeFilter,
+  modifyFilter,
   setSort,
   setGroup,
   setDepth,

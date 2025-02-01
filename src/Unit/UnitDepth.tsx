@@ -1,8 +1,9 @@
 import { Box } from "@mui/material"
-import { Portfolio, useActivePortfolio } from "../Portfolio/Portfolio"
+import { useActivePortfolio } from "../Portfolio/Portfolio"
+import { getUnitDepth } from "@/Portfolio/getMaxDepth"
 
 export default function UnitDepth({ guid }: { guid: string }) {
-  const depth = useActivePortfolio((p) => getDepth(guid, p))
+  const depth = useActivePortfolio((p) => getUnitDepth(guid, p))
 
   return (
     <Box display="flex" gap="0.2rem">
@@ -24,13 +25,4 @@ function DepthIcon() {
       borderRadius={size}
     />
   )
-}
-
-function getDepth(unitGuid: string, portfolio: Portfolio): number {
-  const unit = portfolio.unitsByGuid[unitGuid]
-  if (unit.parentGuid === undefined) {
-    return 0
-  } else {
-    return 1 + getDepth(unit.parentGuid, portfolio)
-  }
 }

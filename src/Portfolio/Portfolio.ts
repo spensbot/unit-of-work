@@ -58,7 +58,7 @@ export function newPortfolio(): Portfolio {
     levelNames: [],
     viewGuids: ['View_1'],
     viewsByGuid: {
-      'View_1': { guid: 'View_1', mode: 'table', name: 'Everything', depth: 0 }
+      'View_1': { guid: 'View_1', mode: 'table', name: 'Everything', depth: 0, filters: [], focusUnits: [] }
     },
     activeViewGuid: 'View_1',
     activeViewUnitGuids: [],

@@ -1,24 +1,33 @@
-import { Portfolio } from "../Portfolio/Portfolio"
-import { Unit } from "../Unit/Unit"
+import { Portfolio } from "@/Portfolio/Portfolio"
+import { Unit } from "@/Unit/Unit"
 import { Filter, Sort, Group } from "./View"
-import { FieldVal } from "../Field/FieldVal"
-import { Field } from "../Field/Field"
-import { getActiveFieldVal } from "../Field/getFieldVal"
-import * as f from '../util/functional'
-import { reduceFieldVals } from "../Field/reduceFunctions"
+import { FieldVal } from "@/Field/FieldVal"
+import { Field } from "@/Field/Field"
+import { getActiveFieldVal } from "@/Field/getFieldVal"
+import * as f from '@/util/functional'
+import { reduceFieldVals } from "@/Field/reduceFunctions"
 import { Grouping, MapGrouping, UnitGrouping } from "./Grouping"
 import { getFieldValPrimitive, getFieldValSortPrimitive } from "./getFieldValPrimitive"
-import { getRootParent } from "./getActiveViewUnitGuids"
+import { all } from "@/util/arrayUtil"
 import { Log } from "@/util/Log"
+import { getUnitDepth } from "@/Portfolio/getMaxDepth"
 
 export default function getActiveViewGrouping(state: Portfolio): Grouping {
   const activeView = state.viewsByGuid[state.activeViewGuid]
 
-  // let units = state.rootUnitGuids.map(guid => state.unitsByGuid[guid])
-  let units = state.rootUnitGuids.flatMap(guid => getUnitsRecursive(state.unitsByGuid[guid], activeView.depth, state))
-  // const view = state.vie wsByGuid[state.activeViewGuid]
-  // TODO: Apply filter, sort, group.
-  if (activeView.filter) units = applyFilter(units, activeView.filter, state)
+  let units: Unit[] = []
+
+  if (activeView.focusUnits.length === 0) {
+    units = state.rootUnitGuids.flatMap(guid => getUnitsRecursive(guid, activeView.depth, state))
+  } else {
+    // We currently only support a single focus unit
+    // I'll need to think through how it should work to allow multiple focus units if we even want that
+    const guid = activeView.focusUnits[0]
+    const remainingDepth = activeView.depth - getUnitDepth(guid, state)
+    units = getUnitsRecursive(guid, remainingDepth, state)
+  }
+
+  units = applyFilters(units, activeView.filters, state)
   let unitGrouping = applyGroup(state, units, activeView.group)
   if (activeView.sort) unitGrouping = applySortToGrouping(unitGrouping, activeView.sort, state)
 
@@ -26,33 +35,28 @@ export default function getActiveViewGrouping(state: Portfolio): Grouping {
 }
 
 // Returns the unit's children if it has any, otherwise returns the unit itself.
-function getUnitsRecursive(unit: Unit, depth: number, state: Portfolio): Unit[] {
-  if (depth === 1 || unit.childrenGuids.length === 0) return [unit]
-
-  return unit.childrenGuids.flatMap(guid => getUnitsRecursive(state.unitsByGuid[guid], depth - 1, state))
+function getUnitsRecursive(unitGuid: string, depth: number, state: Portfolio): Unit[] {
+  const unit = state.unitsByGuid[unitGuid]
+  if (depth < 2 || unit.childrenGuids.length === 0) return [unit]
+  return unit.childrenGuids.flatMap(guid => getUnitsRecursive(guid, depth - 1, state))
 }
 
-function applyFilter(units: Unit[], filter: Filter, state: Portfolio): Unit[] {
-  if (filter.fieldGuid === 'ROOT_UNIT') {
-    return units.filter(unit => getRootParent(unit, state).guid === filter.value)
-  } else {
-    return units.filter(unit => {
-      const fieldVal = getActiveFieldVal(unit, state.fieldsByGuid[filter.fieldGuid])
-
-      return getFieldValPrimitive(state, fieldVal) === filter.value
+function applyFilters(units: Unit[], filters: Filter[], state: Portfolio): Unit[] {
+  return units.filter(unit => {
+    return all(filters, filter => {
+      if (filter.t === 'SelectFieldFilter') {
+        const fieldVal = unit.fieldValsByGuid[filter.fieldGuid]
+        const isEqual = getFieldValPrimitive(state, fieldVal) === filter.values[0]
+        return isEqual
+      } else {
+        Log.Error(`Unhandled filter type: ${filter.t}`)
+        return true
+      }
     })
-  }
+  })
 }
 
 function applySortToGrouping(grouping: UnitGrouping, sort: Sort, state: Portfolio): UnitGrouping {
-  Log.Temp(`applySortToGrouping. Members: ${grouping.members.length}`)
-
-  Log.Temp(`Sort Primitives: ${grouping.members.filter(v => v.t === 'Unit').map(member => {
-    const field = state.fieldsByGuid[sort.fieldGuid]
-    const fieldVal = getActiveFieldVal(member, field)
-    return getFieldValSortPrimitive(state, field, fieldVal)
-  })}`)
-
   const mult = sort.ascending ? 1 : -1
   const fieldGuid = sort.fieldGuid
   const field = state.fieldsByGuid[fieldGuid]

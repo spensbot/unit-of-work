@@ -11,3 +11,12 @@ function getMaxDepthRecursive(units: Unit[], state: Portfolio): number {
     return depth > maxDepth ? depth : maxDepth
   }, 0)
 }
+
+export function getUnitDepth(unitGuid: string, portfolio: Portfolio): number {
+  const unit = portfolio.unitsByGuid[unitGuid]
+  if (unit.parentGuid === undefined) {
+    return 0
+  } else {
+    return 1 + getUnitDepth(unit.parentGuid, portfolio)
+  }
+}

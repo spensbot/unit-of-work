@@ -1,14 +1,15 @@
-import { Box, Button, IconButton } from "@mui/material"
-import Select from "../../components/Select"
+import { Button, IconButton } from "@mui/material"
+import Select from "@/components/Select"
 import { useState } from "react"
-import { useAppDispatch } from "../../config/store"
-import { Filter, Group, Sort } from "../View"
-import { useActivePortfolio } from "../../Portfolio/Portfolio"
-import { setFilter, setGroup, setSort } from "../../Portfolio/portfolioSlice"
+import { useAppDispatch } from "@/config/store"
+import { Group, SelectFieldFilter, Sort } from "../View"
+import { useActivePortfolio } from "@/Portfolio/Portfolio"
+import { addFilter, setGroup, setSort } from "@/Portfolio/portfolioSlice"
 import { ArrowUpward, ArrowDownward } from "@mui/icons-material"
-import SelectGroup from "../../components/SelectGroup"
+import SelectGroup from "@/components/SelectGroup"
 import FilterEditor from "./FilterEditor"
-import PopoverBox from "../../components/PopoverBox"
+import PopoverBox from "@/components/PopoverBox"
+import { Log } from "@/util/Log"
 
 type ConfigType = "Sort" | "Group" | "Filter"
 const configTypes: readonly ConfigType[] = ["Sort", "Group", "Filter"]
@@ -129,14 +130,18 @@ function AddFilterView({ close }: Props) {
   const fields = fieldGuids
     .map((guid) => fieldsByGuid[guid])
     .filter((f) => f?.t === "SelectField")
-  const [filter, setLocalFilter] = useState<Filter>({
+  const [filter, setLocalFilter] = useState<SelectFieldFilter>({
+    t: "SelectFieldFilter",
     fieldGuid: fields[0].guid,
-    value: fields[0].selectOptions[0],
+    values: [fields[0].selectOptions[0]],
   })
 
   const onAdd = () => {
-    if (!filter) return
-    dispatch(setFilter(filter))
+    if (!filter) {
+      Log.Error(`Missing filter`)
+      return
+    }
+    dispatch(addFilter(filter))
     close()
   }
 

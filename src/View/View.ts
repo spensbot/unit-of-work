@@ -8,10 +8,10 @@ export interface View {
   mode: 'table' | 'kanban' | 'map' | 'timeline'
   guid: string
   name: string
-  group?: Group
-  filter?: Filter
-  // filters?: Filter[]
+  focusUnits: string[]
+  filters: Filters
   sort?: Sort
+  group?: Group
   depth: number // Determines how many levels of children to show
 }
 
@@ -19,24 +19,21 @@ export type Group = {
   fieldGuid: string
 }
 
-// This filter is trash for display purposes (for now)
-export interface Filter {
-  fieldGuid: string | 'ROOT_UNIT'
-  value: string
+// An array of filters applied consecutively (&&)
+export type Filters = Filter[]
+
+export type Filter = SelectFieldFilter
+
+export interface UnitFilter {
+  t: 'UnitFilter'
+  unitGuids: string[] // The result is the || of each guid
 }
 
-// export type Filter = ParentUnitFilter | SelectFieldFilter
-
-// export interface ParentUnitFilter {
-//   t: 'ParentUnitFilter'
-//   parentUnitGuids: string[]
-// }
-
-// export interface SelectFieldFilter {
-//   t: 'SelectFieldFilter'
-//   fieldGuid: string
-//   values: string[]
-// }
+export interface SelectFieldFilter {
+  t: 'SelectFieldFilter'
+  fieldGuid: string
+  values: string[] // The result is the || of each value
+}
 
 export interface Sort {
   fieldGuid: string
@@ -50,7 +47,9 @@ export function newTableView(name: string): View {
     mode: 'table',
     guid: uowGuid(),
     name,
-    depth: 1
+    depth: 1,
+    filters: [],
+    focusUnits: []
   }
 }
 

@@ -1,19 +1,12 @@
 import { useActiveView } from "./View"
 import { useAppDispatch } from "../config/store"
-import {
-  setFilter,
-  setSort,
-  setGroup,
-  setDepth,
-} from "../Portfolio/portfolioSlice"
+import { setSort, setGroup, setDepth } from "../Portfolio/portfolioSlice"
 import { useActivePortfolio } from "../Portfolio/Portfolio"
 import { Box, Chip, Slider } from "@mui/material"
 import getMaxDepth from "../Portfolio/getMaxDepth"
 import AddViewConfigButton from "./Edit/AddViewConfigButton"
-import usePopover from "../hooks/usePopover"
-import FilterEditor from "./Edit/FilterEditor"
-import PopoverBox from "@/components/PopoverBox"
 import HierarchyView from "./HierarchyView"
+import FiltersView from "./FiltersView"
 
 export default function ViewConfig() {
   const canConfig = useActivePortfolio((p) => p.fieldGuids.length > 0)
@@ -23,52 +16,10 @@ export default function ViewConfig() {
       <HierarchyView />
       <SortView />
       <GroupView />
-      <FilterView />
+      <FiltersView />
       <Box flexGrow={1} />
       {canConfig && <AddViewConfigButton />}
     </Box>
-  )
-}
-
-function FilterView() {
-  const dispatch = useAppDispatch()
-  const filter = useActiveView((v) => v.filter)
-  const fieldsByGuid = useActivePortfolio((p) => p.fieldsByGuid)
-  const [open, Popover] = usePopover()
-  const rootUnitName = useActivePortfolio((p) => {
-    if (filter?.value === undefined) return null
-    const rootUnit = p.unitsByGuid[filter?.value]
-    return rootUnit.name
-  })
-
-  if (filter === undefined) return null
-
-  let label = ""
-  if (filter.fieldGuid === "ROOT_UNIT") {
-    label = `Root Unit == ${rootUnitName}`
-  } else {
-    const filterField = fieldsByGuid[filter.fieldGuid]?.name ?? "Deleted Field"
-    label = `${filterField} == ${filter.value}`
-  }
-
-  return (
-    <>
-      <Chip
-        label={label}
-        onDelete={() => dispatch(setFilter())}
-        onClick={open}
-      />
-      <Popover>
-        <PopoverBox>
-          <FilterEditor
-            filter={filter}
-            setFilter={(newFilter) => {
-              dispatch(setFilter(newFilter))
-            }}
-          />
-        </PopoverBox>
-      </Popover>
-    </>
   )
 }
 

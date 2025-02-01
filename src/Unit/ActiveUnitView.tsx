@@ -7,6 +7,9 @@ import {
   setActiveUnit,
   addUnit,
   addUnitRandomized,
+  setViewFocusUnits,
+  addView,
+  createViewWithFocusUnit,
 } from "../Portfolio/portfolioSlice"
 import { useAppDispatch } from "../config/store"
 import { Close } from "@mui/icons-material"
@@ -16,6 +19,7 @@ import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp"
 import { ActiveUnitFieldView } from "../Field/FieldView"
 import isDebug from "../isDebug"
 import DeleteUnitButton from "./DeleteUnitButton"
+import { newTableView } from "@/View/View"
 
 export default function ActiveUnitView() {
   const guid = useActivePortfolio((p) => p.activeUnitGuid)
@@ -34,23 +38,24 @@ export default function ActiveUnitView() {
         </IconButton>
       </Box>
       <Description guid={guid} />
-      <Children guid={guid} />
+      {/* <Children guid={guid} /> */}
       <Button
-        onClick={() =>
-          dispatch(
-            addUnit({
-              unit: newUnit(guid),
-            })
-          )
-        }
+        onClick={() => {
+          dispatch(createViewWithFocusUnit(guid))
+        }}
       >
-        Add Child Unit
+        Create View
       </Button>
+      <AddChildButton guid={guid} />
       <AddRandomizedChildButton guid={guid} />
     </Root>
   )
 }
 
+// Deprecated
+// We used to render a separate table of child units in the ActiveUnitView
+// This was intended to feel like asana's subtasks editor
+// But I think inconsistend behaviour with that of the view would provide more confusion than anything
 function Children({ guid }: { guid: string }) {
   const fieldGuids = useActivePortfolio((p) => p.fieldGuids)
 
@@ -128,6 +133,24 @@ function GotoParentButton({ guid }: { guid: string }) {
     >
       <ArrowCircleUpIcon sx={{ fontSize: 30 }} />
     </IconButton>
+  )
+}
+
+function AddChildButton({ guid }: { guid: string }) {
+  const dispatch = useAppDispatch()
+
+  return (
+    <Button
+      onClick={() =>
+        dispatch(
+          addUnit({
+            unit: newUnit(guid),
+          })
+        )
+      }
+    >
+      Add Child Unit
+    </Button>
   )
 }
 
