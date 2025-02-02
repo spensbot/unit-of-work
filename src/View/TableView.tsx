@@ -4,6 +4,7 @@ import Button from "@mui/material/Button"
 import {
   addUnit,
   addUnitRandomized,
+  addUnitToDisplayInCurrentView,
   setActiveUnit,
 } from "../Portfolio/portfolioSlice"
 import { newUnit } from "../Unit/Unit"
@@ -115,9 +116,7 @@ function AddUnitButton() {
     <Button
       fullWidth
       onClick={() => {
-        const unit = newUnit()
-        dispatch(addUnit({ unit }))
-        dispatch(setActiveUnit({ guid: unit.guid }))
+        dispatch(addUnitToDisplayInCurrentView())
       }}
     >
       Add Unit

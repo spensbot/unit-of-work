@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { newPortfolio } from './Portfolio'
-import { Unit } from '../Unit/Unit'
+import { newUnit, Unit } from '../Unit/Unit'
 import { Filter, Sort, Group, View, UnitFilter, newTableView } from '../View/View'
 import { FieldVal } from '../Field/FieldVal'
 import updatePortfolio from './updatePortfolio'
 import { Field } from '../Field/Field'
 import createRandomizedUnit from '../Unit/createRandomizedUnit'
 import { Log } from '../util/Log'
+import { mapUndef } from '@/util/functional'
 
 const portfolioSlice = createSlice({
   name: 'portfolio',
@@ -45,6 +46,31 @@ const portfolioSlice = createSlice({
       } else {
         state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
       }
+      updatePortfolio(state)
+    },
+    addUnitToDisplayInCurrentView: (state, { }: PayloadAction) => {
+      const unit = newUnit()
+      const activeView = state.viewsByGuid[state.activeViewGuid]
+      unit.parentGuid = activeView.focusUnits[0]
+
+      activeView.filters.forEach(filter => {
+        unit.fieldValsByGuid[filter.fieldGuid] = {
+          t: 'Select',
+          vals: {
+            [filter.values[0]]: 1
+          }
+        }
+      })
+
+      Log.Temp(`New unit in view: ${unit}`)
+
+      state.unitsByGuid[unit.guid] = unit
+      if (unit.parentGuid === undefined) {
+        state.rootUnitGuids.push(unit.guid)
+      } else {
+        state.unitsByGuid[unit.parentGuid].childrenGuids.push(unit.guid)
+      }
+      state.activeUnitGuid = unit.guid
       updatePortfolio(state)
     },
     setActiveUnit: (state, { payload }: PayloadAction<{ guid?: string }>) => {
@@ -215,6 +241,7 @@ export const {
   // Unit
   addUnit,
   addUnitRandomized,
+  addUnitToDisplayInCurrentView,
   setActiveUnit,
   setUnitName,
   setUnitDescription,

@@ -7,8 +7,6 @@ import {
   setActiveUnit,
   addUnit,
   addUnitRandomized,
-  setViewFocusUnits,
-  addView,
   createViewWithFocusUnit,
 } from "../Portfolio/portfolioSlice"
 import { useAppDispatch } from "../config/store"
@@ -19,7 +17,6 @@ import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp"
 import { ActiveUnitFieldView } from "../Field/FieldView"
 import isDebug from "../isDebug"
 import DeleteUnitButton from "./DeleteUnitButton"
-import { newTableView } from "@/View/View"
 
 export default function ActiveUnitView() {
   const guid = useActivePortfolio((p) => p.activeUnitGuid)
